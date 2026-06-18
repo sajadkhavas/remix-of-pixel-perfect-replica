@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-import Particles, { initParticlesEngine } from "@tsparticles/react";
+import Particles, { ParticlesProvider, useParticlesProvider } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
-import type { ISourceOptions } from "@tsparticles/engine";
+import type { Engine, ISourceOptions } from "@tsparticles/engine";
 
 const GOLD_DUST_CONFIG: ISourceOptions = {
   background: { color: { value: "transparent" } },
@@ -35,19 +34,26 @@ const GOLD_DUST_CONFIG: ISourceOptions = {
   detectRetina: true,
 };
 
-export function ParticlesBackground() {
-  const [init, setInit] = useState(false);
-  useEffect(() => {
-    initParticlesEngine(async (engine) => {
-      await loadSlim(engine);
-    }).then(() => setInit(true));
-  }, []);
-  if (!init) return null;
+const initEngine = async (engine: Engine) => {
+  await loadSlim(engine);
+};
+
+function ParticlesInner() {
+  const { loaded } = useParticlesProvider();
+  if (!loaded) return null;
   return (
     <Particles
       id="gold-dust"
       options={GOLD_DUST_CONFIG}
       className="absolute inset-0 pointer-events-none z-0"
     />
+  );
+}
+
+export function ParticlesBackground() {
+  return (
+    <ParticlesProvider init={initEngine}>
+      <ParticlesInner />
+    </ParticlesProvider>
   );
 }
