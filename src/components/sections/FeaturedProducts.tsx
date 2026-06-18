@@ -1,11 +1,33 @@
-import { useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
+import { motion, useInView } from "framer-motion";
 import { gsap } from "@/lib/gsap";
 import { ProductCard, type Watch } from "@/components/ui/ProductCard";
-import * as ReactCountUpNS from "react-countup";
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const CountUp: typeof import("react-countup").default =
-  (ReactCountUpNS as any).default ?? (ReactCountUpNS as any);
+
+function AnimatedNumber({ value, suffix = "" }: { value: number; suffix?: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "0px 0px -100px 0px" });
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    if (!inView) return;
+    const start = performance.now();
+    const dur = 2200;
+    let raf = 0;
+    const tick = (t: number) => {
+      const p = Math.min(1, (t - start) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setN(Math.round(value * eased));
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, value]);
+  return (
+    <span ref={ref}>
+      {n.toLocaleString("en-US")}
+      {suffix}
+    </span>
+  );
+}
 
 export function FeaturedProducts({ watches }: { watches: Watch[] }) {
   const cardsRef = useRef<HTMLDivElement>(null);
