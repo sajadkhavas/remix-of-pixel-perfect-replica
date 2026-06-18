@@ -1,6 +1,9 @@
-import { Parallax } from "react-parallax";
+import ReactParallax from "react-parallax";
 import { motion } from "framer-motion";
 import editorialImg from "@/assets/watch-7.jpg";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Parallax: any = (ReactParallax as any).Parallax ?? (ReactParallax as any);
 
 export function EditorialSection() {
   return (
