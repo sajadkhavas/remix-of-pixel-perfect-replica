@@ -66,7 +66,7 @@ export function FeaturedProducts({ watches }: { watches: Watch[] }) {
                 className="text-4xl font-black text-[#C9A84C] mb-1"
                 style={{ fontFamily: "DM Mono, monospace" }}
               >
-                <CountUp end={s.value} duration={2.5} suffix={s.suffix} enableScrollSpy scrollSpyOnce />
+                <AnimatedNumber value={s.value} suffix={s.suffix} />
               </div>
               <p className="text-xs text-[#8A8A8A] tracking-widest uppercase">
                 {s.label}
