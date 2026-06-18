@@ -3,7 +3,9 @@ import { motion } from "framer-motion";
 import { gsap } from "@/lib/gsap";
 import { ProductCard, type Watch } from "@/components/ui/ProductCard";
 import * as ReactCountUpNS from "react-countup";
-const CountUp = ((ReactCountUpNS as unknown as { default?: typeof ReactCountUpNS }).default ?? ReactCountUpNS) as typeof import("react-countup").default;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const CountUp: typeof import("react-countup").default =
+  (ReactCountUpNS as any).default ?? (ReactCountUpNS as any);
 
 export function FeaturedProducts({ watches }: { watches: Watch[] }) {
   const cardsRef = useRef<HTMLDivElement>(null);
