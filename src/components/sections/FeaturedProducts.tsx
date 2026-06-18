@@ -2,7 +2,8 @@ import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "@/lib/gsap";
 import { ProductCard, type Watch } from "@/components/ui/ProductCard";
-import CountUp from "react-countup";
+import * as ReactCountUpNS from "react-countup";
+const CountUp = ((ReactCountUpNS as unknown as { default?: typeof ReactCountUpNS }).default ?? ReactCountUpNS) as typeof import("react-countup").default;
 
 export function FeaturedProducts({ watches }: { watches: Watch[] }) {
   const cardsRef = useRef<HTMLDivElement>(null);
