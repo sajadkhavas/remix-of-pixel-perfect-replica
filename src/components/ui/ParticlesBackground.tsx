@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Particles, { ParticlesProvider, useParticlesProvider } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import type { Engine, ISourceOptions } from "@tsparticles/engine";
@@ -51,6 +52,23 @@ function ParticlesInner() {
 }
 
 export function ParticlesBackground() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const updateIsMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    updateIsMobile();
+    window.addEventListener("resize", updateIsMobile);
+
+    return () => {
+      window.removeEventListener("resize", updateIsMobile);
+    };
+  }, []);
+
+  if (isMobile) return null;
+
   return (
     <ParticlesProvider init={initEngine}>
       <ParticlesInner />

@@ -166,8 +166,8 @@ export function CategoriesSection() {
                       ←
                     </motion.span>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </motion.div>
             </motion.div>
           ))}
         </div>

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, lazy, Suspense } from "react";
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Pagination } from "swiper/modules";
@@ -7,16 +7,11 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/pagination";
 import Typewriter from "typewriter-effect";
-import { gsap } from "@/lib/gsap";
 import watchLuxury from "@/assets/watch-luxury.png";
 import watchSport from "@/assets/watch-sport.png";
 import watchSmart from "@/assets/watch-smart.png";
 
-const ParticlesBackground = lazy(() =>
-  import("@/components/ui/ParticlesBackground").then((m) => ({ default: m.ParticlesBackground })),
-);
-
-const HERO_SLIDES = [
+const SLIDES = [
   {
     id: 1,
     eyebrow: "کلکسیون جدید ۱۴۰۴",
@@ -86,11 +81,6 @@ export function HeroSection() {
 
   return (
     <section className="relative w-full h-[88vh] sm:h-screen overflow-hidden grain-overlay">
-      {isDesktop && (
-        <Suspense fallback={null}>
-          <ParticlesBackground />
-        </Suspense>
-      )}
       <div className="absolute inset-0 vignette z-10 pointer-events-none" />
       <div
         className="absolute top-0 left-0 right-0 h-[1px] z-30"
@@ -106,28 +96,42 @@ export function HeroSection() {
         autoplay={{ delay: 7000, disableOnInteraction: false }}
         pagination={{ clickable: true }}
         loop
-        className="w-full h-full"
+        onSlideChange={(sw) => setActiveIdx(sw.realIndex)}
+        className="absolute inset-0 w-full h-full"
       >
-        {HERO_SLIDES.map((slide) => (
+        {SLIDES.map((slide) => (
           <SwiperSlide key={slide.id}>
-            <div
-              className={`relative w-full h-full bg-gradient-to-br ${slide.bg} flex items-center`}
-            >
+            <div className={`relative w-full h-full bg-gradient-to-br ${slide.bg}`}>
               <div
                 className="absolute right-[10%] top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[120px] opacity-20 pointer-events-none"
                 style={{ background: slide.accent }}
               />
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
-              <div
-                className="container mx-auto px-5 sm:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center z-20 relative pt-10 lg:pt-0"
-                dir="rtl"
-              >
-                <div ref={headingRef} className="flex flex-col gap-5 sm:gap-7">
+      <div
+        className="container mx-auto px-5 sm:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center z-20 relative h-full pt-10 lg:pt-0"
+        dir="rtl"
+      >
+        <AnimatePresence mode="wait">
+          {SLIDES.map(
+            (slide, i) =>
+              activeIdx === i && (
+                <motion.div
+                  key={slide.id}
+                  initial={{ opacity: 0, x: -28, filter: "blur(6px)" }}
+                  animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, x: 28, filter: "blur(6px)" }}
+                  transition={{ duration: 0.55, ease: "easeOut" }}
+                  className="flex flex-col gap-5 sm:gap-7"
+                >
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2, duration: 0.8 }}
-                    className="hero-line flex items-center gap-3"
+                    className="flex items-center gap-3"
                   >
                     <div className="h-[1px] w-8 sm:w-10" style={{ background: slide.accent }} />
                     <span
@@ -138,7 +142,7 @@ export function HeroSection() {
                     </span>
                   </motion.div>
 
-                  <div className="hero-line">
+                  <div>
                     <h1
                       className="text-4xl sm:text-6xl lg:text-8xl font-black leading-[1.05] text-[#F0EDE8] whitespace-pre-line"
                       style={{ fontFamily: "Playfair Display, Vazirmatn Variable, serif" }}
@@ -155,7 +159,7 @@ export function HeroSection() {
                     />
                   </div>
 
-                  <div className="hero-line text-[#8A8A8A] text-base tracking-widest h-6">
+                  <div className="text-[#8A8A8A] text-base tracking-widest h-6">
                     <Typewriter
                       options={{
                         strings: [slide.subtitle],
@@ -171,7 +175,7 @@ export function HeroSection() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1 }}
-                    className="hero-line inline-flex items-center gap-2 w-fit px-4 py-2 rounded-full border text-xs tracking-wider"
+                    className="inline-flex items-center gap-2 w-fit px-4 py-2 rounded-full border text-xs tracking-wider"
                     style={{
                       borderColor: `${slide.accent}55`,
                       color: slide.accent,
@@ -179,14 +183,11 @@ export function HeroSection() {
                       animation: "gold-pulse 3s ease-in-out infinite",
                     }}
                   >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full"
-                      style={{ background: slide.accent }}
-                    />
+                    <span className="w-1.5 h-1.5 rounded-full" style={{ background: slide.accent }} />
                     {slide.badge}
                   </motion.div>
 
-                  <div className="hero-line flex gap-3 sm:gap-4 flex-wrap mt-2">
+                  <div className="flex gap-3 sm:gap-4 flex-wrap mt-2">
                     <Link
                       to="/shop"
                       className="relative overflow-hidden px-6 sm:px-10 py-3 sm:py-4 font-bold text-[#080808] text-xs sm:text-sm tracking-[0.15em] uppercase group"
@@ -210,12 +211,22 @@ export function HeroSection() {
                       {slide.ctaSecondary}
                     </Link>
                   </div>
-                </div>
+                </motion.div>
+              ),
+          )}
+        </AnimatePresence>
 
+        <AnimatePresence mode="wait">
+          {SLIDES.map(
+            (slide, i) =>
+              activeIdx === i && (
                 <motion.div
+                  key={slide.id}
                   className="flex items-center justify-center relative order-first lg:order-last"
-                  animate={{ y: [0, -14, 0] }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  initial={{ opacity: 0, scale: 0.92, y: 18 }}
+                  animate={{ opacity: 1, scale: 1, y: [0, -14, 0] }}
+                  exit={{ opacity: 0, scale: 0.92, y: 18 }}
+                  transition={{ y: { duration: 6, repeat: Infinity, ease: "easeInOut" }, opacity: { duration: 0.45 }, scale: { duration: 0.45 } }}
                 >
                   <div
                     className="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 sm:w-48 h-6 blur-2xl opacity-30 rounded-full"
@@ -233,11 +244,10 @@ export function HeroSection() {
                     style={{ filter: `drop-shadow(0 20px 40px ${slide.accent}55)` }}
                   />
                 </motion.div>
-              </div>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+              ),
+          )}
+        </AnimatePresence>
+      </div>
 
       <motion.div
         className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-3"
@@ -255,10 +265,7 @@ export function HeroSection() {
               stroke="#C9A84C"
               strokeWidth="1.5"
               strokeLinecap="round"
-              style={{
-                transformOrigin: "16px 16px",
-                animation: "second-hand 10s linear infinite",
-              }}
+              style={{ transformOrigin: "16px 16px", animation: "second-hand 10s linear infinite" }}
             />
             <line
               x1="16"
@@ -268,10 +275,7 @@ export function HeroSection() {
               stroke="#C9A84C"
               strokeWidth="1.5"
               strokeLinecap="round"
-              style={{
-                transformOrigin: "16px 16px",
-                animation: "second-hand 120s linear infinite",
-              }}
+              style={{ transformOrigin: "16px 16px", animation: "second-hand 120s linear infinite" }}
             />
           </svg>
         </div>
