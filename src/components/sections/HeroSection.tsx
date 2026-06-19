@@ -169,51 +169,46 @@ export function HeroSection() {
                     {slide.badge}
                   </motion.div>
 
-                  <div className="hero-line flex gap-4 flex-wrap mt-2">
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.97 }}
-                      className="relative overflow-hidden px-10 py-4 font-bold text-[#080808] text-sm tracking-[0.15em] uppercase group"
+                  <div className="hero-line flex gap-3 sm:gap-4 flex-wrap mt-2">
+                    <Link
+                      to="/shop"
+                      className="relative overflow-hidden px-6 sm:px-10 py-3 sm:py-4 font-bold text-[#080808] text-xs sm:text-sm tracking-[0.15em] uppercase group"
                       style={{ background: slide.accent }}
                     >
                       <span className="relative z-10">{slide.cta}</span>
                       <span
                         className="absolute inset-0 opacity-0 group-hover:opacity-100"
                         style={{
-                          background:
-                            "linear-gradient(100deg, transparent 20%, rgba(255,255,255,0.35) 50%, transparent 80%)",
+                          background: "linear-gradient(100deg, transparent 20%, rgba(255,255,255,0.35) 50%, transparent 80%)",
                           animation: "gold-shimmer 1.6s ease-in-out infinite",
                         }}
                       />
-                    </motion.button>
+                    </Link>
 
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      className="px-10 py-4 font-medium text-[#8A8A8A] hover:text-[#F0EDE8] text-sm tracking-[0.15em] uppercase border border-[#2A2A2A] hover:border-[#C9A84C] transition-all duration-300"
+                    <Link
+                      to="/brands"
+                      className="px-6 sm:px-10 py-3 sm:py-4 font-medium text-[#A8A8A8] hover:text-[#F0EDE8] text-xs sm:text-sm tracking-[0.15em] uppercase border border-[#2A2A2A] hover:border-[#C9A84C] transition-all duration-300"
                     >
                       {slide.ctaSecondary}
-                    </motion.button>
+                    </Link>
                   </div>
                 </div>
 
                 <motion.div
-                  className="hidden lg:flex items-center justify-center relative"
+                  className="flex items-center justify-center relative order-first lg:order-last"
                   animate={{ y: [0, -14, 0] }}
                   transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  <div
-                    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-48 h-8 blur-2xl opacity-30 rounded-full"
-                    style={{ background: slide.accent }}
-                  />
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 sm:w-48 h-6 blur-2xl opacity-30 rounded-full" style={{ background: slide.accent }} />
                   <img
                     src={slide.image}
                     alt={slide.subtitle}
                     width={480}
                     height={480}
-                    className="relative z-10 w-full max-w-[480px] drop-shadow-[0_40px_60px_rgba(0,0,0,0.8)]"
-                    style={{
-                      filter: `drop-shadow(0 20px 40px ${slide.accent}55)`,
-                    }}
+                    loading="eager"
+                    fetchPriority="high"
+                    className="relative z-10 w-48 sm:w-72 lg:w-full lg:max-w-[480px] drop-shadow-[0_40px_60px_rgba(0,0,0,0.8)]"
+                    style={{ filter: `drop-shadow(0 20px 40px ${slide.accent}55)` }}
                   />
                 </motion.div>
               </div>
