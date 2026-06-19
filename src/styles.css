@@ -92,9 +92,43 @@
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes pulse-badge {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 #C9A84C44; }
+  50%       { transform: scale(1.04); box-shadow: 0 0 0 6px #C9A84C00; }
+}
 
 @utility vignette {
   background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.7) 100%);
+}
+
+@utility skeleton-shimmer {
+  background: linear-gradient(90deg, #111111 0%, #1E1E1E 35%, #C9A84C26 50%, #1E1E1E 65%, #111111 100%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+}
+
+@utility gold-text-glow {
+  color: #C9A84C;
+  text-shadow: 0 0 12px #C9A84C55, 0 0 28px #C9A84C22;
+}
+
+@utility section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #C9A84C;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
 }
 
 @utility grain-overlay {
