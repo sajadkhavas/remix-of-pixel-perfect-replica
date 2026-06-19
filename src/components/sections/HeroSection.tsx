@@ -57,8 +57,14 @@ const HERO_SLIDES = [
 
 export function HeroSection() {
   const headingRef = useRef<HTMLDivElement>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const fn = () => setIsDesktop(mq.matches);
+    fn(); mq.addEventListener("change", fn);
+    return () => mq.removeEventListener("change", fn);
+  }, []);
     if (!headingRef.current) return;
     gsap.fromTo(
       headingRef.current.querySelectorAll(".hero-line"),
