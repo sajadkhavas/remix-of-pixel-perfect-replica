@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { memo, useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Heart, ShoppingCart, Star, Shield } from "lucide-react";
 import { Link } from "@tanstack/react-router";
@@ -29,8 +29,9 @@ const CATEGORY_GOLD: Record<string, string> = {
   classic: "#8A6A3C",
 };
 
-export function ProductCard({ watch }: { watch: Watch }) {
+export const ProductCard = memo(function ProductCard({ watch }: { watch: Watch }) {
   const cardRef = useRef<HTMLDivElement>(null);
+  const [imgLoaded, setImgLoaded] = useState(false);
   const { addToCart, toggleWishlist, isWishlisted } = useStore();
   const wished = isWishlisted(watch.id);
 
@@ -55,19 +56,27 @@ export function ProductCard({ watch }: { watch: Watch }) {
       className="group relative overflow-hidden bg-[#111111] border border-[#1E1E1E] hover:border-[#C9A84C33] transition-colors duration-500"
       style={{ transformStyle: "preserve-3d" }}
     >
+      <motion.div
+        className="absolute top-0 left-0 h-px w-full z-20"
+        style={{ background: `linear-gradient(90deg, transparent, ${accent}, transparent)` }}
+        initial={{ scaleX: 0, opacity: 0 }}
+        whileInView={{ scaleX: 1, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      />
       <Link
         to="/product/$id"
         params={{ id: String(watch.id) }}
-        className="block relative overflow-hidden aspect-[3/4] bg-[#0D0D0D]"
+        className="block relative overflow-hidden aspect-square bg-[#0D0D0D]"
       >
+        {!imgLoaded && <div className="absolute inset-0 skeleton-shimmer" />}
         <motion.img
           src={watch.image}
           alt={watch.name}
-          width={360}
-          height={360}
-          className="w-full h-full object-contain p-6 sm:p-8"
+          className={`w-full h-full object-contain p-6 sm:p-8 transition-opacity duration-500 ${imgLoaded ? "opacity-100" : "opacity-0"}`}
           whileHover={{ scale: 1.07 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          onLoad={() => setImgLoaded(true)}
           loading="lazy"
           decoding="async"
         />
@@ -165,6 +174,8 @@ export function ProductCard({ watch }: { watch: Watch }) {
           </div>
         )}
 
+        <div className="h-px w-full bg-[#1E1E1E] my-3" />
+
         <div className="flex items-end justify-between mb-3">
           <div>
             <span
@@ -184,16 +195,24 @@ export function ProductCard({ watch }: { watch: Watch }) {
           disabled={watch.stock === 0}
           whileTap={watch.stock > 0 ? { scale: 0.97 } : {}}
           onClick={() => watch.stock > 0 && addToCart(watch.id)}
-          className="w-full py-2.5 sm:py-3 text-[11px] sm:text-xs font-bold tracking-[0.2em] uppercase flex items-center justify-center gap-2 transition-all duration-300 disabled:cursor-not-allowed"
+          className="relative overflow-hidden group w-full py-2.5 sm:py-3 text-[11px] sm:text-xs font-bold tracking-[0.2em] uppercase flex items-center justify-center gap-2 transition-all duration-300 disabled:cursor-not-allowed"
           style={{
             background: watch.stock === 0 ? "#1E1E1E" : accent,
             color: watch.stock === 0 ? "#4A4A4A" : "#080808",
           }}
         >
-          <ShoppingCart className="w-4 h-4" />
-          {watch.stock === 0 ? "ناموجود" : "افزودن به سبد"}
+          <span
+            className="absolute inset-0 opacity-0 group-hover:opacity-100"
+            style={{
+              background:
+                "linear-gradient(100deg, transparent 20%, rgba(255,255,255,0.35) 50%, transparent 80%)",
+              animation: "gold-shimmer 1.6s ease-in-out infinite",
+            }}
+          />
+          <ShoppingCart className="relative z-10 w-4 h-4" />
+          <span className="relative z-10">{watch.stock === 0 ? "ناموجود" : "افزودن به سبد"}</span>
         </motion.button>
       </div>
     </div>
   );
-}
+});
