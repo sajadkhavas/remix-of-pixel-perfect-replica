@@ -83,7 +83,7 @@ export function Navbar() {
                       {item.sub.map((s) => (
                         <Link
                           key={s.to}
-                          to={s.to}
+                          to={s.to as never}
                           className="block px-5 py-3 text-xs text-[#A8A8A8] hover:text-[#C9A84C] hover:bg-[#C9A84C08] transition-colors tracking-wider border-b border-[#1A1A1A] last:border-0"
                         >
                           {s.label}
@@ -178,7 +178,7 @@ export function Navbar() {
                         {item.sub.map((s) => (
                           <Link
                             key={s.to}
-                            to={s.to}
+                            to={s.to as never}
                             onClick={() => setMenuOpen(false)}
                             className="block py-2 text-xs text-[#8A8A8A] hover:text-[#C9A84C]"
                           >
