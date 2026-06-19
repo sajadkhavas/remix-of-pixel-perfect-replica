@@ -1,28 +1,46 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
+import VanillaTilt from "vanilla-tilt";
 
 const SERVICES = [
   {
-    id: 1, icon: "🔒", name: "اصالت تضمینی",
+    id: 1,
+    icon: "🔒",
+    name: "اصالت تضمینی",
     desc: "تمام ساعت‌های ما دارای گواهی اصالت و سریال معتبر هستند.",
     points: ["کارت گارانتی اصل", "جعبه اورجینال", "سریال قابل استعلام"],
-    color: "#C9A84C", time: "همیشه",
+    color: "#C9A84C",
+    time: "همیشه",
   },
   {
-    id: 2, icon: "⚙️", name: "سرویس و تعمیر",
+    id: 2,
+    icon: "⚙️",
+    name: "سرویس و تعمیر",
     desc: "تعمیر تخصصی ساعت‌های مکانیکال، کوارتز و هوشمند توسط متخصص.",
     points: ["تعمیر ساعت مکانیکال", "تنظیم بند", "تعویض باتری"],
-    color: "#8A6A3C", time: "۱–۵ روز",
+    color: "#8A6A3C",
+    time: "۱–۵ روز",
   },
   {
-    id: 3, icon: "🚚", name: "ارسال امن",
+    id: 3,
+    icon: "🚚",
+    name: "ارسال امن",
     desc: "بسته‌بندی ضد ضربه با بیمه کامل و ردیابی آنلاین سفارش.",
     points: ["بسته‌بندی لوکس", "بیمه کامل محموله", "ردیابی آنلاین"],
-    color: "#3A7CA8", time: "۱–۳ روز",
+    color: "#3A7CA8",
+    time: "۱–۳ روز",
   },
 ];
 
-function ServiceCard({ s, i }: { s: (typeof SERVICES)[0]; i: number }) {
+function ServiceCard({
+  s,
+  i,
+  cardElementRef,
+}: {
+  s: (typeof SERVICES)[0];
+  i: number;
+  cardElementRef?: (el: HTMLDivElement | null) => void;
+}) {
   const cardRef = useRef<HTMLDivElement>(null);
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
@@ -31,7 +49,10 @@ function ServiceCard({ s, i }: { s: (typeof SERVICES)[0]; i: number }) {
 
   return (
     <motion.div
-      ref={cardRef}
+      ref={(el) => {
+        cardRef.current = el;
+        cardElementRef?.(el);
+      }}
       style={{ rotateX: rotX, rotateY: rotY, transformStyle: "preserve-3d", perspective: 1000 }}
       onMouseMove={(e) => {
         const r = cardRef.current!.getBoundingClientRect();
@@ -53,10 +74,7 @@ function ServiceCard({ s, i }: { s: (typeof SERVICES)[0]; i: number }) {
       />
 
       <div style={{ transform: "translateZ(20px)" }}>
-        <div
-          className="text-5xl mb-6"
-          style={{ filter: `drop-shadow(0 4px 12px ${s.color}55)` }}
-        >
+        <div className="text-5xl mb-6" style={{ filter: `drop-shadow(0 4px 12px ${s.color}55)` }}>
           {s.icon}
         </div>
 
@@ -72,10 +90,7 @@ function ServiceCard({ s, i }: { s: (typeof SERVICES)[0]; i: number }) {
         <ul className="space-y-2 mb-8">
           {s.points.map((p, j) => (
             <li key={j} className="flex items-center gap-2 text-sm text-[#D4C9B0]">
-              <span style={{ color: s.color, fontFamily: "DM Mono, monospace" }}>
-                —
-              </span>{" "}
-              {p}
+              <span style={{ color: s.color, fontFamily: "DM Mono, monospace" }}>—</span> {p}
             </li>
           ))}
         </ul>
@@ -97,6 +112,29 @@ function ServiceCard({ s, i }: { s: (typeof SERVICES)[0]; i: number }) {
 }
 
 export function ServicesSection() {
+  const serviceCardRefs = useRef<Array<HTMLDivElement | null>>([]);
+
+  useEffect(() => {
+    const elements = serviceCardRefs.current.filter((el): el is HTMLDivElement => Boolean(el));
+
+    elements.forEach((el) => {
+      VanillaTilt.init(el, {
+        max: 6,
+        speed: 600,
+        glare: true,
+        "max-glare": 0.06,
+        perspective: 1200,
+      });
+    });
+
+    return () => {
+      elements.forEach((el) => {
+        const tiltedEl = el as HTMLDivElement & { vanillaTilt?: { destroy: () => void } };
+        tiltedEl.vanillaTilt?.destroy();
+      });
+    };
+  }, []);
+
   return (
     <section className="py-28 bg-[#080808]" dir="rtl">
       <div className="container mx-auto px-8">
@@ -117,7 +155,14 @@ export function ServicesSection() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
           {SERVICES.map((s, i) => (
-            <ServiceCard key={s.id} s={s} i={i} />
+            <ServiceCard
+              key={s.id}
+              s={s}
+              i={i}
+              cardElementRef={(el) => {
+                serviceCardRefs.current[i] = el;
+              }}
+            />
           ))}
         </div>
       </div>
