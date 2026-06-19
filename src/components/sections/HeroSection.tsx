@@ -65,25 +65,23 @@ export function HeroSection() {
     fn(); mq.addEventListener("change", fn);
     return () => mq.removeEventListener("change", fn);
   }, []);
+
+  useEffect(() => {
     if (!headingRef.current) return;
     gsap.fromTo(
       headingRef.current.querySelectorAll(".hero-line"),
       { opacity: 0, y: 60, filter: "blur(6px)" },
-      {
-        opacity: 1,
-        y: 0,
-        filter: "blur(0px)",
-        duration: 1.2,
-        stagger: 0.18,
-        ease: "power4.out",
-        delay: 0.3,
-      },
+      { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2, stagger: 0.18, ease: "power4.out", delay: 0.3 },
     );
   }, []);
 
   return (
-    <section className="relative w-full h-screen overflow-hidden grain-overlay">
-      <ParticlesBackground />
+    <section className="relative w-full h-[88vh] sm:h-screen overflow-hidden grain-overlay">
+      {isDesktop && (
+        <Suspense fallback={null}>
+          <ParticlesBackground />
+        </Suspense>
+      )}
       <div className="absolute inset-0 vignette z-10 pointer-events-none" />
       <div
         className="absolute top-0 left-0 right-0 h-[1px] z-30"
