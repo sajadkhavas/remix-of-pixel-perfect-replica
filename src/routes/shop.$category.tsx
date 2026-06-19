@@ -31,7 +31,7 @@ function CategoryPage() {
     <>
       <PageHero eyebrow="دسته‌بندی" title={cat.name} sub={cat.desc}>
         <div className="flex gap-2 flex-wrap mt-4">
-          {cat.brands.map((b) => (
+          {cat.brands.map((b: string) => (
             <span key={b} className="text-[10px] sm:text-xs px-3 py-1 border tracking-wider" style={{ borderColor: `${cat.color}44`, color: cat.color, background: `${cat.color}10` }}>
               {b}
             </span>
