@@ -1,16 +1,20 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, lazy, Suspense } from "react";
 import { motion } from "framer-motion";
+import { Link } from "@tanstack/react-router";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/pagination";
 import Typewriter from "typewriter-effect";
-import { ParticlesBackground } from "@/components/ui/ParticlesBackground";
 import { gsap } from "@/lib/gsap";
 import watchLuxury from "@/assets/watch-luxury.png";
 import watchSport from "@/assets/watch-sport.png";
 import watchSmart from "@/assets/watch-smart.png";
+
+const ParticlesBackground = lazy(() =>
+  import("@/components/ui/ParticlesBackground").then((m) => ({ default: m.ParticlesBackground })),
+);
 
 const HERO_SLIDES = [
   {
