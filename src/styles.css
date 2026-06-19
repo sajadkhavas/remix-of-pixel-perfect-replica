@@ -2,18 +2,12 @@
 @source "../src";
 @import "tw-animate-css";
 
-@import "@fontsource/playfair-display/400.css";
-@import "@fontsource/playfair-display/700.css";
-@import "@fontsource/playfair-display/900.css";
-@import "@fontsource-variable/vazirmatn";
-@import "@fontsource/dm-mono/400.css";
-@import "@fontsource/dm-mono/500.css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-display: "Playfair Display", "Vazirmatn Variable", serif;
-  --font-body: "Vazirmatn Variable", "Inter", sans-serif;
+  --font-display: "Playfair Display", "Vazirmatn", serif;
+  --font-body: "Vazirmatn", "Inter", sans-serif;
   --font-mono: "DM Mono", monospace;
 
   --color-gold: #C9A84C;
@@ -42,10 +36,14 @@
 }
 
 @layer base {
+  @font-face {
+    font-display: swap;
+  }
+
   html, body {
     background: #080808;
     color: #F0EDE8;
-    font-family: "Vazirmatn Variable", "Inter", sans-serif;
+    font-family: "Vazirmatn", "Inter", sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 }
