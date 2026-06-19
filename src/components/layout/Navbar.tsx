@@ -46,6 +46,13 @@ export function Navbar() {
         transition={{ duration: 0.3 }}
         style={{ borderBottom: "1px solid rgba(201,168,76,0.10)" }}
       >
+        <div
+          className="h-px w-full"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent, #C9A84C 30%, #E8C96C 50%, #C9A84C 70%, transparent)",
+          }}
+        />
         <div className="container mx-auto flex items-center justify-between gap-4" dir="rtl">
           <Link to="/" className="flex flex-col shrink-0">
             <span className="text-[#C9A84C] text-lg sm:text-xl font-black tracking-[0.15em] uppercase" style={{ fontFamily: "Playfair Display, serif" }}>
