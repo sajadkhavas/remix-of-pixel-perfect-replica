@@ -41,7 +41,7 @@ export function ProductCard({ watch }: { watch: Watch }) {
 
   useEffect(() => {
     const el = cardRef.current;
-    if (!el || typeof window === "undefined" || window.innerWidth < 1024) return;
+    if (!el || typeof window === "undefined" || window.innerWidth < 768) return;
     VanillaTilt.init(el, { max: 6, speed: 600, glare: true, "max-glare": 0.06, perspective: 1200 });
     return () => {
       const inst = (el as unknown as { vanillaTilt?: { destroy: () => void } }).vanillaTilt;
