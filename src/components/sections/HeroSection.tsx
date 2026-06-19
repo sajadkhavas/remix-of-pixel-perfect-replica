@@ -1,16 +1,20 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, lazy, Suspense } from "react";
 import { motion } from "framer-motion";
+import { Link } from "@tanstack/react-router";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/pagination";
 import Typewriter from "typewriter-effect";
-import { ParticlesBackground } from "@/components/ui/ParticlesBackground";
 import { gsap } from "@/lib/gsap";
 import watchLuxury from "@/assets/watch-luxury.png";
 import watchSport from "@/assets/watch-sport.png";
 import watchSmart from "@/assets/watch-smart.png";
+
+const ParticlesBackground = lazy(() =>
+  import("@/components/ui/ParticlesBackground").then((m) => ({ default: m.ParticlesBackground })),
+);
 
 const HERO_SLIDES = [
   {
@@ -53,27 +57,31 @@ const HERO_SLIDES = [
 
 export function HeroSection() {
   const headingRef = useRef<HTMLDivElement>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const fn = () => setIsDesktop(mq.matches);
+    fn(); mq.addEventListener("change", fn);
+    return () => mq.removeEventListener("change", fn);
+  }, []);
 
   useEffect(() => {
     if (!headingRef.current) return;
     gsap.fromTo(
       headingRef.current.querySelectorAll(".hero-line"),
       { opacity: 0, y: 60, filter: "blur(6px)" },
-      {
-        opacity: 1,
-        y: 0,
-        filter: "blur(0px)",
-        duration: 1.2,
-        stagger: 0.18,
-        ease: "power4.out",
-        delay: 0.3,
-      },
+      { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2, stagger: 0.18, ease: "power4.out", delay: 0.3 },
     );
   }, []);
 
   return (
-    <section className="relative w-full h-screen overflow-hidden grain-overlay">
-      <ParticlesBackground />
+    <section className="relative w-full h-[88vh] sm:h-screen overflow-hidden grain-overlay">
+      {isDesktop && (
+        <Suspense fallback={null}>
+          <ParticlesBackground />
+        </Suspense>
+      )}
       <div className="absolute inset-0 vignette z-10 pointer-events-none" />
       <div
         className="absolute top-0 left-0 right-0 h-[1px] z-30"
@@ -102,45 +110,31 @@ export function HeroSection() {
               />
 
               <div
-                className="container mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center z-20 relative"
+                className="container mx-auto px-5 sm:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center z-20 relative pt-10 lg:pt-0"
                 dir="rtl"
               >
-                <div ref={headingRef} className="flex flex-col gap-7">
+                <div ref={headingRef} className="flex flex-col gap-5 sm:gap-7">
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2, duration: 0.8 }}
                     className="hero-line flex items-center gap-3"
                   >
-                    <div
-                      className="h-[1px] w-10"
-                      style={{ background: slide.accent }}
-                    />
-                    <span
-                      className="text-xs tracking-[0.3em] uppercase font-medium"
-                      style={{ color: slide.accent }}
-                    >
+                    <div className="h-[1px] w-8 sm:w-10" style={{ background: slide.accent }} />
+                    <span className="text-[10px] sm:text-xs tracking-[0.3em] uppercase font-medium" style={{ color: slide.accent }}>
                       {slide.eyebrow}
                     </span>
                   </motion.div>
 
                   <div className="hero-line">
                     <h1
-                      className="text-6xl lg:text-8xl font-black leading-none text-[#F0EDE8] whitespace-pre-line"
-                      style={{
-                        fontFamily:
-                          "Playfair Display, Vazirmatn Variable, serif",
-                      }}
+                      className="text-4xl sm:text-6xl lg:text-8xl font-black leading-[1.05] text-[#F0EDE8] whitespace-pre-line"
+                      style={{ fontFamily: "Playfair Display, Vazirmatn Variable, serif" }}
                     >
                       {slide.title}
                     </h1>
-                    <div
-                      className="h-[2px] mt-4 rounded-full"
-                      style={{
-                        width: "120px",
-                        background: `linear-gradient(90deg, ${slide.accent}, transparent)`,
-                        animation: "line-draw 1.4s ease-out 0.8s both",
-                      }}
+                    <div className="h-[2px] mt-3 sm:mt-4 rounded-full"
+                      style={{ width: "100px", background: `linear-gradient(90deg, ${slide.accent}, transparent)`, animation: "line-draw 1.4s ease-out 0.8s both" }}
                     />
                   </div>
 
@@ -175,51 +169,46 @@ export function HeroSection() {
                     {slide.badge}
                   </motion.div>
 
-                  <div className="hero-line flex gap-4 flex-wrap mt-2">
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.97 }}
-                      className="relative overflow-hidden px-10 py-4 font-bold text-[#080808] text-sm tracking-[0.15em] uppercase group"
+                  <div className="hero-line flex gap-3 sm:gap-4 flex-wrap mt-2">
+                    <Link
+                      to="/shop"
+                      className="relative overflow-hidden px-6 sm:px-10 py-3 sm:py-4 font-bold text-[#080808] text-xs sm:text-sm tracking-[0.15em] uppercase group"
                       style={{ background: slide.accent }}
                     >
                       <span className="relative z-10">{slide.cta}</span>
                       <span
                         className="absolute inset-0 opacity-0 group-hover:opacity-100"
                         style={{
-                          background:
-                            "linear-gradient(100deg, transparent 20%, rgba(255,255,255,0.35) 50%, transparent 80%)",
+                          background: "linear-gradient(100deg, transparent 20%, rgba(255,255,255,0.35) 50%, transparent 80%)",
                           animation: "gold-shimmer 1.6s ease-in-out infinite",
                         }}
                       />
-                    </motion.button>
+                    </Link>
 
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      className="px-10 py-4 font-medium text-[#8A8A8A] hover:text-[#F0EDE8] text-sm tracking-[0.15em] uppercase border border-[#2A2A2A] hover:border-[#C9A84C] transition-all duration-300"
+                    <Link
+                      to="/brands"
+                      className="px-6 sm:px-10 py-3 sm:py-4 font-medium text-[#A8A8A8] hover:text-[#F0EDE8] text-xs sm:text-sm tracking-[0.15em] uppercase border border-[#2A2A2A] hover:border-[#C9A84C] transition-all duration-300"
                     >
                       {slide.ctaSecondary}
-                    </motion.button>
+                    </Link>
                   </div>
                 </div>
 
                 <motion.div
-                  className="hidden lg:flex items-center justify-center relative"
+                  className="flex items-center justify-center relative order-first lg:order-last"
                   animate={{ y: [0, -14, 0] }}
                   transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  <div
-                    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-48 h-8 blur-2xl opacity-30 rounded-full"
-                    style={{ background: slide.accent }}
-                  />
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 sm:w-48 h-6 blur-2xl opacity-30 rounded-full" style={{ background: slide.accent }} />
                   <img
                     src={slide.image}
                     alt={slide.subtitle}
                     width={480}
                     height={480}
-                    className="relative z-10 w-full max-w-[480px] drop-shadow-[0_40px_60px_rgba(0,0,0,0.8)]"
-                    style={{
-                      filter: `drop-shadow(0 20px 40px ${slide.accent}55)`,
-                    }}
+                    loading="eager"
+                    fetchPriority="high"
+                    className="relative z-10 w-48 sm:w-72 lg:w-full lg:max-w-[480px] drop-shadow-[0_40px_60px_rgba(0,0,0,0.8)]"
+                    style={{ filter: `drop-shadow(0 20px 40px ${slide.accent}55)` }}
                   />
                 </motion.div>
               </div>
