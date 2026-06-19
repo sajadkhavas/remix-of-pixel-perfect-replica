@@ -110,45 +110,31 @@ export function HeroSection() {
               />
 
               <div
-                className="container mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center z-20 relative"
+                className="container mx-auto px-5 sm:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center z-20 relative pt-10 lg:pt-0"
                 dir="rtl"
               >
-                <div ref={headingRef} className="flex flex-col gap-7">
+                <div ref={headingRef} className="flex flex-col gap-5 sm:gap-7">
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2, duration: 0.8 }}
                     className="hero-line flex items-center gap-3"
                   >
-                    <div
-                      className="h-[1px] w-10"
-                      style={{ background: slide.accent }}
-                    />
-                    <span
-                      className="text-xs tracking-[0.3em] uppercase font-medium"
-                      style={{ color: slide.accent }}
-                    >
+                    <div className="h-[1px] w-8 sm:w-10" style={{ background: slide.accent }} />
+                    <span className="text-[10px] sm:text-xs tracking-[0.3em] uppercase font-medium" style={{ color: slide.accent }}>
                       {slide.eyebrow}
                     </span>
                   </motion.div>
 
                   <div className="hero-line">
                     <h1
-                      className="text-6xl lg:text-8xl font-black leading-none text-[#F0EDE8] whitespace-pre-line"
-                      style={{
-                        fontFamily:
-                          "Playfair Display, Vazirmatn Variable, serif",
-                      }}
+                      className="text-4xl sm:text-6xl lg:text-8xl font-black leading-[1.05] text-[#F0EDE8] whitespace-pre-line"
+                      style={{ fontFamily: "Playfair Display, Vazirmatn Variable, serif" }}
                     >
                       {slide.title}
                     </h1>
-                    <div
-                      className="h-[2px] mt-4 rounded-full"
-                      style={{
-                        width: "120px",
-                        background: `linear-gradient(90deg, ${slide.accent}, transparent)`,
-                        animation: "line-draw 1.4s ease-out 0.8s both",
-                      }}
+                    <div className="h-[2px] mt-3 sm:mt-4 rounded-full"
+                      style={{ width: "100px", background: `linear-gradient(90deg, ${slide.accent}, transparent)`, animation: "line-draw 1.4s ease-out 0.8s both" }}
                     />
                   </div>
 
