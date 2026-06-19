@@ -106,77 +106,65 @@ export function CategoriesSection() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             >
-              <motion.div initial="rest" whileHover="hover">
-                <Link
-                  to="/shop/$category"
-                  params={{ category: cat.slug }}
-                  className="group relative overflow-hidden block aspect-[3/4] bg-[#111111] border border-[#1E1E1E] hover:border-[#C9A84C44] transition-colors"
-                >
-                  <div className="absolute inset-0">
-                    <img
-                      src={cat.image}
-                      alt={cat.name}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-full object-cover opacity-50 group-hover:opacity-75 group-hover:scale-105 transition-all duration-700"
-                    />
-                  </div>
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      background: `linear-gradient(to top, #080808 10%, transparent 60%, ${cat.color}22 100%)`,
-                    }}
+              <Link
+                to="/shop/$category"
+                params={{ category: cat.slug }}
+                className="group relative overflow-hidden block aspect-[3/4] bg-[#111111] border border-[#1E1E1E] hover:border-[#C9A84C44] transition-colors"
+              >
+                <div className="absolute inset-0">
+                  <img
+                    src={cat.image}
+                    alt={cat.name}
+                    width={800}
+                    height={800}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover opacity-50 group-hover:opacity-70 group-hover:scale-105 transition-all duration-700"
                   />
-                  <div className="absolute top-4 left-4 z-20 text-[9px] tracking-widest text-[#C9A84C] border border-[#C9A84C30] px-2 py-1 bg-[#080808]/70 backdrop-blur-sm">
-                    {cat.count}+ محصول
-                  </div>
-                  <div className="absolute top-4 right-4 z-20 h-10 w-10 pointer-events-none">
-                    <motion.div
-                      className="absolute top-0 right-0 h-px bg-[#C9A84C]"
-                      variants={{ rest: { width: 0 }, hover: { width: 40 } }}
-                      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                    />
-                    <motion.div
-                      className="absolute top-0 right-0 w-px bg-[#C9A84C]"
-                      variants={{ rest: { height: 0 }, hover: { height: 40 } }}
-                      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                    />
-                  </div>
-                  <div className="relative z-10 h-full flex flex-col justify-end p-4 sm:p-6">
-                    <h3 className="text-lg sm:text-xl font-bold text-[#F0EDE8] mb-1 group-hover:text-[#C9A84C] transition-colors">
-                      {cat.name}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-[#A8A8A8] mb-3 line-clamp-2">
-                      {cat.desc}
-                    </p>
-                    <div className="hidden sm:flex flex-wrap gap-1 mb-3">
-                      {cat.brands.map((b) => (
-                        <span
-                          key={b}
-                          className="text-[10px] px-2 py-0.5 border tracking-wider"
-                          style={{
-                            borderColor: `${cat.color}44`,
-                            color: cat.color,
-                            background: `${cat.color}10`,
-                          }}
-                        >
-                          {b}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] sm:text-xs text-[#8A8A8A]">
-                        {cat.count} محصول
-                      </span>
-                      <motion.span
-                        animate={{ x: [0, -4, 0] }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                        style={{ color: cat.color }}
-                        className="text-lg"
+                </div>
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background: `linear-gradient(to top, #080808 10%, transparent 60%, ${cat.color}22 100%)`,
+                  }}
+                />
+                <div
+                  className="absolute top-0 right-0 w-0 h-0 group-hover:w-12 group-hover:h-12 transition-all duration-500"
+                  style={{
+                    borderTop: `2px solid ${cat.color}`,
+                    borderRight: `2px solid ${cat.color}`,
+                  }}
+                />
+                <div className="relative z-10 h-full flex flex-col justify-end p-4 sm:p-6">
+                  <h3 className="text-lg sm:text-xl font-bold text-[#F0EDE8] mb-1 group-hover:text-[#C9A84C] transition-colors">
+                    {cat.name}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-[#A8A8A8] mb-3 line-clamp-2">{cat.desc}</p>
+                  <div className="hidden sm:flex flex-wrap gap-1 mb-3">
+                    {cat.brands.map((b) => (
+                      <span
+                        key={b}
+                        className="text-[10px] px-2 py-0.5 border tracking-wider"
+                        style={{
+                          borderColor: `${cat.color}44`,
+                          color: cat.color,
+                          background: `${cat.color}10`,
+                        }}
                       >
-                        ←
-                      </motion.span>
-                    </div>
+                        {b}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] sm:text-xs text-[#8A8A8A]">{cat.count} محصول</span>
+                    <motion.span
+                      animate={{ x: [0, -4, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                      style={{ color: cat.color }}
+                      className="text-lg"
+                    >
+                      ←
+                    </motion.span>
                   </div>
                 </Link>
               </motion.div>
