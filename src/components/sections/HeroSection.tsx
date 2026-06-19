@@ -62,7 +62,8 @@ export function HeroSection() {
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1024px)");
     const fn = () => setIsDesktop(mq.matches);
-    fn(); mq.addEventListener("change", fn);
+    fn();
+    mq.addEventListener("change", fn);
     return () => mq.removeEventListener("change", fn);
   }, []);
 
@@ -71,7 +72,15 @@ export function HeroSection() {
     gsap.fromTo(
       headingRef.current.querySelectorAll(".hero-line"),
       { opacity: 0, y: 60, filter: "blur(6px)" },
-      { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2, stagger: 0.18, ease: "power4.out", delay: 0.3 },
+      {
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 1.2,
+        stagger: 0.18,
+        ease: "power4.out",
+        delay: 0.3,
+      },
     );
   }, []);
 
@@ -121,7 +130,10 @@ export function HeroSection() {
                     className="hero-line flex items-center gap-3"
                   >
                     <div className="h-[1px] w-8 sm:w-10" style={{ background: slide.accent }} />
-                    <span className="text-[10px] sm:text-xs tracking-[0.3em] uppercase font-medium" style={{ color: slide.accent }}>
+                    <span
+                      className="text-[10px] sm:text-xs tracking-[0.3em] uppercase font-medium"
+                      style={{ color: slide.accent }}
+                    >
                       {slide.eyebrow}
                     </span>
                   </motion.div>
@@ -133,8 +145,13 @@ export function HeroSection() {
                     >
                       {slide.title}
                     </h1>
-                    <div className="h-[2px] mt-3 sm:mt-4 rounded-full"
-                      style={{ width: "100px", background: `linear-gradient(90deg, ${slide.accent}, transparent)`, animation: "line-draw 1.4s ease-out 0.8s both" }}
+                    <div
+                      className="h-[2px] mt-3 sm:mt-4 rounded-full"
+                      style={{
+                        width: "100px",
+                        background: `linear-gradient(90deg, ${slide.accent}, transparent)`,
+                        animation: "line-draw 1.4s ease-out 0.8s both",
+                      }}
                     />
                   </div>
 
@@ -179,7 +196,8 @@ export function HeroSection() {
                       <span
                         className="absolute inset-0 opacity-0 group-hover:opacity-100"
                         style={{
-                          background: "linear-gradient(100deg, transparent 20%, rgba(255,255,255,0.35) 50%, transparent 80%)",
+                          background:
+                            "linear-gradient(100deg, transparent 20%, rgba(255,255,255,0.35) 50%, transparent 80%)",
                           animation: "gold-shimmer 1.6s ease-in-out infinite",
                         }}
                       />
@@ -199,13 +217,17 @@ export function HeroSection() {
                   animate={{ y: [0, -14, 0] }}
                   transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 sm:w-48 h-6 blur-2xl opacity-30 rounded-full" style={{ background: slide.accent }} />
+                  <div
+                    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 sm:w-48 h-6 blur-2xl opacity-30 rounded-full"
+                    style={{ background: slide.accent }}
+                  />
                   <img
                     src={slide.image}
                     alt={slide.subtitle}
                     width={480}
                     height={480}
                     loading="eager"
+                    decoding="async"
                     fetchPriority="high"
                     className="relative z-10 w-48 sm:w-72 lg:w-full lg:max-w-[480px] drop-shadow-[0_40px_60px_rgba(0,0,0,0.8)]"
                     style={{ filter: `drop-shadow(0 20px 40px ${slide.accent}55)` }}
@@ -224,14 +246,7 @@ export function HeroSection() {
       >
         <div className="relative w-8 h-8">
           <svg viewBox="0 0 32 32" className="w-full h-full" fill="none">
-            <circle
-              cx="16"
-              cy="16"
-              r="14"
-              stroke="#C9A84C"
-              strokeWidth="1"
-              strokeOpacity="0.4"
-            />
+            <circle cx="16" cy="16" r="14" stroke="#C9A84C" strokeWidth="1" strokeOpacity="0.4" />
             <line
               x1="16"
               y1="16"
@@ -260,9 +275,7 @@ export function HeroSection() {
             />
           </svg>
         </div>
-        <span className="text-[#8A8A8A] text-[10px] tracking-[0.4em] uppercase">
-          اسکرول
-        </span>
+        <span className="text-[#8A8A8A] text-[10px] tracking-[0.4em] uppercase">اسکرول</span>
       </motion.div>
     </section>
   );
