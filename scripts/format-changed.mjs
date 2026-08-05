@@ -50,22 +50,13 @@ function collectFiles() {
   };
 
   if (baseReference) {
-    addOutput(
-      runGit([
-        "diff",
-        "--name-only",
-        "--diff-filter=ACMR",
-        `${baseReference}...HEAD`,
-      ]),
-    );
+    addOutput(runGit(["diff", "--name-only", "--diff-filter=ACMR", `${baseReference}...HEAD`]));
   } else {
     addOutput(runGit(["ls-files"]));
   }
 
   addOutput(runGit(["diff", "--name-only", "--diff-filter=ACMR"]));
-  addOutput(
-    runGit(["diff", "--cached", "--name-only", "--diff-filter=ACMR"]),
-  );
+  addOutput(runGit(["diff", "--cached", "--name-only", "--diff-filter=ACMR"]));
   addOutput(runGit(["ls-files", "--others", "--exclude-standard"]));
 
   return [...files]
@@ -91,12 +82,7 @@ for (const file of files) console.log(`- ${file}`);
 
 const prettierResult = spawnSync(
   process.execPath,
-  [
-    "node_modules/prettier/bin/prettier.cjs",
-    requestedMode,
-    "--ignore-unknown",
-    ...files,
-  ],
+  ["node_modules/prettier/bin/prettier.cjs", requestedMode, "--ignore-unknown", ...files],
   { stdio: "inherit" },
 );
 
