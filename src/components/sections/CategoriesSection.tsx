@@ -69,10 +69,7 @@ export function CategoriesSection() {
   }, []);
 
   return (
-    <section
-      className="relative py-20 sm:py-28 bg-[#080808] overflow-hidden"
-      dir="rtl"
-    >
+    <section className="relative py-20 sm:py-28 bg-[#080808] overflow-hidden" dir="rtl">
       <div
         className="absolute inset-0 opacity-[0.025]"
         style={{
@@ -153,9 +150,7 @@ export function CategoriesSection() {
                   <h3 className="text-lg sm:text-xl font-bold text-[#F0EDE8] mb-1 group-hover:text-[#C9A84C] transition-colors">
                     {cat.name}
                   </h3>
-                  <p className="text-xs sm:text-sm text-[#A8A8A8] mb-3 line-clamp-2">
-                    {cat.desc}
-                  </p>
+                  <p className="text-xs sm:text-sm text-[#A8A8A8] mb-3 line-clamp-2">{cat.desc}</p>
                   <div className="hidden sm:flex flex-wrap gap-1 mb-3">
                     {cat.brands.map((brand) => (
                       <span
@@ -172,9 +167,7 @@ export function CategoriesSection() {
                     ))}
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] sm:text-xs text-[#8A8A8A]">
-                      {cat.count} محصول
-                    </span>
+                    <span className="text-[10px] sm:text-xs text-[#8A8A8A]">{cat.count} محصول</span>
                     <motion.span
                       animate={{ x: [0, -4, 0] }}
                       transition={{ duration: 1.5, repeat: Infinity }}

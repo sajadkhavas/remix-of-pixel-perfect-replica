@@ -99,11 +99,7 @@ export function HeroSection() {
       <Swiper
         modules={[Autoplay, EffectFade, Pagination]}
         effect="fade"
-        autoplay={
-          shouldReduceMotion
-            ? false
-            : { delay: 7000, disableOnInteraction: false }
-        }
+        autoplay={shouldReduceMotion ? false : { delay: 7000, disableOnInteraction: false }}
         pagination={{ clickable: true }}
         loop
         onSlideChange={(swiper) => setActiveIdx(swiper.realIndex)}
@@ -129,17 +125,9 @@ export function HeroSection() {
           <motion.div
             ref={headingRef}
             key={activeSlide.id}
-            initial={
-              shouldReduceMotion
-                ? false
-                : { opacity: 0, x: -28, filter: "blur(6px)" }
-            }
+            initial={shouldReduceMotion ? false : { opacity: 0, x: -28, filter: "blur(6px)" }}
             animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            exit={
-              shouldReduceMotion
-                ? undefined
-                : { opacity: 0, x: 28, filter: "blur(6px)" }
-            }
+            exit={shouldReduceMotion ? undefined : { opacity: 0, x: 28, filter: "blur(6px)" }}
             transition={{ duration: shouldReduceMotion ? 0 : 0.55, ease: "easeOut" }}
             className="flex flex-col gap-5 sm:gap-7"
           >
@@ -152,10 +140,7 @@ export function HeroSection() {
               }}
               className="hero-line flex items-center gap-3"
             >
-              <div
-                className="h-[1px] w-8 sm:w-10"
-                style={{ background: activeSlide.accent }}
-              />
+              <div className="h-[1px] w-8 sm:w-10" style={{ background: activeSlide.accent }} />
               <span
                 className="text-[10px] sm:text-xs tracking-[0.3em] uppercase font-medium"
                 style={{ color: activeSlide.accent }}
@@ -178,9 +163,7 @@ export function HeroSection() {
                 style={{
                   width: "100px",
                   background: `linear-gradient(90deg, ${activeSlide.accent}, transparent)`,
-                  animation: shouldReduceMotion
-                    ? undefined
-                    : "line-draw 1.4s ease-out 0.8s both",
+                  animation: shouldReduceMotion ? undefined : "line-draw 1.4s ease-out 0.8s both",
                 }}
               />
             </div>
@@ -214,9 +197,7 @@ export function HeroSection() {
                 borderColor: `${activeSlide.accent}55`,
                 color: activeSlide.accent,
                 background: `${activeSlide.accent}0d`,
-                animation: shouldReduceMotion
-                  ? undefined
-                  : "gold-pulse 3s ease-in-out infinite",
+                animation: shouldReduceMotion ? undefined : "gold-pulse 3s ease-in-out infinite",
               }}
             >
               <span
@@ -259,21 +240,13 @@ export function HeroSection() {
           <motion.div
             key={activeSlide.id}
             className="flex items-center justify-center relative order-first lg:order-last"
-            initial={
-              shouldReduceMotion
-                ? false
-                : { opacity: 0, scale: 0.92, y: 18 }
-            }
+            initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.92, y: 18 }}
             animate={
               shouldReduceMotion
                 ? { opacity: 1, scale: 1, y: 0 }
                 : { opacity: 1, scale: 1, y: [0, -14, 0] }
             }
-            exit={
-              shouldReduceMotion
-                ? undefined
-                : { opacity: 0, scale: 0.92, y: 18 }
-            }
+            exit={shouldReduceMotion ? undefined : { opacity: 0, scale: 0.92, y: 18 }}
             transition={
               shouldReduceMotion
                 ? { duration: 0 }
@@ -309,21 +282,12 @@ export function HeroSection() {
         className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-3"
         animate={shouldReduceMotion ? undefined : { y: [0, 8, 0] }}
         transition={
-          shouldReduceMotion
-            ? undefined
-            : { duration: 2, repeat: Infinity, ease: "easeInOut" }
+          shouldReduceMotion ? undefined : { duration: 2, repeat: Infinity, ease: "easeInOut" }
         }
       >
         <div className="relative w-8 h-8">
           <svg viewBox="0 0 32 32" className="w-full h-full" fill="none">
-            <circle
-              cx="16"
-              cy="16"
-              r="14"
-              stroke="#C9A84C"
-              strokeWidth="1"
-              strokeOpacity="0.4"
-            />
+            <circle cx="16" cy="16" r="14" stroke="#C9A84C" strokeWidth="1" strokeOpacity="0.4" />
             <line
               x1="16"
               y1="16"
@@ -334,9 +298,7 @@ export function HeroSection() {
               strokeLinecap="round"
               style={{
                 transformOrigin: "16px 16px",
-                animation: shouldReduceMotion
-                  ? undefined
-                  : "second-hand 10s linear infinite",
+                animation: shouldReduceMotion ? undefined : "second-hand 10s linear infinite",
               }}
             />
             <line
@@ -349,16 +311,12 @@ export function HeroSection() {
               strokeLinecap="round"
               style={{
                 transformOrigin: "16px 16px",
-                animation: shouldReduceMotion
-                  ? undefined
-                  : "second-hand 120s linear infinite",
+                animation: shouldReduceMotion ? undefined : "second-hand 120s linear infinite",
               }}
             />
           </svg>
         </div>
-        <span className="text-[#8A8A8A] text-[10px] tracking-[0.4em] uppercase">
-          اسکرول
-        </span>
+        <span className="text-[#8A8A8A] text-[10px] tracking-[0.4em] uppercase">اسکرول</span>
       </motion.div>
     </section>
   );
