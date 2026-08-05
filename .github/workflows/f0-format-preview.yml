@@ -1,4 +1,4 @@
-name: F0 Format Preview
+name: F0 Owned Formatter
 
 on:
   push:
@@ -6,28 +6,32 @@ on:
       - phase/f0-production-foundation
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  preview:
+  format:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.2.22
       - run: bun install --frozen-lockfile
       - name: Format owned build fixes
         run: bunx prettier --write src/components/sections/HeroSection.tsx src/components/sections/CategoriesSection.tsx
-      - name: Emit formatted sources
+      - name: Commit formatted sources
         shell: bash
         run: |
-          echo '===HERO_BASE64_BEGIN==='
-          base64 -w 0 src/components/sections/HeroSection.tsx
-          echo
-          echo '===HERO_BASE64_END==='
-          echo '===CATEGORIES_BASE64_BEGIN==='
-          base64 -w 0 src/components/sections/CategoriesSection.tsx
-          echo
-          echo '===CATEGORIES_BASE64_END==='
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/components/sections/HeroSection.tsx src/components/sections/CategoriesSection.tsx
+          if git diff --cached --quiet; then
+            echo "Owned files are already formatted."
+            exit 0
+          fi
+          git commit -m "style(f0): format owned build fixes"
+          git push origin HEAD:phase/f0-production-foundation
