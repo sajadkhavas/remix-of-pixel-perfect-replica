@@ -1,18 +1,40 @@
 import js from "@eslint/js";
-import eslintPluginPrettier from "eslint-plugin-prettier/recommended";
+import prettierConfig from "eslint-config-prettier";
 import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: ["dist", ".output", ".vinxi"] },
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    ignores: [
+      "dist",
+      ".output",
+      ".vinxi",
+      "coverage",
+      "node_modules",
+      "src/routeTree.gen.ts",
+    ],
+  },
+  js.configs.recommended,
+  {
+    files: ["**/*.{js,mjs,cjs}"],
+    languageOptions: {
+      ecmaVersion: "latest",
+      globals: globals.node,
+      sourceType: "module",
+    },
+  },
+  {
+    extends: [...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+      ecmaVersion: "latest",
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+      sourceType: "module",
     },
     plugins: {
       "react-hooks": reactHooks,
@@ -20,6 +42,7 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      "no-console": ["warn", { allow: ["warn", "error"] }],
       "no-restricted-imports": [
         "error",
         {
@@ -32,9 +55,34 @@ export default tseslint.config(
           ],
         },
       ],
-      "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
-      "@typescript-eslint/no-unused-vars": "off",
+      "no-unused-vars": "off",
+      "react-refresh/only-export-components": [
+        "warn",
+        { allowConstantExport: true },
+      ],
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+          ignoreRestSiblings: true,
+          varsIgnorePattern: "^_",
+        },
+      ],
     },
   },
-  eslintPluginPrettier,
+  {
+    files: [
+      "scripts/**/*.{js,mjs,cjs,ts}",
+      "tests/**/*.{ts,tsx}",
+      "vite.config.ts",
+      "src/server.ts",
+    ],
+    rules: {
+      "no-console": "off",
+      "react-refresh/only-export-components": "off",
+    },
+  },
+  prettierConfig,
 );
