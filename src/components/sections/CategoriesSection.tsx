@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { gsap } from "@/lib/gsap";
@@ -51,20 +51,28 @@ export function CategoriesSection() {
 
   useEffect(() => {
     if (!titleRef.current) return;
-    gsap.fromTo(
-      titleRef.current,
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.9,
-        scrollTrigger: { trigger: titleRef.current, start: "top 80%" },
-      },
-    );
+
+    const context = gsap.context(() => {
+      gsap.fromTo(
+        titleRef.current,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.9,
+          scrollTrigger: { trigger: titleRef.current, start: "top 80%" },
+        },
+      );
+    }, titleRef);
+
+    return () => context.revert();
   }, []);
 
   return (
-    <section className="relative py-20 sm:py-28 bg-[#080808] overflow-hidden" dir="rtl">
+    <section
+      className="relative py-20 sm:py-28 bg-[#080808] overflow-hidden"
+      dir="rtl"
+    >
       <div
         className="absolute inset-0 opacity-[0.025]"
         style={{
@@ -86,7 +94,9 @@ export function CategoriesSection() {
           <h2
             ref={titleRef}
             className="text-3xl sm:text-5xl lg:text-6xl font-black text-[#F0EDE8]"
-            style={{ fontFamily: "Playfair Display, Vazirmatn Variable, serif" }}
+            style={{
+              fontFamily: "Playfair Display, Vazirmatn Variable, serif",
+            }}
           >
             هر لحظه، یک انتخاب
           </h2>
@@ -104,7 +114,11 @@ export function CategoriesSection() {
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.08, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              transition={{
+                delay: i * 0.08,
+                duration: 0.6,
+                ease: [0.16, 1, 0.3, 1],
+              }}
             >
               <Link
                 to="/shop/$category"
@@ -139,11 +153,13 @@ export function CategoriesSection() {
                   <h3 className="text-lg sm:text-xl font-bold text-[#F0EDE8] mb-1 group-hover:text-[#C9A84C] transition-colors">
                     {cat.name}
                   </h3>
-                  <p className="text-xs sm:text-sm text-[#A8A8A8] mb-3 line-clamp-2">{cat.desc}</p>
+                  <p className="text-xs sm:text-sm text-[#A8A8A8] mb-3 line-clamp-2">
+                    {cat.desc}
+                  </p>
                   <div className="hidden sm:flex flex-wrap gap-1 mb-3">
-                    {cat.brands.map((b) => (
+                    {cat.brands.map((brand) => (
                       <span
-                        key={b}
+                        key={brand}
                         className="text-[10px] px-2 py-0.5 border tracking-wider"
                         style={{
                           borderColor: `${cat.color}44`,
@@ -151,12 +167,14 @@ export function CategoriesSection() {
                           background: `${cat.color}10`,
                         }}
                       >
-                        {b}
+                        {brand}
                       </span>
                     ))}
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] sm:text-xs text-[#8A8A8A]">{cat.count} محصول</span>
+                    <span className="text-[10px] sm:text-xs text-[#8A8A8A]">
+                      {cat.count} محصول
+                    </span>
                     <motion.span
                       animate={{ x: [0, -4, 0] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
@@ -166,8 +184,8 @@ export function CategoriesSection() {
                       ←
                     </motion.span>
                   </div>
-                </Link>
-              </motion.div>
+                </div>
+              </Link>
             </motion.div>
           ))}
         </div>
