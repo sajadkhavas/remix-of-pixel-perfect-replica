@@ -1,0 +1,87 @@
+# KRONOS Final Route Map
+
+**Route count:** 39  
+**Public indexable page groups:** home, base/curated shop landings, brands, products, magazine/guides, durable informational and legal pages.  
+**Noindex groups:** search results, mutable personal/transactional surfaces, compare/wishlist/cart/checkout/account.
+
+## Shared route rules
+
+- Public slugs are lowercase ASCII kebab-case; Persian text remains display content.
+- No trailing slash except `/`.
+- Every route owns explicit loading, empty, error/not-found, robots, canonical, and breadcrumb data.
+- “Private” means an authenticated account is required. “Session” means public entry is allowed but a cart/session prerequisite applies.
+- Product/category/brand/content route loaders consume repository interfaces, not fixture arrays.
+- Loading state should preserve page geometry and announce status accessibly; empty state is distinct from error.
+- Breadcrumb labels are localized; the path examples below define hierarchy.
+
+## Commerce discovery routes
+
+| Route | Purpose / page type | Access | Index | Canonical policy | Breadcrumb / parent | Data requirement | Frontend state | Future backend dependency | Loading / empty / error states |
+|---|---|---|---|---|---|---|---|---|---|
+| `/` | Brand and commerce entry; homepage | public | index | self | `Home`; root | featured categories/products/brands, editorial highlights, store settings | carousel/animation state only; no catalog truth in local state | merchandising/content/settings | section skeletons; empty section omitted with fallback CTA; repository error degrades by section |
+| `/shop` | All-products discovery; collection page | public | index | self; clean pagination self-canonical | `Home > Shop`; parent `/` | category contract, normalized search state, product page, facets, counts | URL-driven filters/sort/page/view | catalog/search/pricing/inventory | grid skeleton; zero results with clear filters; invalid params normalize; repository failure retry |
+| `/shop/men` | Curated audience landing | public | index when content/inventory threshold met | self; facet params follow discovery policy | `Home > Shop > Men`; parent `/shop` | landing category mapping + audience filter + unique intro/SEO | URL-driven secondary facets | catalog/search/content | listing skeleton; empty => noindex and editorial fallback; 404 if route mapping removed |
+| `/shop/women` | Curated audience landing | public | index when useful | self | `Home > Shop > Women`; parent `/shop` | same as men with `audience=women` | URL-driven secondary facets | catalog/search/content | same as men |
+| `/shop/luxury` | Curated style landing | public | index when useful | self | `Home > Shop > Luxury`; parent `/shop` | style/category mapping, products, unique content | URL-driven secondary facets | catalog/search/content | skeleton; zero-result recovery; 404 for unknown mapping |
+| `/shop/classic` | Curated style landing | public | index when useful | self | `Home > Shop > Classic`; parent `/shop` | style/category mapping and listing | URL-driven secondary facets | catalog/search/content | same as luxury |
+| `/shop/sport` | Curated style landing | public | index when useful | self | `Home > Shop > Sport`; parent `/shop` | style/category mapping and listing | URL-driven secondary facets | catalog/search/content | same as luxury |
+| `/shop/smart` | Curated smartwatch landing | public | index when useful | self | `Home > Shop > Smart`; parent `/shop` | smart category, compatibility/connectivity filters | URL-driven secondary facets | catalog/search/content | skeleton; compatibility-aware empty state; repository failure |
+| `/shop/automatic` | Curated movement landing | public | index when useful | self | `Home > Shop > Automatic`; parent `/shop` | `movement=automatic`, unique content, listing | URL-driven secondary facets | catalog/search/content | skeleton; zero-result recovery; 404 if retired |
+| `/shop/mechanical` | Curated movement landing | public | index when useful | self | `Home > Shop > Mechanical`; parent `/shop` | `movement=mechanical`, unique content, listing | URL-driven secondary facets | catalog/search/content | same as automatic |
+| `/shop/quartz` | Curated movement landing | public | index when useful | self | `Home > Shop > Quartz`; parent `/shop` | `movement=quartz`, unique content, listing | URL-driven secondary facets | catalog/search/content | same as automatic |
+| `/search` | Site/product search results | public | noindex, follow | normalized `/search` without `q`, sort, view, facets; omit canonical if no equivalent | `Home > Search`; parent `/` | normalized query, ranked products, facets, correction/suggestions | URL-driven `q`, filters, sort, page, view | search service/catalog | search skeleton; no results with spelling/recovery; invalid params normalize; service error preserves query |
+| `/brands` | Brand directory | public | index | self; pagination self-canonical if introduced | `Home > Brands`; parent `/` | brand summaries and calculated product counts | optional URL alpha/page state | brand/catalog/content | logo/list skeleton; empty directory treated as configuration error; repository failure |
+| `/brands/$brandSlug` | Brand landing and products | public | index when verified/useful | self using canonical brand slug | `Home > Brands > Brand`; parent `/brands` | brand, products, collections, related articles, evidence-backed claims | URL-driven secondary facets/sort/page | brand/catalog/content/trust evidence | hero/list skeleton; empty brand => noindex with editorial state; unknown slug 404; prior slug 301 |
+| `/product/$productSlug` | Product detail / purchasable entity | public | index for active or temporarily unavailable products | self canonical product slug; variant selection normally state/fragment, not duplicate URL | `Home > Shop > Primary Category > Product`; parent primary category | normalized product, variants, prices, inventory, media, reviews, policies, related products, SEO | selected variant, gallery, qty; canonical identity remains product | product/pricing/inventory/reviews/policy/trust | PDP skeleton; temporarily unavailable remains useful; discontinued policy; unknown 404; deleted 410 when intentional |
+
+## Local commerce and checkout routes
+
+| Route | Purpose / page type | Access | Index | Canonical policy | Breadcrumb / parent | Data requirement | Frontend state | Future backend dependency | Loading / empty / error states |
+|---|---|---|---|---|---|---|---|---|---|
+| `/compare` | Compare selected products | public local/session | noindex, follow | self clean URL; ignore tracking | `Home > Compare`; parent `/` | compare IDs reconciled to products/specifications | versioned compare state; max from settings | catalog/settings; later account sync | card/table skeleton; empty compare education; stale items removed with notice; repository error |
+| `/wishlist` | Anonymous/session wishlist | public local/session | noindex, follow | self clean URL | `Home > Wishlist`; parent `/` | local wishlist reconciled to products | versioned wishlist state | catalog; later account merge | product skeleton; empty wishlist CTA; stale product notice; repository error |
+| `/cart` | Cart review and quantity editing | public session | noindex, follow | self clean URL | `Home > Cart`; parent `/` | reconciled variant lines, current prices/stock, subtotal | versioned cart/coupon state | catalog/pricing/inventory/promotion | line skeleton; empty cart CTA; reconciliation notices; calculation/service error |
+| `/checkout` | Transaction draft and order submission | session prerequisite; auth policy configurable | noindex, nofollow | self; never retain personal query params | `Home > Cart > Checkout`; parent `/cart` | validated cart, address, shipping, payment-method metadata, terms | checkout draft only; no payment credentials | customer/address/shipping/tax/payment/order | full-page guarded loading; empty/invalid cart redirects to cart; recoverable field errors; submission idempotency error |
+
+## Account routes
+
+| Route | Purpose / page type | Access | Index | Canonical policy | Breadcrumb / parent | Data requirement | Frontend state | Future backend dependency | Loading / empty / error states |
+|---|---|---|---|---|---|---|---|---|---|
+| `/account` | Account dashboard | private | noindex, nofollow | self | `Home > Account`; parent `/` | customer summary, recent orders, addresses, wishlist summary | UI-only panel state | identity/customer/order/address | authenticated skeleton; new-account empty summaries; 401 sign-in redirect; service error |
+| `/account/orders` | Order history | private | noindex, nofollow | self; page params retained only for navigation | `Home > Account > Orders`; parent `/account` | paginated orders | URL page/status filter may be used but noindex | order service | list skeleton; no orders education; 401/403; service error |
+| `/account/orders/$orderId` | Order detail | private owner-only | noindex, nofollow | self; opaque order ID | `Home > Account > Orders > Order`; parent `/account/orders` | authorized order, lines, payments, shipments, returns | transient expansion state | order/payment/shipping/returns | detail skeleton; 404 for absent/unauthorized to avoid disclosure; service error |
+| `/account/addresses` | Address book | private | noindex, nofollow | self | `Home > Account > Addresses`; parent `/account` | customer addresses and validation rules | form/dialog state; unsaved changes guarded | customer/address | skeleton; no-address CTA; validation/conflict/service errors |
+| `/account/profile` | Personal profile | private | noindex, nofollow | self | `Home > Account > Profile`; parent `/account` | profile, consent/preferences | form state; no URL PII | identity/customer/preferences | skeleton; required-field empty state; validation, conflict, re-auth errors |
+| `/account/wishlist` | Synced account wishlist | private | noindex, nofollow | self | `Home > Account > Wishlist`; parent `/account` | account wishlist reconciled with catalog | server-backed wishlist projection; anonymous merge decision | customer/wishlist/catalog | skeleton; empty CTA; merge conflict/stale product/service errors |
+
+## Editorial and informational routes
+
+| Route | Purpose / page type | Access | Index | Canonical policy | Breadcrumb / parent | Data requirement | Frontend state | Future backend dependency | Loading / empty / error states |
+|---|---|---|---|---|---|---|---|---|---|
+| `/magazine` | Editorial index | public | index | self; pagination self-canonical | `Home > Magazine`; parent `/` | article summaries/categories | URL page/category where approved | content/CMS | card skeleton; empty publication fallback; content error |
+| `/magazine/$articleSlug` | Editorial article | public | index when published | self canonical published slug | `Home > Magazine > Article`; parent `/magazine` | article body, author/editorial metadata, related content, SEO | reading progress/share state only | content/CMS | article skeleton; draft noindex/preview auth; unknown 404; prior slug 301 |
+| `/guides/$guideSlug` | Durable buying/usage guide | public | index when published | self canonical guide slug | `Home > Guides > Guide`; logical parent `/magazine` until a `/guides` index is approved | guide body, related products/articles, SEO | interactive guide choices may use local state | content/catalog | guide skeleton; empty related products acceptable; unknown 404; content error |
+| `/about` | Company/story information | public | index | self | `Home > About`; parent `/` | managed page content | none beyond disclosure state | content/CMS | content skeleton; missing content configuration error; 404 only if intentionally retired |
+| `/authenticity` | Evidence-backed authenticity policy | public | index | self | `Home > Authenticity`; parent `/` | policy, verification process, evidence references | FAQ disclosure state | content/trust system | content skeleton; no unsupported claims; content error |
+| `/warranty` | Warranty policy and process | public | index | self | `Home > Warranty`; parent `/` | warranty types, exclusions, process, contacts | optional lookup form state without URL PII | content/warranty/support | content skeleton; policy missing = configuration error; form errors |
+| `/shipping-returns` | Shipping and returns policy | public | index | self | `Home > Shipping & Returns`; parent `/` | regions, methods, estimates, return rules | calculator inputs transient | content/shipping/returns | content skeleton; unsupported region state; service/calculator error |
+| `/services` | Watch services offering | public | index | self | `Home > Services`; parent `/` | service catalogue, eligibility, contact CTA | optional inquiry form | content/service/support | service-card skeleton; no services fallback contact; form/service error |
+| `/faq` | Frequently asked questions | public | index | self | `Home > FAQ`; parent `/` | FAQ groups and stable IDs | disclosure and on-page filter state | content/CMS | accordion skeleton; empty = configuration error; content error |
+| `/contact` | Contact channels and inquiry form | public | index | self | `Home > Contact`; parent `/` | contact methods, business hours, form schema | form draft; no PII in URL | content/support/anti-abuse | content/form skeleton; alternative channels if form unavailable; validation/rate-limit/service errors |
+
+## Legal and payment-information routes
+
+| Route | Purpose / page type | Access | Index | Canonical policy | Breadcrumb / parent | Data requirement | Frontend state | Future backend dependency | Loading / empty / error states |
+|---|---|---|---|---|---|---|---|---|---|
+| `/privacy` | Privacy notice | public | index | self | `Home > Privacy`; parent `/` | versioned legal content and effective date | section navigation only | legal content/CMS | document skeleton; missing document blocks release; content error |
+| `/terms` | General site terms | public | index | self | `Home > Terms`; parent `/` | versioned legal content and effective date | section navigation only | legal content/CMS | same legal document policy |
+| `/purchase-terms` | Purchase contract terms | public | index | self | `Home > Purchase Terms`; parent `/` | current purchase terms/version/effective date | section navigation only | legal/commerce policy | missing document blocks checkout release; content error |
+| `/payment-methods` | Supported payment method information | public | index | self | `Home > Payment Methods`; parent `/` | non-sensitive payment-method descriptions and constraints | none | payment configuration/content | content skeleton; no active methods shows support guidance; config/content error |
+
+## Authentication and authorization behavior
+
+The final public IA does not expose the current `/auth` route as a canonical destination. Unauthenticated access to private account routes preserves a safe return path and redirects to the future sign-in surface. Authentication implementation and its final clean route require a dedicated security/account decision; redirect policy for the current prototype is documented separately.
+
+## Data composition rule
+
+Route loaders orchestrate repositories but do not reshape raw DTOs or own domain types. A route may create a page-specific view model from normalized entities. Page components never become the source of truth for Product, Brand, Category, Search, Cart, or SEO contracts.
