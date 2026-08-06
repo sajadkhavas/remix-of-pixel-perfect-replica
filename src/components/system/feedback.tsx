@@ -1,12 +1,7 @@
 import * as React from "react";
 import { AlertCircle, CheckCircle2, Info, TriangleAlert } from "lucide-react";
 
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-  type AlertProps,
-} from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle, type AlertProps } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
 
 type StatusTone = "info" | "success" | "warning" | "error";
