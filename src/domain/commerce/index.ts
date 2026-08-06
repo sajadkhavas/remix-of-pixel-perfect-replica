@@ -221,6 +221,10 @@ function validCartItem(value: unknown, cartCurrency: string): value is CartItem 
   );
 }
 
+function validCartItems(value: unknown, cartCurrency: string): value is CartItem[] {
+  return Array.isArray(value) && value.every((item) => validCartItem(item, cartCurrency));
+}
+
 function validWishlistItem(value: unknown): value is WishlistItem {
   return (
     record(value) &&
@@ -319,33 +323,33 @@ function validPersistedEnvelope(value: unknown): value is PersistedCommerceEnvel
   }
 
   const state = value.state;
-  if (
-    state.version !== COMMERCE_SCHEMA_VERSION ||
-    !record(state.cart) ||
-    !stringValue(state.cart.currency) ||
-    !stringValue(state.cart.updatedAt) ||
-    !Array.isArray(state.cart.items) ||
-    !state.cart.items.every((item) => validCartItem(item, state.cart.currency)) ||
-    !hasUniqueValues(
-      state.cart.items
-        .filter(record)
-        .map((item) => item.lineId)
-        .filter(stringValue),
-    ) ||
-    !Array.isArray(state.wishlist) ||
-    !state.wishlist.every(validWishlistItem) ||
-    !Array.isArray(state.compare) ||
-    !state.compare.every(validCompareItem) ||
-    !Array.isArray(state.recentlyViewed) ||
-    !state.recentlyViewed.every(validRecentlyViewedItem) ||
-    !validCoupon(state.coupon) ||
-    (state.checkoutDraft !== undefined && !validCheckoutDraft(state.checkoutDraft)) ||
-    !stringValue(state.updatedAt)
-  ) {
+  if (state.version !== COMMERCE_SCHEMA_VERSION || !record(state.cart)) return false;
+
+  const cart = state.cart;
+  const cartCurrency = cart.currency;
+  if (!stringValue(cartCurrency) || !stringValue(cart.updatedAt)) return false;
+
+  const cartItems = cart.items;
+  if (!validCartItems(cartItems, cartCurrency)) return false;
+  if (!hasUniqueValues(cartItems.map((item) => item.lineId))) return false;
+
+  const wishlist = state.wishlist;
+  if (!Array.isArray(wishlist) || !wishlist.every(validWishlistItem)) return false;
+
+  const compare = state.compare;
+  if (!Array.isArray(compare) || !compare.every(validCompareItem)) return false;
+
+  const recentlyViewed = state.recentlyViewed;
+  if (!Array.isArray(recentlyViewed) || !recentlyViewed.every(validRecentlyViewedItem)) {
     return false;
   }
 
-  return true;
+  if (!validCoupon(state.coupon)) return false;
+  if (state.checkoutDraft !== undefined && !validCheckoutDraft(state.checkoutDraft)) {
+    return false;
+  }
+
+  return stringValue(state.updatedAt);
 }
 
 export function parsePersistedCommerce(input: string): PersistedCommerceEnvelopeV1 | null {
