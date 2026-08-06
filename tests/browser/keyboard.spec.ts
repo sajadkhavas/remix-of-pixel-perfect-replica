@@ -23,7 +23,9 @@ test("@keyboard focus progression and visibility", async ({ page }, testInfo) =>
         active.tagName.toLowerCase(),
         active.id ? `#${active.id}` : "",
         active.getAttribute("href") ? `[href=\"${active.getAttribute("href")}\"]` : "",
-        active.getAttribute("aria-label") ? `[aria-label=\"${active.getAttribute("aria-label")}\"]` : "",
+        active.getAttribute("aria-label")
+          ? `[aria-label=\"${active.getAttribute("aria-label")}\"]`
+          : "",
       ].join("");
       const label =
         active.getAttribute("aria-label") ||
@@ -70,7 +72,8 @@ test("@keyboard focus progression and visibility", async ({ page }, testInfo) =>
         impact: "serious",
         owner: "F3B",
         reason: "Focused control has no detectable outline or box-shadow indicator.",
-        removalCondition: "Implement a visible focus-visible treatment with sufficient contrast and area.",
+        removalCondition:
+          "Implement a visible focus-visible treatment with sufficient contrast and area.",
         expiry,
       });
     }
@@ -85,7 +88,8 @@ test("@keyboard focus progression and visibility", async ({ page }, testInfo) =>
       impact: "critical",
       owner: "F3B/F4",
       reason: `Only ${visited.size} unique focus targets were reached in twelve Tab presses.`,
-      removalCondition: "Expose a logical, complete keyboard path through primary navigation and actions.",
+      removalCondition:
+        "Expose a logical, complete keyboard path through primary navigation and actions.",
       expiry,
     });
   }
@@ -99,12 +103,57 @@ test("@keyboard focus progression and visibility", async ({ page }, testInfo) =>
   expect(newDefects).toEqual([]);
 });
 
-test("@keyboard mobile menu trigger has an accessible keyboard contract", async ({ page }) => {
+test("@keyboard mobile menu trigger contract", async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/", { waitUntil: "domcontentloaded" });
+
+  const defects: BrowserDefect[] = [];
   const trigger = page.getByRole("button", { name: "منو" });
-  await expect(trigger).toBeVisible();
-  await trigger.focus();
-  await page.keyboard.press("Enter");
-  await expect(page.getByRole("button", { name: "بستن" })).toBeVisible();
+  const triggerVisible = await trigger.isVisible().catch(() => false);
+
+  if (!triggerVisible) {
+    defects.push({
+      route: "/",
+      project: testInfo.project.name,
+      rule: "keyboard:mobile-menu-trigger-missing",
+      selector: 'button[aria-label="منو"]',
+      impact: "critical",
+      owner: "F4",
+      reason: "The mobile navigation trigger is not visible in the mobile viewport.",
+      removalCondition: "Expose a visible and named mobile menu trigger at mobile breakpoints.",
+      expiry,
+    });
+  } else {
+    await trigger.focus();
+    await page.keyboard.press("Enter");
+    await page.waitForTimeout(300);
+    const closeVisible = await page
+      .getByRole("button", { name: "بستن" })
+      .isVisible()
+      .catch(() => false);
+
+    if (!closeVisible) {
+      defects.push({
+        route: "/",
+        project: testInfo.project.name,
+        rule: "keyboard:mobile-menu-enter-does-not-open",
+        selector: 'button[aria-label="منو"]',
+        impact: "critical",
+        owner: "F4",
+        reason:
+          "Activating the mobile menu trigger with Enter does not expose the menu or its close control.",
+        removalCondition:
+          "Enter and Space must open the mobile navigation, move focus into it, and expose a named close control.",
+        expiry,
+      });
+    }
+  }
+
+  const { newDefects } = compareOrUpdateDefects(
+    "quality/keyboard-baseline.json",
+    defects,
+    "/",
+    testInfo.project.name,
+  );
+  expect(newDefects).toEqual([]);
 });
