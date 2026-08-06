@@ -21,10 +21,10 @@ concurrency:
 
 jobs:
   capture:
-    name: Capture source, asset, browser, and motion debt
+    name: Capture exact source, asset, browser, keyboard, and motion debt
     if: ${{ !contains(github.event.head_commit.message, '[skip baseline-sync]') }}
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 30
 
     steps:
       - name: Checkout branch
@@ -49,12 +49,14 @@ jobs:
           node scripts/performance/check-budget.mjs
       - name: Install Chromium
         run: bunx playwright install --with-deps chromium
-      - name: Capture accessibility and reduced-motion debt
+      - name: Capture browser debt
         env:
           UPDATE_QUALITY_BASELINES: "1"
         run: |
+          bunx playwright test tests/browser/route-smoke.spec.ts --project=desktop-chromium --project=mobile-chromium
           bunx playwright test tests/browser/accessibility.spec.ts --project=desktop-chromium --project=mobile-chromium
           bunx playwright test tests/browser/reduced-motion.spec.ts --project=reduced-motion
+          bunx playwright test tests/browser/keyboard.spec.ts --project=keyboard-only
       - name: Commit generated exact baselines
         shell: bash
         run: |
@@ -63,8 +65,10 @@ jobs:
             quality/forbidden-copy-baseline.json
             quality/link-integrity-baseline.json
             quality/asset-violation-baseline.json
+            quality/route-smoke-baseline.json
             quality/accessibility-baseline.json
             quality/reduced-motion-baseline.json
+            quality/keyboard-baseline.json
             quality/performance-current.json
           )
           if git diff --quiet -- "${paths[@]}"; then
@@ -74,5 +78,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add "${paths[@]}"
-          git commit -m "feat(f14a): capture exact quality debt [skip baseline-sync]"
+          git commit -m "test(f14a): capture route and keyboard debt [skip baseline-sync]"
           git push origin HEAD:phase/f14a-quality-harness

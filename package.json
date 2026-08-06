@@ -24,7 +24,7 @@
     "test:run": "bun run test:unit && bun run test:contract",
     "test:browser": "playwright test",
     "test:routes": "playwright test tests/browser/route-smoke.spec.ts --project=desktop-chromium --project=mobile-chromium",
-    "test:a11y": "playwright test tests/browser/accessibility.spec.ts --project=desktop-chromium --project=mobile-chromium",
+    "test:a11y": "playwright test tests/browser/accessibility.spec.ts tests/browser/accessibility-fixtures.spec.ts --project=desktop-chromium --project=mobile-chromium",
     "test:reduced-motion": "playwright test tests/browser/reduced-motion.spec.ts --project=reduced-motion",
     "test:keyboard": "playwright test tests/browser/keyboard.spec.ts --project=keyboard-only",
     "quality:lint": "node scripts/quality/lint-governance.mjs",
