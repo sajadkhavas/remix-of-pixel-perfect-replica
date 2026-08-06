@@ -19,9 +19,9 @@ test("@keyboard focus progression and visibility", async ({ page }, testInfo) =>
       const selector = [
         active.tagName.toLowerCase(),
         active.id ? `#${active.id}` : "",
-        active.getAttribute("href") ? `[href=\"${active.getAttribute("href")}\"]` : "",
+        active.getAttribute("href") ? `[href="${active.getAttribute("href")}"]` : "",
         active.getAttribute("aria-label")
-          ? `[aria-label=\"${active.getAttribute("aria-label")}\"]`
+          ? `[aria-label="${active.getAttribute("aria-label")}"]`
           : "",
       ].join("");
       const label =
