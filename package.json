@@ -18,9 +18,23 @@
     "typecheck": "tsc --noEmit",
     "format": "node scripts/format-changed.mjs --write",
     "format:check": "node scripts/format-changed.mjs --check",
-    "test": "bun test",
-    "test:run": "bun test --bail",
-    "quality": "bun run format:check && bun run lint && bun run typecheck && bun run test:run && bun run build"
+    "test": "bun run test:run",
+    "test:unit": "bun test tests/server-error-page.smoke.test.ts tests/quality/*.test.ts --bail",
+    "test:contract": "bun test tests/commerce-persistence.test.ts --bail",
+    "test:run": "bun run test:unit && bun run test:contract",
+    "test:browser": "playwright test",
+    "test:routes": "playwright test tests/browser/route-smoke.spec.ts --project=desktop-chromium --project=mobile-chromium",
+    "test:a11y": "playwright test tests/browser/accessibility.spec.ts --project=desktop-chromium --project=mobile-chromium",
+    "test:reduced-motion": "playwright test tests/browser/reduced-motion.spec.ts --project=reduced-motion",
+    "test:keyboard": "playwright test tests/browser/keyboard.spec.ts --project=keyboard-only",
+    "quality:lint": "node scripts/quality/lint-governance.mjs",
+    "quality:forbidden-copy": "node scripts/quality/forbidden-copy.mjs",
+    "quality:links": "node scripts/quality/link-integrity.mjs",
+    "quality:assets": "node scripts/quality/asset-validation.mjs",
+    "quality:assets:release": "node scripts/quality/asset-validation.mjs --release",
+    "quality:performance": "node scripts/performance/check-budget.mjs",
+    "quality:scanners": "bun run quality:forbidden-copy && bun run quality:links && bun run quality:assets",
+    "quality": "bun run format:check && bun run quality:lint && bun run typecheck && bun run test:run && bun run quality:scanners && bun run build && bun run quality:performance"
   },
   "dependencies": {
     "@fontsource-variable/vazirmatn": "^5.2.8",
@@ -91,8 +105,10 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
     "@eslint/js": "^9.32.0",
     "@lovable.dev/vite-tanstack-config": "2.5.3",
+    "@playwright/test": "^1.62.1",
     "@types/node": "^22.16.5",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",

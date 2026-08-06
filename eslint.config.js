@@ -7,7 +7,17 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
-    ignores: ["dist", ".output", ".vinxi", "coverage", "node_modules", "src/routeTree.gen.ts"],
+    ignores: [
+      "dist",
+      ".output",
+      ".vinxi",
+      "coverage",
+      "node_modules",
+      "playwright-report",
+      "test-results",
+      ".quality-output",
+      "src/routeTree.gen.ts",
+    ],
   },
   js.configs.recommended,
   {
@@ -66,6 +76,8 @@ export default tseslint.config(
     files: [
       "scripts/**/*.{js,mjs,cjs,ts}",
       "tests/**/*.{ts,tsx}",
+      "e2e/**/*.{ts,tsx}",
+      "playwright.config.ts",
       "vite.config.ts",
       "src/server.ts",
     ],
