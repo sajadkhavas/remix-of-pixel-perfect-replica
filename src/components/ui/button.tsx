@@ -51,59 +51,57 @@ export interface ButtonProps extends NativeButtonProps, ButtonVariantProps {
   loadingText?: React.ReactNode;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      className,
-      variant,
-      size,
-      width,
-      asChild = false,
-      loading = false,
-      loadingText,
-      disabled,
-      children,
-      onClick,
-      ...props
-    },
-    ref,
-  ) => {
-    const Comp = asChild ? Slot : "button";
-    const isDisabled = disabled || loading;
+function ButtonRender(props: ButtonProps, ref: React.ForwardedRef<HTMLButtonElement>) {
+  const {
+    className,
+    variant,
+    size,
+    width,
+    asChild = false,
+    loading = false,
+    loadingText,
+    disabled,
+    children,
+    onClick,
+    ...restProps
+  } = props;
+  const Comp = asChild ? Slot : "button";
+  const isDisabled = disabled || loading;
 
-    const handleClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
-      if (isDisabled) {
-        event.preventDefault();
-        event.stopPropagation();
-        return;
-      }
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+    if (isDisabled) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
 
-      onClick?.(event);
-    };
+    onClick?.(event);
+  };
 
-    return (
-      <Comp
-        ref={ref}
-        className={cn(buttonVariants({ variant, size, width, className }))}
-        aria-busy={loading || undefined}
-        aria-disabled={isDisabled || undefined}
-        data-loading={loading ? "true" : undefined}
-        disabled={asChild ? undefined : isDisabled}
-        onClick={handleClick}
-        {...props}
-      >
-        {asChild ? (
-          children
-        ) : (
-          <>
-            {loading ? <Spinner aria-hidden="true" /> : null}
-            <span>{loading && loadingText ? loadingText : children}</span>
-          </>
-        )}
-      </Comp>
-    );
-  },
-);
+  return (
+    <Comp
+      ref={ref}
+      className={cn(buttonVariants({ variant, size, width, className }))}
+      aria-busy={loading || undefined}
+      aria-disabled={isDisabled || undefined}
+      data-loading={loading ? "true" : undefined}
+      disabled={asChild ? undefined : isDisabled}
+      onClick={handleClick}
+      {...restProps}
+    >
+      {asChild ? (
+        children
+      ) : (
+        <>
+          {loading ? <Spinner aria-hidden="true" /> : null}
+          <span>{loading && loadingText ? loadingText : children}</span>
+        </>
+      )}
+    </Comp>
+  );
+}
+
+const Button = React.forwardRef(ButtonRender);
 Button.displayName = "Button";
 
 export { Button, buttonVariants };
