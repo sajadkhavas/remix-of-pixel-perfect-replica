@@ -129,14 +129,16 @@ export function buildBrand(input: BrandSchemaInput): Readonly<Record<string, Jso
   });
 }
 
-export function buildOrganization(input: Readonly<{
-  name: string;
-  url: string;
-  logo?: string;
-  sameAs?: readonly string[];
-  returnPolicy?: Readonly<Record<string, JsonValue>>;
-  shippingService?: Readonly<Record<string, JsonValue>>;
-}>): Readonly<Record<string, JsonValue>> {
+export function buildOrganization(
+  input: Readonly<{
+    name: string;
+    url: string;
+    logo?: string;
+    sameAs?: readonly string[];
+    returnPolicy?: Readonly<Record<string, JsonValue>>;
+    shippingService?: Readonly<Record<string, JsonValue>>;
+  }>,
+): Readonly<Record<string, JsonValue>> {
   const sameAs = input.sameAs?.length
     ? [...new Set(input.sameAs.map((value) => validHttpUrl(value, "organization.sameAs")))]
     : undefined;
@@ -152,11 +154,13 @@ export function buildOrganization(input: Readonly<{
   });
 }
 
-export function buildWebSite(input: Readonly<{
-  name: string;
-  url: string;
-  searchUrlTemplate?: string;
-}>): Readonly<Record<string, JsonValue>> {
+export function buildWebSite(
+  input: Readonly<{
+    name: string;
+    url: string;
+    searchUrlTemplate?: string;
+  }>,
+): Readonly<Record<string, JsonValue>> {
   const searchTemplate = optionalText(input.searchUrlTemplate);
   let validatedSearchTemplate: string | undefined;
   if (searchTemplate) {
@@ -194,7 +198,10 @@ export function buildOffer(input: OfferSchemaInput): Readonly<Record<string, Jso
   }
   const price = requiredText(input.price, "offer.price");
   if (!/^\d+(?:\.\d+)?$/.test(price)) {
-    throw new StructuredDataError("invalid-price", "Offer price must be a non-negative decimal string.");
+    throw new StructuredDataError(
+      "invalid-price",
+      "Offer price must be a non-negative decimal string.",
+    );
   }
   return cleanObject({
     "@type": "Offer",
@@ -223,7 +230,10 @@ function buildAggregateRating(
     input.ratingValue < input.worstRating ||
     input.ratingValue > input.bestRating
   ) {
-    throw new StructuredDataError("invalid-aggregate-rating", "Aggregate rating values are invalid.");
+    throw new StructuredDataError(
+      "invalid-aggregate-rating",
+      "Aggregate rating values are invalid.",
+    );
   }
   return {
     "@type": "AggregateRating",
@@ -235,9 +245,7 @@ function buildAggregateRating(
   };
 }
 
-function buildReview(
-  input: VerifiedReviewInput,
-): Readonly<Record<string, JsonValue>> | undefined {
+function buildReview(input: VerifiedReviewInput): Readonly<Record<string, JsonValue>> | undefined {
   if (!input.evidenceRef.trim()) return undefined;
   if (!Number.isFinite(input.ratingValue)) {
     throw new StructuredDataError("invalid-review-rating", "Review rating must be finite.");
@@ -338,10 +346,12 @@ export function buildBreadcrumbList(
   };
 }
 
-export function buildItemList(input: Readonly<{
-  name?: string;
-  items: readonly Readonly<{ name: string; url: string }>[];
-}>): Readonly<Record<string, JsonValue>> {
+export function buildItemList(
+  input: Readonly<{
+    name?: string;
+    items: readonly Readonly<{ name: string; url: string }>[];
+  }>,
+): Readonly<Record<string, JsonValue>> {
   return cleanObject({
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -356,12 +366,14 @@ export function buildItemList(input: Readonly<{
   });
 }
 
-export function buildCollectionPage(input: Readonly<{
-  name: string;
-  url: string;
-  description?: string;
-  itemList?: Readonly<Record<string, JsonValue>>;
-}>): Readonly<Record<string, JsonValue>> {
+export function buildCollectionPage(
+  input: Readonly<{
+    name: string;
+    url: string;
+    description?: string;
+    itemList?: Readonly<Record<string, JsonValue>>;
+  }>,
+): Readonly<Record<string, JsonValue>> {
   return cleanObject({
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -372,15 +384,17 @@ export function buildCollectionPage(input: Readonly<{
   });
 }
 
-export function buildArticle(input: Readonly<{
-  headline: string;
-  url: string;
-  datePublished: string;
-  dateModified?: string;
-  description?: string;
-  images?: readonly string[];
-  authorName?: string;
-}>): Readonly<Record<string, JsonValue>> {
+export function buildArticle(
+  input: Readonly<{
+    headline: string;
+    url: string;
+    datePublished: string;
+    dateModified?: string;
+    description?: string;
+    images?: readonly string[];
+    authorName?: string;
+  }>,
+): Readonly<Record<string, JsonValue>> {
   return cleanObject({
     "@context": "https://schema.org",
     "@type": "Article",
@@ -414,14 +428,16 @@ export function buildFaqPage(
   };
 }
 
-export function buildMerchantReturnPolicy(input: Readonly<{
-  applicableCountry: string;
-  returnPolicyCategory: string;
-  merchantReturnDays?: number;
-  returnFees?: string;
-  returnMethod?: readonly string[];
-  policyUrl?: string;
-}>): Readonly<Record<string, JsonValue>> {
+export function buildMerchantReturnPolicy(
+  input: Readonly<{
+    applicableCountry: string;
+    returnPolicyCategory: string;
+    merchantReturnDays?: number;
+    returnFees?: string;
+    returnMethod?: readonly string[];
+    policyUrl?: string;
+  }>,
+): Readonly<Record<string, JsonValue>> {
   const category = requiredText(input.returnPolicyCategory, "returnPolicy.category");
   if (category.endsWith("MerchantReturnFiniteReturnWindow")) {
     if (!Number.isSafeInteger(input.merchantReturnDays) || (input.merchantReturnDays ?? 0) < 0) {
@@ -445,13 +461,15 @@ export function buildMerchantReturnPolicy(input: Readonly<{
   });
 }
 
-export function buildOfferShippingDetails(input: Readonly<{
-  country: string;
-  currency: string;
-  rate: string;
-  handlingDays?: Readonly<{ min: number; max: number }>;
-  transitDays?: Readonly<{ min: number; max: number }>;
-}>): Readonly<Record<string, JsonValue>> {
+export function buildOfferShippingDetails(
+  input: Readonly<{
+    country: string;
+    currency: string;
+    rate: string;
+    handlingDays?: Readonly<{ min: number; max: number }>;
+    transitDays?: Readonly<{ min: number; max: number }>;
+  }>,
+): Readonly<Record<string, JsonValue>> {
   const currency = requiredText(input.currency, "shipping.currency").toUpperCase();
   if (!/^[A-Z]{3}$/.test(currency)) {
     throw new StructuredDataError("invalid-currency", "Shipping currency must be ISO 4217-like.");
@@ -469,7 +487,12 @@ export function buildOfferShippingDetails(input: Readonly<{
     ) {
       throw new StructuredDataError("invalid-shipping-duration", "Shipping duration is invalid.");
     }
-    return { "@type": "QuantitativeValue", minValue: value.min, maxValue: value.max, unitCode: "DAY" };
+    return {
+      "@type": "QuantitativeValue",
+      minValue: value.min,
+      maxValue: value.max,
+      unitCode: "DAY",
+    };
   };
   return cleanObject({
     "@context": "https://schema.org",

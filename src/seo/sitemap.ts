@@ -66,7 +66,9 @@ export function createSitemapCollection(
   const byCanonical = new Map<string, SitemapEntry>();
   for (const candidate of candidates) {
     if (candidate.group !== group || !candidate.indexable) continue;
-    if (["search", "cart", "wishlist", "compare", "checkout", "account"].includes(candidate.pageType)) {
+    if (
+      ["search", "cart", "wishlist", "compare", "checkout", "account"].includes(candidate.pageType)
+    ) {
       continue;
     }
     const loc = httpUrl(candidate.url);
@@ -97,7 +99,9 @@ export function createSitemapCollection(
   }
   return {
     group,
-    entries: [...byCanonical.values()].sort((left, right) => left.loc.localeCompare(right.loc, "en")),
+    entries: [...byCanonical.values()].sort((left, right) =>
+      left.loc.localeCompare(right.loc, "en"),
+    ),
   };
 }
 
@@ -114,7 +118,9 @@ export function createSitemapIndex(
 
 export function serializeSitemapXml(collection: SitemapCollection): string {
   const hasImages = collection.entries.some((entry) => entry.images?.length);
-  const namespace = hasImages ? ' xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"' : "";
+  const namespace = hasImages
+    ? ' xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"'
+    : "";
   const rows = collection.entries.map((entry) => {
     const lastmod = entry.lastmod ? `<lastmod>${xmlEscape(entry.lastmod)}</lastmod>` : "";
     const images =

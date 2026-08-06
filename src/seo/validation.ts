@@ -20,10 +20,7 @@ function absoluteHttpUrl(value: string): boolean {
   }
 }
 
-function findMeta(
-  result: MetadataBuildResult,
-  key: string,
-): string | undefined {
+function findMeta(result: MetadataBuildResult, key: string): string | undefined {
   return result.head.meta.find((meta) => meta.name === key || meta.property === key)?.content;
 }
 
@@ -59,7 +56,12 @@ export function validateMetadata(result: MetadataBuildResult): readonly SeoValid
   if (ogImage) {
     const width = Number(findMeta(result, "og:image:width"));
     const height = Number(findMeta(result, "og:image:height"));
-    if (!Number.isSafeInteger(width) || width <= 0 || !Number.isSafeInteger(height) || height <= 0) {
+    if (
+      !Number.isSafeInteger(width) ||
+      width <= 0 ||
+      !Number.isSafeInteger(height) ||
+      height <= 0
+    ) {
       issues.push(
         issue("og-image-dimensions-invalid", "error", "Open Graph image dimensions are invalid."),
       );
@@ -102,7 +104,9 @@ export function validateSitemapCollection(
       issues.push(issue("sitemap-url-invalid", "error", "Sitemap URL is invalid.", entry.loc));
     }
     if (noindexUrls.has(entry.loc)) {
-      issues.push(issue("noindex-in-sitemap", "error", "Noindex URL is present in sitemap.", entry.loc));
+      issues.push(
+        issue("noindex-in-sitemap", "error", "Noindex URL is present in sitemap.", entry.loc),
+      );
     }
     if (seen.has(entry.loc)) {
       issues.push(issue("duplicate-sitemap-url", "error", "Duplicate sitemap URL.", entry.loc));

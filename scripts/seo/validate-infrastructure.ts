@@ -54,8 +54,7 @@ function parseManifest(input: unknown): SeoValidationManifest {
   if (
     Array.isArray(sitemaps) &&
     !sitemaps.every(
-      (entry) =>
-        isRecord(entry) && typeof entry.group === "string" && Array.isArray(entry.entries),
+      (entry) => isRecord(entry) && typeof entry.group === "string" && Array.isArray(entry.entries),
     )
   ) {
     malformedManifest("sitemaps require group and entries");

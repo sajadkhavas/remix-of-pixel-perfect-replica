@@ -24,20 +24,20 @@ Do not generate `/watches`, canonicalize to it, include it in a sitemap/internal
 
 ## Module map
 
-| Module | Responsibility |
-| --- | --- |
-| `src/data/contracts/seo.ts` | Small structural inputs for F12/deployment adapters; not a second StoreSettings model. |
-| `src/seo/site-url.ts` | Site origin, pathname/query normalization, tracking removal, absolute and canonical URL generation. |
-| `src/seo/metadata.ts` | TanStack-compatible metadata factory and duplicate registry. |
-| `src/seo/indexability.ts` | Route/indexability/canonical classification with reason codes. |
-| `src/seo/json-ld.ts` | Safe JSON-LD value boundary and serializer. |
-| `src/seo/structured-data.ts` | Organization, WebSite, Breadcrumb, Product, Offer, Brand, ItemList, CollectionPage, Article, FAQ, return, and shipping builders. |
-| `src/seo/breadcrumbs.ts` | Visible/structured breadcrumb contract with absolute URLs and sequential positions. |
-| `src/seo/product-adapter.ts` | F2 Product/Brand to metadata and Product/ProductGroup input, gated by evidence flags. |
-| `src/seo/sitemap.ts` | Pure sitemap collection/index construction and XML serialization. |
-| `src/seo/robots.ts` | Environment-specific robots policy. |
-| `src/seo/validation.ts` | Machine-readable metadata/schema/sitemap/canonical checks. |
-| `scripts/seo/validate-infrastructure.ts` | JSON manifest validation CLI for integration or later CI ownership. |
+| Module                                   | Responsibility                                                                                                                   |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `src/data/contracts/seo.ts`              | Small structural inputs for F12/deployment adapters; not a second StoreSettings model.                                           |
+| `src/seo/site-url.ts`                    | Site origin, pathname/query normalization, tracking removal, absolute and canonical URL generation.                              |
+| `src/seo/metadata.ts`                    | TanStack-compatible metadata factory and duplicate registry.                                                                     |
+| `src/seo/indexability.ts`                | Route/indexability/canonical classification with reason codes.                                                                   |
+| `src/seo/json-ld.ts`                     | Safe JSON-LD value boundary and serializer.                                                                                      |
+| `src/seo/structured-data.ts`             | Organization, WebSite, Breadcrumb, Product, Offer, Brand, ItemList, CollectionPage, Article, FAQ, return, and shipping builders. |
+| `src/seo/breadcrumbs.ts`                 | Visible/structured breadcrumb contract with absolute URLs and sequential positions.                                              |
+| `src/seo/product-adapter.ts`             | F2 Product/Brand to metadata and Product/ProductGroup input, gated by evidence flags.                                            |
+| `src/seo/sitemap.ts`                     | Pure sitemap collection/index construction and XML serialization.                                                                |
+| `src/seo/robots.ts`                      | Environment-specific robots policy.                                                                                              |
+| `src/seo/validation.ts`                  | Machine-readable metadata/schema/sitemap/canonical checks.                                                                       |
+| `scripts/seo/validate-infrastructure.ts` | JSON manifest validation CLI for integration or later CI ownership.                                                              |
 
 ## Site runtime input
 
@@ -128,15 +128,15 @@ The Root/page owner chooses the rendering mechanism. It must inject only `escape
 
 Omit a property when its source is not verified. Do not emit zero or placeholder values.
 
-| Property | Required source |
-| --- | --- |
-| `AggregateRating` / `Review` | Published review data plus evidence reference/count. |
-| `Offer.price` / currency | Current operational variant pricing with a valid Money contract. |
-| Availability | Current variant inventory state. |
-| Images | F3A/manifest production approval and matching product identity. |
-| Shipping details | F12/operational shipping configuration. |
-| Return policy | Current approved policy/configuration. |
-| Warranty or official brand relation | Explicit evidence/configuration; no generic prototype label. |
+| Property                            | Required source                                                  |
+| ----------------------------------- | ---------------------------------------------------------------- |
+| `AggregateRating` / `Review`        | Published review data plus evidence reference/count.             |
+| `Offer.price` / currency            | Current operational variant pricing with a valid Money contract. |
+| Availability                        | Current variant inventory state.                                 |
+| Images                              | F3A/manifest production approval and matching product identity.  |
+| Shipping details                    | F12/operational shipping configuration.                          |
+| Return policy                       | Current approved policy/configuration.                           |
+| Warranty or official brand relation | Explicit evidence/configuration; no generic prototype label.     |
 
 ## Product adapter pattern
 

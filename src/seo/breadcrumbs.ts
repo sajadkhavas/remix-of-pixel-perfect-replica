@@ -53,9 +53,7 @@ export function buildBreadcrumbs(
   });
   return {
     items: built,
-    structuredData: buildBreadcrumbList(
-      built.map((item) => ({ name: item.label, url: item.url })),
-    ),
+    structuredData: buildBreadcrumbList(built.map((item) => ({ name: item.label, url: item.url }))),
   };
 }
 

@@ -111,7 +111,10 @@ function offerForVariant(
   };
 }
 
-function selectVariant(product: Product, selectedVariantId: string | undefined): ProductVariant | undefined {
+function selectVariant(
+  product: Product,
+  selectedVariantId: string | undefined,
+): ProductVariant | undefined {
   const selected = selectedVariantId
     ? product.variants.find((variant) => variant.id === selectedVariantId)
     : undefined;
@@ -209,9 +212,7 @@ export function adaptProductToSeo(
 
   const variants = product.variants.map((item) => {
     const itemUrl = productUrl;
-    const labels = item.optionValues
-      .map((option) => option.label.default.trim())
-      .filter(Boolean);
+    const labels = item.optionValues.map((option) => option.label.default.trim()).filter(Boolean);
     const itemImages = approvedMedia
       .filter((record) => item.mediaIds.includes(record.media.id))
       .map((record) => record.url);
@@ -265,7 +266,9 @@ export function adaptProductToSeo(
     gtin: product.identity.gtin,
     brand: { name: brand.name },
     productGroupId: product.identity.productGroupId,
-    variesBy: [...new Set(product.variants.flatMap((item) => item.optionValues.map((v) => v.optionKey)))],
+    variesBy: [
+      ...new Set(product.variants.flatMap((item) => item.optionValues.map((v) => v.optionKey))),
+    ],
     offer: selectedOffer,
     variants,
     aggregateRating: ratingInput(product, options),

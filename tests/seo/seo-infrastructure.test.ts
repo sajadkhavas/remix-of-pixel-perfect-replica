@@ -129,16 +129,14 @@ describe("URL normalization and canonical policy", () => {
   });
 
   test("normalizes safe encoded slugs and rejects encoded separators", () => {
-    expect(normalizePathname("/product/SAMPLE-WATCH%2D2026/")).toBe(
-      "/product/sample-watch-2026",
-    );
+    expect(normalizePathname("/product/SAMPLE-WATCH%2D2026/")).toBe("/product/sample-watch-2026");
     expect(() => normalizePathname("/product/bad%2Fslug")).toThrow();
   });
 
   test("requires explicit production site URL", () => {
-    expect(() =>
-      buildCanonicalUrl({ environment: "production" }, { pathname: "/shop" }),
-    ).toThrow("Production SEO requires an explicit site URL");
+    expect(() => buildCanonicalUrl({ environment: "production" }, { pathname: "/shop" })).toThrow(
+      "Production SEO requires an explicit site URL",
+    );
   });
 });
 
@@ -379,9 +377,7 @@ describe("breadcrumbs, sitemap, and robots", () => {
   });
 
   test("blocks non-production environments and requires production site URL", () => {
-    expect(buildRobotsPolicy({ environment: "preview" }).text).toBe(
-      "User-agent: *\nDisallow: /\n",
-    );
+    expect(buildRobotsPolicy({ environment: "preview" }).text).toBe("User-agent: *\nDisallow: /\n");
     expect(
       buildRobotsPolicy({
         environment: "production",
@@ -506,8 +502,6 @@ describe("product SEO adapter and validation", () => {
   });
 
   test("absolute URL helper never guesses the host", () => {
-    expect(absoluteUrl("https://kronos.example", "/shop/")).toBe(
-      "https://kronos.example/shop",
-    );
+    expect(absoluteUrl("https://kronos.example", "/shop/")).toBe("https://kronos.example/shop");
   });
 });

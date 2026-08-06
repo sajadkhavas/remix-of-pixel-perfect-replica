@@ -84,7 +84,9 @@ export class MetadataRegistry {
     const issues: SeoValidationIssue[] = [];
     const rawTitle = input.title?.trim() || config.defaultTitle;
     if (!input.title?.trim()) {
-      issues.push(issue("metadata-title-defaulted", "warning", "Page title was empty; default title used."));
+      issues.push(
+        issue("metadata-title-defaulted", "warning", "Page title was empty; default title used."),
+      );
     }
     const title = applyTitleTemplate(rawTitle, config);
     const rawDescription = input.description?.trim();
@@ -136,13 +138,18 @@ export class MetadataRegistry {
     const robots: RobotsDirective = input.robots ?? "index,follow";
     const locale = input.locale?.trim() || config.defaultLocale;
     const image = input.image ?? config.defaultImage;
-    const ogType = input.pageType === "article" || input.pageType === "guide" ? "article" : "website";
+    const ogType =
+      input.pageType === "article" || input.pageType === "guide" ? "article" : "website";
 
     if (input.publishedTime && !validDateTime(input.publishedTime)) {
-      issues.push(issue("invalid-published-time", "error", "publishedTime is not a valid date-time."));
+      issues.push(
+        issue("invalid-published-time", "error", "publishedTime is not a valid date-time."),
+      );
     }
     if (input.modifiedTime && !validDateTime(input.modifiedTime)) {
-      issues.push(issue("invalid-modified-time", "error", "modifiedTime is not a valid date-time."));
+      issues.push(
+        issue("invalid-modified-time", "error", "modifiedTime is not a valid date-time."),
+      );
     }
 
     const meta: Array<Record<string, string>> = [

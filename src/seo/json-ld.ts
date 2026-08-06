@@ -2,7 +2,7 @@ export type JsonPrimitive = string | number | boolean | null;
 export interface JsonObject {
   readonly [key: string]: JsonValue;
 }
-export interface JsonArray extends ReadonlyArray<JsonValue> {}
+export type JsonArray = readonly JsonValue[];
 export type JsonValue = JsonPrimitive | JsonObject | JsonArray;
 
 export class JsonLdSerializationError extends Error {
@@ -35,15 +35,14 @@ function sanitizeJsonValue(
   if (value === null || typeof value === "string" || typeof value === "boolean") return value;
   if (typeof value === "number") {
     if (!Number.isFinite(value)) {
-      throw new JsonLdSerializationError("non-finite-number", "JSON-LD cannot contain NaN or Infinity.");
+      throw new JsonLdSerializationError(
+        "non-finite-number",
+        "JSON-LD cannot contain NaN or Infinity.",
+      );
     }
     return value;
   }
-  if (
-    typeof value === "function" ||
-    typeof value === "symbol" ||
-    typeof value === "bigint"
-  ) {
+  if (typeof value === "function" || typeof value === "symbol" || typeof value === "bigint") {
     throw new JsonLdSerializationError(
       "unsupported-json-value",
       `JSON-LD cannot contain ${typeof value} values.`,
@@ -53,7 +52,10 @@ function sanitizeJsonValue(
     throw new JsonLdSerializationError("unsupported-json-value", "Unsupported JSON-LD value.");
   }
   if (seen.has(value)) {
-    throw new JsonLdSerializationError("circular-json-ld", "JSON-LD cannot contain circular references.");
+    throw new JsonLdSerializationError(
+      "circular-json-ld",
+      "JSON-LD cannot contain circular references.",
+    );
   }
   seen.add(value);
   try {

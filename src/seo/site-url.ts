@@ -12,7 +12,13 @@ export const TRACKING_PARAMETER_KEYS = [
 
 const TRACKING_KEYS = new Set<string>(TRACKING_PARAMETER_KEYS);
 const SAFE_PATH_SEGMENT = /^[a-z0-9]+(?:[._~-]?[a-z0-9]+)*$/;
-const CONTROL_CHARACTERS = /[\u0000-\u001f\u007f]/;
+function containsControlCharacter(value: string): boolean {
+  for (const character of value) {
+    const codePoint = character.codePointAt(0);
+    if (codePoint !== undefined && (codePoint <= 0x1f || codePoint === 0x7f)) return true;
+  }
+  return false;
+}
 
 export class SeoUrlError extends Error {
   readonly code: string;
@@ -74,7 +80,7 @@ function decodeSafePathSegment(segment: string): string {
     decoded === ".." ||
     decoded.includes("/") ||
     decoded.includes("\\") ||
-    CONTROL_CHARACTERS.test(decoded)
+    containsControlCharacter(decoded)
   ) {
     throw new SeoUrlError("unsafe-path-segment", "Path contains an unsafe segment.");
   }
@@ -158,10 +164,7 @@ export function normalizeCanonicalSearch(
   return normalized.toString();
 }
 
-export function buildCanonicalUrl(
-  options: SiteUrlOptions,
-  input: CanonicalBuildInput,
-): string {
+export function buildCanonicalUrl(options: SiteUrlOptions, input: CanonicalBuildInput): string {
   const origin = resolveSiteOrigin(options);
   const search = normalizeCanonicalSearch(
     input.search,

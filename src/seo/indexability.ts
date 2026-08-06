@@ -109,10 +109,7 @@ function noindex(
   };
 }
 
-function hasInvalidContentState(
-  pageType: SeoPageType,
-  context: IndexabilityContext,
-): boolean {
+function hasInvalidContentState(pageType: SeoPageType, context: IndexabilityContext): boolean {
   if (context.pageExists === false) return true;
   if (["brand", "product", "policy"].includes(pageType)) return context.contentValid !== true;
   if (["article", "guide"].includes(pageType)) {
