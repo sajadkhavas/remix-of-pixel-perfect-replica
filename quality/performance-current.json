@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "measuredAt": "2026-08-06T06:11:21.231Z",
+  "metrics": {
+    "clientJsTotal": 827737,
+    "largestClientChunk": 576551,
+    "cssTotal": 97878,
+    "serverJsTotal": 179076,
+    "imageBytes": 1680909,
+    "fontBytes": 0,
+    "jsChunkCount": 29,
+    "imageCount": 11,
+    "largestImage": 673220
+  },
+  "violations": [],
+  "fieldDataAvailable": false,
+  "lighthouseExecuted": false
+}

@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "baselineSha": "b0d8e9ba1d0156d18ccb68258a9a650490931d89",
+  "generatedFrom": "github-actions:31072592630",
+  "expiresOn": "2026-10-01",
+  "warnings": [
+    {
+      "file": "src/components/sections/EditorialSection.tsx",
+      "line": 1,
+      "column": 1,
+      "rule": null,
+      "messageIncludes": "Unused eslint-disable directive",
+      "owner": "F8",
+      "reason": "Obsolete feature-file directive; F14A cannot edit editorial implementation.",
+      "removalCondition": "Remove the directive during final editorial implementation.",
+      "expiry": "2026-10-01"
+    },
+    {
+      "file": "src/components/ui/badge.tsx",
+      "line": 32,
+      "column": 17,
+      "rule": "react-refresh/only-export-components",
+      "messageIncludes": "Fast refresh only works",
+      "owner": "F3B",
+      "reason": "CVA variant export shares a component module.",
+      "removalCondition": "Split variants or approve a narrow architecture exception.",
+      "expiry": "2026-10-01"
+    },
+    {
+      "file": "src/components/ui/button.tsx",
+      "line": 49,
+      "column": 18,
+      "rule": "react-refresh/only-export-components",
+      "messageIncludes": "Fast refresh only works",
+      "owner": "F3B",
+      "reason": "Button variant export shares a component module.",
+      "removalCondition": "Split variants or approve a narrow architecture exception.",
+      "expiry": "2026-10-01"
+    },
+    {
+      "file": "src/components/ui/form.tsx",
+      "line": 163,
+      "column": 3,
+      "rule": "react-refresh/only-export-components",
+      "messageIncludes": "Fast refresh only works",
+      "owner": "F3B",
+      "reason": "Form helpers and components share a refresh boundary.",
+      "removalCondition": "Separate helpers/hooks from components.",
+      "expiry": "2026-10-01"
+    },
+    {
+      "file": "src/components/ui/navigation-menu.tsx",
+      "line": 111,
+      "column": 3,
+      "rule": "react-refresh/only-export-components",
+      "messageIncludes": "Fast refresh only works",
+      "owner": "F3B",
+      "reason": "Navigation style helper shares a component module.",
+      "removalCondition": "Move style/variant helper to a dedicated module.",
+      "expiry": "2026-10-01"
+    },
+    {
+      "file": "src/components/ui/sidebar.tsx",
+      "line": 743,
+      "column": 3,
+      "rule": "react-refresh/only-export-components",
+      "messageIncludes": "Fast refresh only works",
+      "owner": "F3B",
+      "reason": "Sidebar hook/helper and components share a large module.",
+      "removalCondition": "Decompose sidebar primitive and helper modules.",
+      "expiry": "2026-10-01"
+    },
+    {
+      "file": "src/components/ui/toggle.tsx",
+      "line": 42,
+      "column": 18,
+      "rule": "react-refresh/only-export-components",
+      "messageIncludes": "Fast refresh only works",
+      "owner": "F3B",
+      "reason": "Toggle variants share a component module.",
+      "removalCondition": "Split variants or approve a narrow architecture exception.",
+      "expiry": "2026-10-01"
+    },
+    {
+      "file": "src/lib/store-context.tsx",
+      "line": 63,
+      "column": 17,
+      "rule": "react-refresh/only-export-components",
+      "messageIncludes": "Fast refresh only works",
+      "owner": "F6",
+      "reason": "Store hook and provider share a refresh boundary.",
+      "removalCondition": "Separate hook/context exports during commerce migration.",
+      "expiry": "2026-10-01"
+    }
+  ]
+}

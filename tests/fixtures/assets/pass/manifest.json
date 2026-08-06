@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "id": "product-demo-front",
+      "path": "fixture.avif",
+      "source": "internal-studio",
+      "licenseStatus": "approved",
+      "identity": "sku-demo",
+      "alt": "نمای روبه‌روی ساعت نمونه",
+      "responsiveVariants": ["fixture-mobile.avif"],
+      "mobileCrop": "fixture-mobile.avif",
+      "format": "avif",
+      "usage": "Product demo",
+      "productionApproved": true,
+      "owner": "F5",
+      "bytes": 100,
+      "width": 100,
+      "height": 100
+    }
+  ]
+}

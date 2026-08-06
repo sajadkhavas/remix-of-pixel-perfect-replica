@@ -1,0 +1,4 @@
+{
+  "metrics": { "clientJsTotal": 101, "largestClientChunk": 50 },
+  "hardLimits": { "clientJsTotal": 100, "largestClientChunk": 50 }
+}

@@ -2,14 +2,11 @@ name: Frontend Quality
 
 on:
   pull_request:
-    branches:
-      - main
   push:
     branches:
       - main
-      - "phase/**"
       - "integration/**"
-  workflow_dispatch:
+      - "phase/**"
 
 permissions:
   contents: read
@@ -18,134 +15,147 @@ concurrency:
   group: frontend-quality-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  BUN_VERSION: 1.2.22
+  NODE_VERSION: 22.16.0
+
 jobs:
-  quality:
-    name: Install, validate, test, and build
+  static-quality:
+    name: Static, contract, scanner, build and budget gates
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 22
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v5
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 22.16.0
-          check-latest: false
-
+          node-version: ${{ env.NODE_VERSION }}
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.2.22
-
+          bun-version: ${{ env.BUN_VERSION }}
       - name: Cache Bun packages
-        uses: actions/cache@v6
+        uses: actions/cache@v4
         with:
           path: ~/.bun/install/cache
           key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-bun-
-
-      - name: Record toolchain
-        run: |
-          node --version
-          bun --version
-
-      - name: Install dependencies from lockfile
+          restore-keys: ${{ runner.os }}-bun-
+      - name: Install frozen dependencies
         run: bun install --frozen-lockfile
-
-      - name: Resolve formatting comparison base
-        id: format-base
+      - name: Resolve format comparison base
         shell: bash
         env:
-          EVENT_NAME: ${{ github.event_name }}
           PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          PUSH_BEFORE_SHA: ${{ github.event.before }}
-          REF_NAME: ${{ github.ref_name }}
         run: |
           set -Eeuo pipefail
-
-          base=""
-          if [[ "$EVENT_NAME" == "pull_request" && -n "$PR_BASE_SHA" ]]; then
-            base="$PR_BASE_SHA"
-          elif [[ "$EVENT_NAME" == "push" && "$REF_NAME" == "main" ]]; then
-            if [[ -n "$PUSH_BEFORE_SHA" && ! "$PUSH_BEFORE_SHA" =~ ^0+$ ]] && git cat-file -e "${PUSH_BEFORE_SHA}^{commit}" 2>/dev/null; then
-              base="$PUSH_BEFORE_SHA"
-            fi
+          if [[ -n "${PR_BASE_SHA:-}" ]]; then
+            base="${PR_BASE_SHA}"
+          elif [[ "${GITHUB_REF_NAME}" == phase/* ]]; then
+            git fetch --no-tags origin integration/front-200:refs/remotes/origin/integration/front-200
+            base="$(git merge-base HEAD origin/integration/front-200)"
           else
-            base="$(git merge-base HEAD origin/main || true)"
-          fi
-
-          if [[ -z "$base" ]] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
             base="$(git rev-parse HEAD^ 2>/dev/null || git rev-parse HEAD)"
           fi
-
-          echo "FORMAT_BASE_REF=$base" >> "$GITHUB_ENV"
-          echo "base=$base" >> "$GITHUB_OUTPUT"
-          echo "Formatting comparison base: $base"
-
-      - name: Check changed-file formatting
+          echo "FORMAT_BASE_REF=${base}" >> "${GITHUB_ENV}"
+          echo "Formatting comparison base: ${base}"
+      - name: Format
         run: bun run format:check
-
-      - name: Lint source
-        run: bun run lint
-
+      - name: Lint warning governance
+        run: bun run quality:lint
       - name: Typecheck
         run: bun run typecheck
+      - name: Unit tests
+        run: bun run test:unit
+      - name: Contract tests
+        run: bun run test:contract
+      - name: Forbidden production copy
+        run: bun run quality:forbidden-copy
+      - name: Link integrity
+        run: bun run quality:links
+      - name: Asset validation
+        run: bun run quality:assets
+      - name: Registry summary freshness
+        run: bun run quality:summary
+      - name: Production build
+        run: bun run build
+      - name: Performance budget
+        run: bun run quality:performance
 
-      - name: Run tests
-        run: bun run test:run
+  browser-quality:
+    name: Browser gate — ${{ matrix.name }}
+    needs: static-quality
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: route-smoke
+            command: bun run test:routes
+          - name: accessibility
+            command: bun run test:a11y
+          - name: reduced-motion
+            command: bun run test:reduced-motion
+          - name: keyboard
+            command: bun run test:keyboard
 
-      - name: Smoke test development server
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - name: Cache Bun packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+          restore-keys: ${{ runner.os }}-bun-
+      - name: Install frozen dependencies
+        run: bun install --frozen-lockfile
+      - name: Cache Playwright browser
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('bun.lock') }}
+          restore-keys: ${{ runner.os }}-playwright-
+      - name: Install Chromium and system dependencies
+        run: bunx playwright install --with-deps chromium
+      - name: Run browser suite
+        run: ${{ matrix.command }}
+      - name: Upload failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-${{ matrix.name }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            test-results
+            playwright-report
+          if-no-files-found: warn
+          retention-days: 7
+
+  quality-gate:
+    name: Frontend quality release gate
+    if: always()
+    needs:
+      - static-quality
+      - browser-quality
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: Enforce all required jobs
         shell: bash
         run: |
           set -Eeuo pipefail
-
-          log_file="${RUNNER_TEMP}/vite-dev.log"
-          bun run dev --host 127.0.0.1 --port 4174 > "$log_file" 2>&1 &
-          server_pid=$!
-
-          cleanup() {
-            kill "$server_pid" 2>/dev/null || true
-            wait "$server_pid" 2>/dev/null || true
-          }
-          trap cleanup EXIT
-
-          for _ in {1..30}; do
-            if curl --fail --silent --show-error http://127.0.0.1:4174/ > /dev/null; then
-              echo "Development server responded successfully."
-              exit 0
-            fi
-
-            if ! kill -0 "$server_pid" 2>/dev/null; then
-              echo "Development server exited before becoming ready."
-              cat "$log_file"
-              exit 1
-            fi
-
-            sleep 1
-          done
-
-          echo "Development server did not become ready within 30 seconds."
-          cat "$log_file"
-          exit 1
-
-      - name: Build production bundles
-        run: bun run build
-
-      - name: Write quality summary
-        if: always()
-        shell: bash
-        run: |
-          {
-            echo "## Frontend quality gate"
-            echo
-            echo "- Commit: \`${GITHUB_SHA}\`"
-            echo "- Node: \`$(node --version 2>/dev/null || echo unavailable)\`"
-            echo "- Bun: \`$(bun --version 2>/dev/null || echo unavailable)\`"
-            echo "- Formatting base: \`${FORMAT_BASE_REF:-unresolved}\`"
-            echo "- Result: inspect the individual job steps above; no gate uses continue-on-error."
-          } >> "$GITHUB_STEP_SUMMARY"
+          test "${{ needs.static-quality.result }}" = "success"
+          test "${{ needs.browser-quality.result }}" = "success"
+          echo "All frontend quality jobs passed."
