@@ -1,6 +1,10 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { expect, test } from "@playwright/test";
-import routeCoverage from "../../quality/route-coverage.json";
 
+const routeCoverage = JSON.parse(
+  readFileSync(path.resolve(process.cwd(), "quality/route-coverage.json"), "utf8"),
+) as { implemented: Array<{ samplePath: string }> };
 const routes = routeCoverage.implemented.map((route) => route.samplePath);
 
 for (const route of routes) {
@@ -19,14 +23,9 @@ for (const route of routes) {
     await expect(page).toHaveTitle(/\S+/);
 
     const primaryLink = page.locator('main a[href]:not([href="#"]):visible').first();
-    if ((await primaryLink.count()) > 0) {
-      await primaryLink.click({ trial: true });
-    }
+    if ((await primaryLink.count()) > 0) await primaryLink.click({ trial: true });
 
-    expect(
-      criticalConsoleErrors,
-      `Critical console or hydration errors on ${route}`,
-    ).toEqual([]);
+    expect(criticalConsoleErrors, `Critical console or hydration errors on ${route}`).toEqual([]);
   });
 }
 

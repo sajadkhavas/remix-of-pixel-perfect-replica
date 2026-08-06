@@ -1,7 +1,11 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
-import routeCoverage from "../../quality/route-coverage.json";
+import path from "node:path";
 import { classifyInternalPath, scanLinkText } from "../../scripts/quality/link-integrity.mjs";
+
+const routeCoverage = JSON.parse(
+  readFileSync(path.resolve(process.cwd(), "quality/route-coverage.json"), "utf8"),
+);
 
 describe("link integrity scanner", () => {
   test("accepts implemented internal destination", () => {

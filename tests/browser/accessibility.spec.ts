@@ -1,6 +1,7 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
-import routeCoverage from "../../quality/route-coverage.json";
 import {
   compareOrUpdateDefects,
   ownerForRoute,
@@ -8,6 +9,9 @@ import {
   type BrowserDefect,
 } from "./helpers/quality-baseline";
 
+const routeCoverage = JSON.parse(
+  readFileSync(path.resolve(process.cwd(), "quality/route-coverage.json"), "utf8"),
+) as { implemented: Array<{ samplePath: string }> };
 const routes = routeCoverage.implemented.map((route) => route.samplePath);
 const expiry = "2026-10-01";
 
