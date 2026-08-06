@@ -1,13 +1,32 @@
 name: F14A Final Format Sync
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - phase/f14a-quality-harness
+    paths:
+      - ".github/workflows/**"
+      - "docs/quality/**"
+      - "e2e/**"
+      - "eslint.config.js"
+      - "package.json"
+      - "playwright.config.*"
+      - "quality/**"
+      - "scripts/a11y/**"
+      - "scripts/performance/**"
+      - "scripts/quality/**"
+      - "tests/**"
 
 permissions:
   contents: write
 
+concurrency:
+  group: f14a-final-quality-sync-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   sync:
+    if: ${{ !contains(github.event.head_commit.message, '[skip quality-sync]') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 12
     steps:
