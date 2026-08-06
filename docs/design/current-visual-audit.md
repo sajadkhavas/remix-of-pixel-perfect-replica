@@ -1,0 +1,118 @@
+# ممیزی بصری فعلی KRONOS
+
+**فاز:** F3A — Visual Direction and Asset Strategy  
+**Baseline:** `0ddb98cfd640a59ea2cc7687ee35478f9cf4f09c`  
+**تاریخ ممیزی:** 2026-08-05  
+**دامنه:** همه routeهای محصول‌محور، layoutها، sectionهای صفحه اصلی، ProductCard، stateهای ریشه و inventory فایل‌های تصویری. این سند هیچ تغییر UI یا CSS ایجاد نمی‌کند.
+
+## خلاصه اجرایی
+
+وضعیت فعلی از نظر «تلاش برای لوکس‌بودن» پرجزئیات است، اما زبان بصری هنوز یک سیستم کنترل‌شده نیست. لوکس‌بودن تقریباً با ترکیب ثابت مشکی، طلایی، glow، blur، grain، marquee، tilt و حرکت دائمی بیان می‌شود. نتیجه در بعضی viewportها نمایشی است، ولی اطلاعات خرید و اعتماد بصری زیر تزئینات قرار می‌گیرد.
+
+سه مسئله ریشه‌ای:
+
+1. **طلایی هم‌زمان نقش برند، CTA، قیمت، لینک، focus، badge و decoration را دارد.** در نتیجه hierarchy رنگی ضعیف است.
+2. **مالکیت transform و motion شفاف نیست.** Framer Motion، GSAP، Swiper، Lenis، react-parallax، VanillaTilt، tsParticles و CSS animation در یک تجربه جمع شده‌اند.
+3. **دارایی تصویری برای یک فروشگاه واقعی کافی نیست.** ۱۲ رکورد محصول از ۸ تصویر استفاده می‌کنند و چهار محصول تصویر محصول دیگری را تکرار می‌کنند.
+
+## سطوح شدت
+
+- **Critical:** مانع render/خرید/دسترسی پایه یا ایجادکننده ادعای گمراه‌کننده.
+- **High:** لطمه جدی به usability، اعتماد، performance یا consistency.
+- **Medium:** ناسازگاری محسوس که در مقیاس پروژه تشدید می‌شود.
+- **Low:** polish و کیفیت ادراکی.
+
+## یافته‌های اصلی
+
+| # | Location | Current behavior | Visual problem | UX impact | Severity | Recommended direction | Owner phase |
+|---|---|---|---|---|---|---|---|
+| 1 | `HeroSection` | از `useRef`، `useEffect`، `gsap` و `activeIdx` استفاده شده اما import/state کامل نیست | احتمال render/build failure؛ ممیزی بصری Hero قابل اتکا نیست | ورودی اصلی فروشگاه ممکن است از کار بیفتد | Critical | ابتدا اصلاح فنی بدون redesign، سپس اجرای storyboard F3A | F4/Home implementation |
+| 2 | Hero viewport | Swiper autoplay + fade + GSAP reveal + typewriter + float + pulse + shimmer + scroll bounce + clock rotation | چند کانون حرکت هم‌زمان | کاهش خوانایی، motion fatigue و کاهش تمرکز روی CTA | High | یک حرکت غالب در هر viewport؛ بقیه state-driven | F4 |
+| 3 | Hero autoplay | loop و `disableOnInteraction:false` بدون pause/stop | کنترل کاربر وجود ندارد | ناسازگار با نیاز کاربران حساس به حرکت | High | pause control، توقف بعد از تعامل، reduced-motion static hero | F4/A11y |
+| 4 | Hero content | سه slide با ادعاها و نام برندها | محتوای تجاری/برندی تأییدنشده | ریسک اعتماد و حقوق برند | Critical | placeholder label و approval gate پیش از انتشار | Content/Legal |
+| 5 | Hero mobile | ارتفاع 88vh، تصویر order-first، متن و دو CTA و badge در همان viewport | تراکم و احتمال fold/overflow | CTA و اطلاعات ممکن است خارج viewport قرار گیرد | High | composition مستقل موبایل، یک CTA اصلی، crop موبایل | F4 |
+| 6 | Global palette | طلایی برای logo، CTA، price، badge، link، icon، border و scrollbar | accent به رنگ غالب تبدیل شده | hierarchy ضعیف و حس «قالب آماده لوکس» | High | accent budget حداکثر 10–15٪ سطح دیده‌شده | F3B/F4+ |
+| 7 | Typography | Playfair قبل از Vazirmatn روی headingهای فارسی | فرم حروف فارسی وابسته به fallback و وزن‌ها ناهماهنگ | هویت تایپی ناپایدار | High | Display فارسی مستقل؛ Latin display فقط برای واژه لاتین | F3B |
+| 8 | Microcopy | uppercase و tracking زیاد روی متن فارسی | spacing غیرطبیعی در فارسی | خوانایی و کیفیت ادراکی پایین | Medium | tracking صفر یا بسیار کم برای فارسی؛ tracking فقط Latin labels | F3B/All |
+| 9 | Text sizes | badgeها، statusها و labels در 9–10px | متن زیر حد راحت خواندن | مشکل موبایل و کاربران کم‌بینا | High | حداقل 12px برای اطلاعات ضروری؛ 11px فقط meta غیرضروری | F3B/All |
+| 10 | Contrast | متن‌های `#4A4A4A` روی `#080808/#060606` | کنتراست بسیار ضعیف | اطلاعات footer، قیمت قبلی و captions خوانده نمی‌شود | High | contrast test و semantic muted tiers | F3B |
+| 11 | Focus | focus-visible سراسری و قابل تشخیص دیده نمی‌شود | hover جایگزین focus شده | keyboard users مسیر را گم می‌کنند | Critical | focus ring مستقل از gold decoration و حداقل 2px | F3B/A11y |
+| 12 | Navbar desktop | submenu فقط با mouse enter/leave | hover-only menu | keyboard/touch و switch input ناکارآمد | Critical | disclosure button با expanded state، Escape و focus management | F4 Navigation |
+| 13 | Search affordance | آیکن Search به `/shop` می‌رود | affordance نادرست | انتظار overlay/search شکسته می‌شود | High | search overlay یا label صریح «فروشگاه» | F4 Discovery |
+| 14 | Navbar icon targets | بیشتر actionها `p-2` و آیکن 20px | target تقریبی کمتر از 44px | خطای لمس روی موبایل | High | target حداقل 44×44، فاصله امن | F4 |
+| 15 | Mobile drawer | پنل `right:0` است اما animation از `x:-100%` می‌آید | منطق فضایی RTL نامنسجم | حرکت خلاف انتظار و حس ناپایداری | Medium | ورود از inline-end بر اساس dir، نه left/right ثابت | F4 |
+| 16 | Mobile drawer | body overflow lock بدون focus trap/return focus مستند | overlay بصری بدون قرارداد دسترسی | keyboard focus پشت پنل می‌ماند | High | focus trap، initial focus، return focus، Escape | F4 |
+| 17 | ProductCard | VanillaTilt روی هر کارت دسکتاپ + glare | کارت‌های grid دائماً سه‌بعدی و حساس | fatigue، هزینه GPU، مشکل pointer precision | High | tilt حذف از grid؛ فقط یک showcase کنترل‌شده در کمپین | F5 |
+| 18 | ProductCard | image hover scale + reveal + top-line + shimmer + low-stock pulse + CTA shimmer | noise و رقابت motion | تمرکز از نام/قیمت/CTA منحرف می‌شود | High | hover فقط image scale کوچک یا border shift، نه هر دو | F5 |
+| 19 | ProductCard | قیمت با accent دسته تغییر می‌کند | قیمت از semantic hierarchy خارج می‌شود | مقایسه قیمت سخت و ناپایدار | Medium | قیمت primary text؛ accent فقط detail/selection | F5 |
+| 20 | ProductCard | wishlist target کوچک و icon-only | discoverability و touch ضعیف | خطای لمس و state مبهم | High | 44px، tooltip/label، selected state غیررنگی | F5 |
+| 21 | ProductCard | stock dot با رنگ + متن بسیار کوچک | تکیه زیاد بر رنگ | کاربران کم‌بینا/کوررنگ آسیب می‌بینند | High | text واضح، icon/shape و live status مناسب | F5 |
+| 22 | ProductCard images | 12 محصول از 8 تصویر؛ IDs 9–12 تکراری | تصویر با نام/مدل محصول تطابق ندارد | اعتماد به کاتالوگ آسیب جدی می‌بیند | Critical | هر SKU حداقل packshot اختصاصی و source/license ثبت‌شده | Asset/Content |
+| 23 | Product image ratio | همه تصاویر در square با padding ثابت | فرم‌های متنوع ساعت یک scale ادراکی ندارند | مقایسه ابعاد و جزئیات دشوار | Medium | framing guide و product-scale استاندارد | Asset/F5 |
+| 24 | Categories | PNGهای hero و JPG packshot با `object-cover` مخلوط | crop و background ناهماهنگ | دسته‌ها یک مجموعه واحد به نظر نمی‌رسند | High | تصاویر category اختصاصی 3:4 با art direction مشترک | Asset/F4 |
+| 25 | Categories counts | شمارش 84/62/38/47 در برابر catalog 12 آیتم | عدد نمایشی نادرست | اعتماد کاهش می‌یابد | Critical | counts از داده یا label غیرعددی تا تأیید | Data/Content |
+| 26 | Categories mobile | 2 ستون 3:4 + متن/metadata در 375px | عرض کارت کم و متن متراکم | tap و scan دشوار | Medium | carousel 1.15 card یا stack editorial | F4 |
+| 27 | Featured stats | 1200 مدل، 50 برند، 8 سال، 99٪ رضایت | ادعای اثبات‌نشده با count-up نمایشی | ریسک اعتماد/حقوقی | Critical | حذف تا وجود evidence و owner approval | Content/Legal |
+| 28 | Featured grid | GSAP روی wrapper و ProductCard motion داخلی | reveal دوگانه | delayed content و transform conflicts | High | یک owner برای entry motion | F4/F5 |
+| 29 | Brand marquee | حرکت بی‌نهایت 30s، 4 بار تکرار، بدون pause | autoplay تزئینی | distraction و accessibility risk | High | static logo grid یا controllable rail | F4 |
+| 30 | Brand marquee | نام برندها به‌صورت text و رنگ‌های دلخواه | بازنمایی غیررسمی trademark | اعتماد پایین | High | wordmark فقط با مجوز؛ در غیر این صورت text خنثی | Brand/Legal |
+| 31 | Editorial | `react-parallax` strength 400 با packshot تکراری | تصویر editorial واقعی نیست و motion شدید است | داستان‌گویی ضعیف؛ هزینه scroll | High | تصویر workshop/material/human؛ parallax بسیار محدود desktop | F8 Content |
+| 32 | Services cards | Framer rotateX/rotateY و VanillaTilt روی همان element | دو engine یک transform را کنترل می‌کنند | jitter و رفتار غیرقابل پیش‌بینی | Critical | یک motion owner یا حذف tilt | F4/Services |
+| 33 | Services icons | emoji در کنار Lucide | زبان iconography ناهماهنگ | حس prototype | Medium | یک icon set line-based یا photography detail | F3B |
+| 34 | Global Lenis | smooth scroll برای همه کاربران، duration 1.4 | scroll behavior اجباری | motion sensitivity و input latency ادراکی | High | native scroll default؛ opt-in enhancement و reduced-motion bypass | Platform/A11y |
+| 35 | Particles | 28 particle در 60fps و hover interaction | decorative GPU work | battery/performance risk | Medium | حذف از commerce؛ فقط campaign gated و off on low-power | F4 |
+| 36 | CSS motion | duplicate `skeleton-shimmer` keyframe و utility | تعریف تکراری و نتیجه غیرشفاف | consistency/maintenance risk | Medium | در فاز system یک تعریف semantic | F3B |
+| 37 | Loading | Home Suspense فقط `h-96` خالی | structure partially reserved but no information | perceived blank/uncertain state | Medium | skeleton با همان grid و aria-busy | F4 |
+| 38 | Shop filters | input/select/chips ساده؛ بدون applied summary یا drawer | discovery در catalog بزرگ مقیاس‌پذیر نیست | یافتن محصول دشوار | High | filter architecture با URL state و mobile drawer | F4/F5 |
+| 39 | Shop empty | empty state وجود دارد اما فقط متن و reset | context فیلتر و پیشنهاد بعدی کم است | dead end | Medium | علت، chips فعال، reset جزئی، پیشنهاد category | F4 |
+| 40 | Product page gallery | فقط یک تصویر square | جزئیات ساعت قابل ارزیابی نیست | تصمیم خرید high-consideration ناقص | Critical | gallery چندنمایی + thumbnail + zoom + video optional | F5 |
+| 41 | Product image loading | تصویر اصلی PDP `loading=lazy` | LCP و نمایش بالای fold به تأخیر می‌افتد | perceived performance پایین | High | eager/high priority فقط primary media | F5/Performance |
+| 42 | PDP trust | چهار trust item بدون evidence/link | badgeهای عمومی | اعتماد مصنوعی | High | هر claim به policy یا سند قابل مشاهده لینک شود | F5/Legal |
+| 43 | PDP data | category slug انگلیسی در breadcrumb/spec | mixed-language خام | polish و comprehension پایین | Medium | localized label، Latin brand isolated with `dir=ltr` | F5 |
+| 44 | Cart controls | quantity buttons کوچک، remove icon-only | touch target ضعیف | خطای تغییر/حذف | High | 44px controls و undo toast | F6 |
+| 45 | Cart CTA | «تکمیل خرید» button بدون route/feedback | CTA dead-end بصری | شکست funnel | Critical | disabled/coming state صادقانه یا checkout route | F6 |
+| 46 | Cart summary | «ارسال رایگان» hard-coded | ادعای pricing policy | surprise at checkout | Critical | محاسبه و disclosure بر اساس rules | Commerce/Data |
+| 47 | Wishlist | فقط empty و product grid؛ هیچ bulk/availability state | utility کم | مدیریت لیست دشوار | Medium | move-to-cart، stock change و saved state | F6 |
+| 48 | Footer | phone/address/payment/social placeholder به‌شکل production | visual trust کاذب | ریسک اعتبار و حقوقی | Critical | placeholder صریح در dev؛ publish gate برای facts | Content/Legal |
+| 49 | Footer | همه social links `#` و aria-label یکسان | مقصد و نام نامعتبر | keyboard/screen reader confusion | High | نام شبکه دقیق، URL واقعی یا حذف | F8 |
+| 50 | Footer typography | text 10px و `#4A4A4A` | کنتراست/خوانایی ضعیف | اطلاعات قانونی دیده نمی‌شود | High | legal min 12px و contrast-compliant | F8 |
+| 51 | PageHero | header یکسان برای تقریباً همه صفحات | فقدان hierarchy و identity صفحه‌ای | همه صفحات template-like | Medium | سه archetype: commerce, editorial, utility | F4–F8 |
+| 52 | 404/Error | state ساده و قابل فهم است، ولی focus و راه‌های recovery محدود | تجربه utility حداقلی | recovery ناکامل | Medium | search، primary destinations، error ID در صورت نیاز | Platform |
+| 53 | Responsive | desktop spacingهایی مثل `px-8`, `py-28` بدون adaptation کافی | mobile density/whitespace ناهمگون | scroll طولانی و فضای تلف‌شده | Medium | fluid spacing و mobile rhythm مشخص | F3B/All |
+| 54 | RTL | استفاده زیاد از left/right، arrow ثابت و Latin/Persian بدون isolation | mirror ناقص | order، motion و punctuation ناسازگار | High | logical properties + bidi isolation + RTL QA | All |
+| 55 | Borders/glow | border و gold hairline تقریباً در همه blockها | decorative sameness | luxury perception به «خط طلایی» تقلیل می‌یابد | Medium | material hierarchy با tone/space؛ border فقط boundary | F3B |
+| 56 | Radius | radius جهانی صفر، badgeها گاهی pill | rationale نامشخص | component family نامنسجم | Low | geometry rule: sharp commerce, restrained 2–8px utilities | F3B |
+
+## ممیزی route به route
+
+| Route | وضعیت بصری فعلی | ریسک اصلی | جهت بعدی |
+|---|---|---|---|
+| `/` | پرتحرک، پرکنتراست، چند section نمایشی | overload و ادعاهای تأییدنشده | editorial precision با محصول قهرمان |
+| `/shop` | ابزار جستجو/مرتب‌سازی و grid پایه | مقیاس‌پذیری فیلتر و focus | discovery واضح و URL-driven |
+| `/shop/$category` | مشتق ساده catalog | هویت category محدود | campaign header کوتاه + catalog first |
+| `/product/$id` | یک تصویر، اطلاعات و CTA | نبود gallery و evidence | gallery دقیق، buy box ثابت و آرام |
+| `/cart` | لیست و summary دو ستونه | CTA و policyهای غیرواقعی | funnel مینیمال، شفاف و بدون افکت |
+| `/wishlist` | empty/grid پایه | stateهای availability/management | saved utility با actions واضح |
+| `/brands` | صفحه فهرست برند | حقوق wordmark و محتوای کم | brand directory خنثی و قابل فیلتر |
+| `/blog` | listing ساده | asset editorial ناکافی | magazine grid و hierarchy محتوایی |
+| `/services` | cards هم‌شکل | ادعا و 3D effect | evidence-led service modules |
+| `/about` | متن/بلاک عمومی | storytelling و proof کم | editorial narrative با تصاویر مستند |
+| `/contact` | فرم و اطلاعات | placeholder/trust | form-first، SLA صادقانه، location verified |
+| `/faq` | accordion utility | visual hierarchy محدود | search/categories و deep links |
+| `/auth` | فرم utility | hierarchy/focus/error states | آرام، روشن، بدون decoration |
+| Root 404/Error | recovery پایه | focus و destination کم | recovery hub کوچک و قابل اسکن |
+
+## نکات مثبت قابل حفظ
+
+- ساختار کلی RTL در ریشه و استفاده از labels فارسی.
+- `MobileTabBar` دارای safe-area و حداقل ارتفاع 56px است.
+- grid محصول در breakpointها تغییر می‌کند.
+- empty state برای Shop، Cart و Wishlist وجود دارد.
+- primary CTAهای خرید غالباً از متن واضح استفاده می‌کنند.
+- تصاویر با `object-contain` در کارت و PDP از crop شدن خود ساعت جلوگیری می‌کنند.
+- lazy loading برای رسانه‌های زیر fold در چند بخش استفاده شده است.
+- stateهای stock/new/limited/sale در مدل بصری دیده شده‌اند، هرچند نیازمند بازطراحی semantic هستند.
+
+## نتیجه ممیزی
+
+این storefront برای ادامه توسعه به «افزودن جلوه بیشتر» نیاز ندارد. اولویت بعدی باید کاهش noise، تفکیک semantic رنگ، اصلاح اعتماد محتوایی، ایجاد asset coverage واقعی، دسترسی keyboard/focus/reduced-motion و تعریف hierarchy خرید باشد.
