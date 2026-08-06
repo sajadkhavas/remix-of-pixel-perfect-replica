@@ -107,6 +107,7 @@ test("@keyboard mobile menu trigger contract", async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/", { waitUntil: "domcontentloaded" });
 
+  const scenarioProject = `${testInfo.project.name}:mobile-menu`;
   const defects: BrowserDefect[] = [];
   const trigger = page.getByRole("button", { name: "منو" });
   const triggerVisible = await trigger.isVisible().catch(() => false);
@@ -114,7 +115,7 @@ test("@keyboard mobile menu trigger contract", async ({ page }, testInfo) => {
   if (!triggerVisible) {
     defects.push({
       route: "/",
-      project: testInfo.project.name,
+      project: scenarioProject,
       rule: "keyboard:mobile-menu-trigger-missing",
       selector: 'button[aria-label="منو"]',
       impact: "critical",
@@ -135,7 +136,7 @@ test("@keyboard mobile menu trigger contract", async ({ page }, testInfo) => {
     if (!closeVisible) {
       defects.push({
         route: "/",
-        project: testInfo.project.name,
+        project: scenarioProject,
         rule: "keyboard:mobile-menu-enter-does-not-open",
         selector: 'button[aria-label="منو"]',
         impact: "critical",
@@ -153,7 +154,7 @@ test("@keyboard mobile menu trigger contract", async ({ page }, testInfo) => {
     "quality/keyboard-baseline.json",
     defects,
     "/",
-    testInfo.project.name,
+    scenarioProject,
   );
   expect(newDefects).toEqual([]);
 });
