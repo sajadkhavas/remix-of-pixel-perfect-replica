@@ -104,9 +104,40 @@ export interface QuantityRule {
   readonly increment: number;
 }
 
-export function clampQuantity(requested: number, rule: QuantityRule, availableQuantity?: number): number {
-  const hardMax = Math.min(rule.max ?? Number.MAX_SAFE_INTEGER, availableQuantity ?? Number.MAX_SAFE_INTEGER);
-  const normalized = rule.min + Math.floor((Math.max(rule.min, requested) - rule.min) / rule.increment) * rule.increment;
+export function clampQuantity(
+  requested: number,
+  rule: QuantityRule,
+  availableQuantity?: number,
+): number {
+  if (!Number.isSafeInteger(rule.min) || rule.min < 1) {
+    throw new RangeError("Quantity rule min must be a positive safe integer");
+  }
+  if (!Number.isSafeInteger(rule.increment) || rule.increment < 1) {
+    throw new RangeError("Quantity rule increment must be a positive safe integer");
+  }
+  if (rule.max !== undefined && (!Number.isSafeInteger(rule.max) || rule.max < rule.min)) {
+    throw new RangeError("Quantity rule max must be a safe integer greater than or equal to min");
+  }
+  if (
+    availableQuantity !== undefined &&
+    (!Number.isSafeInteger(availableQuantity) || availableQuantity < 0)
+  ) {
+    throw new RangeError("Available quantity must be a non-negative safe integer");
+  }
+
+  const safeRequested = Number.isFinite(requested) ? Math.trunc(requested) : rule.min;
+  const hardMax = Math.min(
+    rule.max ?? Number.MAX_SAFE_INTEGER,
+    availableQuantity ?? Number.MAX_SAFE_INTEGER,
+  );
+
+  if (hardMax < rule.min) return hardMax;
+
+  const normalized =
+    rule.min +
+    Math.floor((Math.max(rule.min, safeRequested) - rule.min) / rule.increment) *
+      rule.increment;
+
   return Math.min(normalized, hardMax);
 }
 
@@ -116,47 +147,241 @@ export function makeLineId(productId: EntityId, variantId: EntityId): string {
 
 export function sumMoney(values: readonly Money[]): Money | null {
   if (!values.length) return null;
+
   const first = values[0];
-  if (!values.every((value) => value.currency === first.currency && value.fractionDigits === first.fractionDigits)) throw new Error("Cannot add money with different currencies or fraction digits");
-  return { amountMinor: values.reduce((total, value) => total + value.amountMinor, 0), currency: first.currency, fractionDigits: first.fractionDigits };
+  if (
+    !values.every(
+      (value) =>
+        value.currency === first.currency && value.fractionDigits === first.fractionDigits,
+    )
+  ) {
+    throw new Error("Cannot add money with different currencies or fraction digits");
+  }
+
+  return {
+    amountMinor: values.reduce((total, value) => total + value.amountMinor, 0),
+    currency: first.currency,
+    fractionDigits: first.fractionDigits,
+  };
 }
 
 export function calculateCartSubtotal(cart: Cart): Money | null {
-  return sumMoney(cart.items.map((item) => ({ ...item.unitPriceSnapshot, amountMinor: item.unitPriceSnapshot.amountMinor * item.quantity })));
+  return sumMoney(
+    cart.items.map((item) => ({
+      ...item.unitPriceSnapshot,
+      amountMinor: item.unitPriceSnapshot.amountMinor * item.quantity,
+    })),
+  );
 }
 
-const record = (value: unknown): value is Record<string, unknown> => typeof value === "object" && value !== null && !Array.isArray(value);
-const stringValue = (value: unknown): value is string => typeof value === "string" && value.length > 0;
-const validMoney = (value: unknown): value is Money => record(value) && Number.isSafeInteger(value.amountMinor) && Number(value.amountMinor) >= 0 && stringValue(value.currency) && Number.isInteger(value.fractionDigits) && Number(value.fractionDigits) >= 0;
+const record = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
 
-function validCartItem(value: unknown): value is CartItem {
-  if (!record(value) || !stringValue(value.lineId) || !stringValue(value.productId) || !stringValue(value.variantId)) return false;
-  if (!Number.isInteger(value.quantity) || Number(value.quantity) < 1 || !validMoney(value.unitPriceSnapshot)) return false;
-  if (!record(value.productSnapshot) || !stringValue(value.productSnapshot.productId) || !stringValue(value.productSnapshot.variantId) || !stringValue(value.productSnapshot.productSlug) || !stringValue(value.productSnapshot.name) || !stringValue(value.productSnapshot.sku)) return false;
-  return stringValue(value.addedAt) && stringValue(value.updatedAt);
+const stringValue = (value: unknown): value is string =>
+  typeof value === "string" && value.trim().length > 0;
+
+const optionalString = (value: unknown): value is string | undefined =>
+  value === undefined || typeof value === "string";
+
+const safeNonNegativeInteger = (value: unknown): value is number =>
+  Number.isSafeInteger(value) && Number(value) >= 0;
+
+const validMoney = (value: unknown): value is Money =>
+  record(value) &&
+  safeNonNegativeInteger(value.amountMinor) &&
+  stringValue(value.currency) &&
+  safeNonNegativeInteger(value.fractionDigits);
+
+function validProductSnapshot(value: unknown): value is ProductSnapshot {
+  return (
+    record(value) &&
+    stringValue(value.productId) &&
+    stringValue(value.variantId) &&
+    stringValue(value.productSlug) &&
+    stringValue(value.name) &&
+    optionalString(value.variantLabel) &&
+    stringValue(value.sku) &&
+    optionalString(value.imageUrl)
+  );
+}
+
+function validCartItem(value: unknown, cartCurrency: string): value is CartItem {
+  return (
+    record(value) &&
+    stringValue(value.lineId) &&
+    stringValue(value.productId) &&
+    stringValue(value.variantId) &&
+    Number.isSafeInteger(value.quantity) &&
+    Number(value.quantity) >= 1 &&
+    validMoney(value.unitPriceSnapshot) &&
+    value.unitPriceSnapshot.currency === cartCurrency &&
+    validProductSnapshot(value.productSnapshot) &&
+    value.productSnapshot.productId === value.productId &&
+    value.productSnapshot.variantId === value.variantId &&
+    stringValue(value.addedAt) &&
+    stringValue(value.updatedAt)
+  );
+}
+
+function validWishlistItem(value: unknown): value is WishlistItem {
+  return (
+    record(value) &&
+    stringValue(value.productId) &&
+    (value.preferredVariantId === undefined || stringValue(value.preferredVariantId)) &&
+    stringValue(value.addedAt)
+  );
+}
+
+function validCompareItem(value: unknown): value is CompareItem {
+  return (
+    record(value) &&
+    stringValue(value.productId) &&
+    (value.variantId === undefined || stringValue(value.variantId)) &&
+    stringValue(value.addedAt)
+  );
+}
+
+function validRecentlyViewedItem(value: unknown): value is RecentlyViewedItem {
+  return (
+    record(value) &&
+    stringValue(value.productId) &&
+    (value.variantId === undefined || stringValue(value.variantId)) &&
+    stringValue(value.viewedAt)
+  );
+}
+
+function validCoupon(value: unknown): value is CouponState {
+  if (!record(value) || !stringValue(value.status)) return false;
+
+  switch (value.status) {
+    case "empty":
+      return true;
+    case "checking":
+      return stringValue(value.code);
+    case "valid":
+      return (
+        stringValue(value.code) &&
+        safeNonNegativeInteger(value.discountMinor) &&
+        optionalString(value.message)
+      );
+    case "invalid":
+      return stringValue(value.code) && stringValue(value.reason);
+    default:
+      return false;
+  }
+}
+
+function validAddress(value: unknown): value is CheckoutAddressDraft {
+  return (
+    record(value) &&
+    optionalString(value.recipientName) &&
+    optionalString(value.phone) &&
+    optionalString(value.countryCode) &&
+    optionalString(value.province) &&
+    optionalString(value.city) &&
+    optionalString(value.postalCode) &&
+    optionalString(value.addressLine)
+  );
+}
+
+function validShipping(value: unknown): value is ShippingSelection {
+  return (
+    record(value) &&
+    stringValue(value.methodId) &&
+    stringValue(value.labelSnapshot) &&
+    validMoney(value.priceSnapshot) &&
+    stringValue(value.selectedAt)
+  );
+}
+
+function validCheckoutDraft(value: unknown): value is CheckoutDraft {
+  return (
+    record(value) &&
+    optionalString(value.email) &&
+    validAddress(value.address) &&
+    (value.shipping === undefined || validShipping(value.shipping)) &&
+    optionalString(value.customerNote) &&
+    typeof value.acceptedPurchaseTerms === "boolean" &&
+    stringValue(value.updatedAt)
+  );
+}
+
+function hasUniqueValues(values: readonly string[]): boolean {
+  return new Set(values).size === values.length;
+}
+
+function validPersistedEnvelope(value: unknown): value is PersistedCommerceEnvelopeV1 {
+  if (
+    !record(value) ||
+    value.schema !== "kronos-commerce" ||
+    value.version !== COMMERCE_SCHEMA_VERSION ||
+    !record(value.state)
+  ) {
+    return false;
+  }
+
+  const state = value.state;
+  if (
+    state.version !== COMMERCE_SCHEMA_VERSION ||
+    !record(state.cart) ||
+    !stringValue(state.cart.currency) ||
+    !stringValue(state.cart.updatedAt) ||
+    !Array.isArray(state.cart.items) ||
+    !state.cart.items.every((item) => validCartItem(item, state.cart.currency)) ||
+    !hasUniqueValues(
+      state.cart.items
+        .filter(record)
+        .map((item) => item.lineId)
+        .filter(stringValue),
+    ) ||
+    !Array.isArray(state.wishlist) ||
+    !state.wishlist.every(validWishlistItem) ||
+    !Array.isArray(state.compare) ||
+    !state.compare.every(validCompareItem) ||
+    !Array.isArray(state.recentlyViewed) ||
+    !state.recentlyViewed.every(validRecentlyViewedItem) ||
+    !validCoupon(state.coupon) ||
+    (state.checkoutDraft !== undefined && !validCheckoutDraft(state.checkoutDraft)) ||
+    !stringValue(state.updatedAt)
+  ) {
+    return false;
+  }
+
+  return true;
 }
 
 export function parsePersistedCommerce(input: string): PersistedCommerceEnvelopeV1 | null {
   let value: unknown;
-  try { value = JSON.parse(input); } catch { return null; }
-  if (!record(value) || value.schema !== "kronos-commerce" || value.version !== 1 || !record(value.state)) return null;
-  const state = value.state;
-  if (state.version !== 1 || !record(state.cart) || !Array.isArray(state.cart.items) || !state.cart.items.every(validCartItem)) return null;
-  if (!stringValue(state.cart.currency) || !stringValue(state.cart.updatedAt) || !Array.isArray(state.wishlist) || !Array.isArray(state.compare) || !Array.isArray(state.recentlyViewed) || !record(state.coupon) || !stringValue(state.updatedAt)) return null;
-  return value as unknown as PersistedCommerceEnvelopeV1;
+
+  try {
+    value = JSON.parse(input);
+  } catch {
+    return null;
+  }
+
+  return validPersistedEnvelope(value) ? value : null;
 }
 
 export type CommerceMigration = (legacy: unknown) => PersistedCommerceEnvelopeV1 | null;
 
-export function migrateLegacyCommerce(legacyCart: unknown, legacyWishlist: unknown, now: ISODateTime): PersistedCommerceEnvelopeV1 | null {
+export function migrateLegacyCommerce(
+  legacyCart: unknown,
+  legacyWishlist: unknown,
+  now: ISODateTime,
+): PersistedCommerceEnvelopeV1 | null {
   if (!Array.isArray(legacyCart) || !Array.isArray(legacyWishlist)) return null;
-  /* Numeric legacy IDs cannot safely resolve variants. Keep no guessed cart lines; later integration may reconcile with catalog data. */
-  const wishlist: WishlistItem[] = legacyWishlist.filter((id): id is number => Number.isInteger(id)).map((id) => ({ productId: `legacy:${id}`, addedAt: now }));
+
+  // Numeric legacy IDs cannot safely resolve variants. Keep no guessed cart lines;
+  // later integration may reconcile wishlist entries with catalog data.
+  const wishlist: WishlistItem[] = legacyWishlist
+    .filter((id): id is number => Number.isInteger(id))
+    .map((id) => ({ productId: `legacy:${id}`, addedAt: now }));
+
   return {
     schema: "kronos-commerce",
-    version: 1,
+    version: COMMERCE_SCHEMA_VERSION,
     state: {
-      version: 1,
+      version: COMMERCE_SCHEMA_VERSION,
       cart: { items: [], currency: "IRR", updatedAt: now },
       wishlist,
       compare: [],
