@@ -1,13 +1,3 @@
-name: F14A Bootstrap Retired
-
-on:
-  workflow_dispatch:
-
-permissions:
-  contents: read
-
-jobs:
-  retired:
-    runs-on: ubuntu-24.04
-    steps:
-      - run: echo "F14A capture and format bootstrap has been retired; use Frontend Quality."
+# Retired F14A bootstrap marker.
+# The writable capture/format workflow has been removed from execution.
+# Use .github/workflows/frontend-quality.yml for all blocking quality gates.
