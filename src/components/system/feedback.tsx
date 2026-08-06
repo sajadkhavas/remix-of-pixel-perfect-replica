@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 type StatusTone = "info" | "success" | "warning" | "error";
 type StatusMessageBaseProps = Omit<AlertProps, "variant" | "live" | "title">;
+type EmptyStateBaseProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title">;
 
 const toneConfig = {
   info: { icon: Info, live: "polite" as const },
@@ -53,7 +54,7 @@ function StatusMessageRender(props: StatusMessageProps, ref: React.ForwardedRef<
 const StatusMessage = React.forwardRef(StatusMessageRender);
 StatusMessage.displayName = "StatusMessage";
 
-export interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface EmptyStateProps extends EmptyStateBaseProps {
   title: React.ReactNode;
   description?: React.ReactNode;
   action?: React.ReactNode;
