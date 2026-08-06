@@ -2,7 +2,9 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-export interface SectionHeadingProps extends React.HTMLAttributes<HTMLDivElement> {
+type SectionHeadingBaseProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title">;
+
+export interface SectionHeadingProps extends SectionHeadingBaseProps {
   as?: "h2" | "h3";
   eyebrow?: React.ReactNode;
   title: React.ReactNode;
