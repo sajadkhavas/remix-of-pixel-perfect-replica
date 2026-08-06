@@ -35,7 +35,10 @@ export function scanForbiddenText(file, text) {
     for (const match of text.matchAll(expression)) {
       const index = match.index ?? 0;
       const position = lineColumn(text, index);
-      const excerpt = text.slice(Math.max(0, index - 30), Math.min(text.length, index + match[0].length + 30));
+      const excerpt = text.slice(
+        Math.max(0, index - 30),
+        Math.min(text.length, index + match[0].length + 30),
+      );
       findings.push({
         file,
         ...position,
@@ -43,8 +46,10 @@ export function scanForbiddenText(file, text) {
         excerptHash: shortHash(excerpt),
         excerpt: excerpt.replace(/\s+/g, " ").trim().slice(0, 180),
         owner: ownerForFile(file),
-        reason: "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-        removalCondition: "Owning phase replaces the copy with evidence-backed, configured production content.",
+        reason:
+          "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
+        removalCondition:
+          "Owning phase replaces the copy with evidence-backed, configured production content.",
         expiry: "2026-10-01",
       });
     }

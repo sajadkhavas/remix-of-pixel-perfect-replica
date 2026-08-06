@@ -10,20 +10,20 @@
 
 ## Layers
 
-| Layer | Runner | Location | Contract |
-| --- | --- | --- | --- |
-| Unit | Bun | `tests/*.test.ts`, `tests/quality/*.test.ts` | Pure functions, error document, scanner internals |
-| Contract | Bun | `tests/commerce-persistence.test.ts` | F2 persistence and quantity contracts |
-| Component | Playwright-ready | future owner tests | UI primitives after F3B integration; F14A does not rewrite them |
-| Integration | Bun/Playwright | tests by feature owner | Repository adapters, local commerce, shell integration |
-| Route smoke | Playwright | `tests/browser/route-smoke.spec.ts` | Only currently implemented routes |
-| SSR/hydration | Playwright | route smoke + console/pageerror capture | Successful response, non-empty body, main/title, no critical error |
-| Accessibility | Playwright + axe | `tests/browser/accessibility.spec.ts` | WCAG automation plus duplicate-ID and touch-target audits |
-| Keyboard | Playwright | `tests/browser/keyboard.spec.ts` | Keyboard-only progression and menu activation |
-| Reduced motion | Playwright | `tests/browser/reduced-motion.spec.ts` | No new long/infinite animation under `reduce` |
-| End-to-end | Playwright | future commerce/account owners | Deterministic local fixtures only |
-| Performance | Node + Vite build | `scripts/performance/*` | Emitted bundle/asset no-regression budgets |
-| Visual regression | Playwright-ready | future approved snapshots | Added after F3B and page compositions stabilize |
+| Layer             | Runner            | Location                                     | Contract                                                           |
+| ----------------- | ----------------- | -------------------------------------------- | ------------------------------------------------------------------ |
+| Unit              | Bun               | `tests/*.test.ts`, `tests/quality/*.test.ts` | Pure functions, error document, scanner internals                  |
+| Contract          | Bun               | `tests/commerce-persistence.test.ts`         | F2 persistence and quantity contracts                              |
+| Component         | Playwright-ready  | future owner tests                           | UI primitives after F3B integration; F14A does not rewrite them    |
+| Integration       | Bun/Playwright    | tests by feature owner                       | Repository adapters, local commerce, shell integration             |
+| Route smoke       | Playwright        | `tests/browser/route-smoke.spec.ts`          | Only currently implemented routes                                  |
+| SSR/hydration     | Playwright        | route smoke + console/pageerror capture      | Successful response, non-empty body, main/title, no critical error |
+| Accessibility     | Playwright + axe  | `tests/browser/accessibility.spec.ts`        | WCAG automation plus duplicate-ID and touch-target audits          |
+| Keyboard          | Playwright        | `tests/browser/keyboard.spec.ts`             | Keyboard-only progression and menu activation                      |
+| Reduced motion    | Playwright        | `tests/browser/reduced-motion.spec.ts`       | No new long/infinite animation under `reduce`                      |
+| End-to-end        | Playwright        | future commerce/account owners               | Deterministic local fixtures only                                  |
+| Performance       | Node + Vite build | `scripts/performance/*`                      | Emitted bundle/asset no-regression budgets                         |
+| Visual regression | Playwright-ready  | future approved snapshots                    | Added after F3B and page compositions stabilize                    |
 
 ## Browser projects
 

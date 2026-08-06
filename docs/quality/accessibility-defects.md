@@ -50,15 +50,15 @@ Controlled pass/fail fixtures prove that axe detects missing image alternatives 
 
 ## Owner handoff
 
-| Area | Primary owner |
-| --- | --- |
-| Shared focus, contrast, primitives | F3B |
-| Header, navigation, search, shop interaction | F4 |
-| Hero/product gallery/product commerce | F5 |
-| Cart, wishlist, checkout commerce | F6 |
-| Account/authentication | F7 |
-| Homepage/editorial/content surfaces | F8 |
-| Static content and legal pages | F9 |
-| Metadata and route SEO | F13A |
+| Area                                         | Primary owner |
+| -------------------------------------------- | ------------- |
+| Shared focus, contrast, primitives           | F3B           |
+| Header, navigation, search, shop interaction | F4            |
+| Hero/product gallery/product commerce        | F5            |
+| Cart, wishlist, checkout commerce            | F6            |
+| Account/authentication                       | F7            |
+| Homepage/editorial/content surfaces          | F8            |
+| Static content and legal pages               | F9            |
+| Metadata and route SEO                       | F13A          |
 
 All temporary entries expire on or before 2026-10-01 unless the supervisor approves a new exact expiry with evidence.

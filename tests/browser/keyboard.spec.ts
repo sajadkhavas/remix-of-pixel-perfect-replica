@@ -1,8 +1,5 @@
 import { expect, test } from "@playwright/test";
-import {
-  compareOrUpdateDefects,
-  type BrowserDefect,
-} from "./helpers/quality-baseline";
+import { compareOrUpdateDefects, type BrowserDefect } from "./helpers/quality-baseline";
 
 const expiry = "2026-10-01";
 

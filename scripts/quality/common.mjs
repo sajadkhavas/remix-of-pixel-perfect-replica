@@ -72,7 +72,8 @@ export function ownerForFile(file) {
   if (file.includes("HeroSection")) return "F5";
   if (file.includes("ProductCard") || file.includes("product.")) return "F5";
   if (file.includes("shop") || file.includes("search")) return "F4";
-  if (file.includes("cart") || file.includes("wishlist") || file.includes("store-context")) return "F6";
+  if (file.includes("cart") || file.includes("wishlist") || file.includes("store-context"))
+    return "F6";
   if (file.includes("auth") || file.includes("account")) return "F7";
   if (file.includes("components/ui/")) return "F3B";
   if (file.includes("seo/")) return "F13A";
@@ -81,13 +82,7 @@ export function ownerForFile(file) {
 }
 
 export function findingKey(finding) {
-  return [
-    finding.file,
-    finding.line,
-    finding.column,
-    finding.rule,
-    finding.excerptHash,
-  ].join("::");
+  return [finding.file, finding.line, finding.column, finding.rule, finding.excerptHash].join("::");
 }
 
 export function makeBaselineEntry(finding, defaults = {}) {
@@ -106,9 +101,9 @@ export function makeBaselineEntry(finding, defaults = {}) {
 export function enforceBaseline({ current, baselinePath, property, write = false, label }) {
   const baseline = readJson(baselinePath);
   const entries = baseline[property] ?? [];
-  const normalized = current.map((item) => makeBaselineEntry(item)).sort((a, b) =>
-    findingKey(a).localeCompare(findingKey(b)),
-  );
+  const normalized = current
+    .map((item) => makeBaselineEntry(item))
+    .sort((a, b) => findingKey(a).localeCompare(findingKey(b)));
 
   if (write) {
     baseline[property] = normalized;
@@ -125,14 +120,18 @@ export function enforceBaseline({ current, baselinePath, property, write = false
   const expired = entries.filter((item) => item.expiry && Date.parse(item.expiry) < Date.now());
 
   if (resolved.length > 0) {
-    console.log(`${label}: ${resolved.length} baseline entries are resolved; remove them in the next owner update.`);
+    console.log(
+      `${label}: ${resolved.length} baseline entries are resolved; remove them in the next owner update.`,
+    );
   }
   if (added.length > 0 || expired.length > 0) {
     if (added.length > 0) {
       console.error(`${label}: ${added.length} new finding(s):`);
-      for (const item of added) console.error(`- ${item.file}:${item.line}:${item.column} ${item.rule}`);
+      for (const item of added)
+        console.error(`- ${item.file}:${item.line}:${item.column} ${item.rule}`);
     }
-    if (expired.length > 0) console.error(`${label}: ${expired.length} baseline entry/entries expired.`);
+    if (expired.length > 0)
+      console.error(`${label}: ${expired.length} baseline entry/entries expired.`);
     process.exitCode = 1;
   } else {
     console.log(`${label}: PASS (${normalized.length} current, ${resolved.length} resolved).`);

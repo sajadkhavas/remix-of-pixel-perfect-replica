@@ -16,7 +16,9 @@ describe("link integrity scanner", () => {
 
   test("detects placeholder, malformed route, and actionless button", () => {
     const file = "tests/fixtures/link-integrity/fail/invalid.tsx";
-    const rules = scanLinkText(file, readFileSync(file, "utf8"), routeCoverage).map((item) => item.rule);
+    const rules = scanLinkText(file, readFileSync(file, "utf8"), routeCoverage).map(
+      (item) => item.rule,
+    );
     expect(rules).toContain("placeholder-hash-link");
     expect(rules).toContain("invalid-watches-family");
     expect(rules).toContain("button-without-static-action");

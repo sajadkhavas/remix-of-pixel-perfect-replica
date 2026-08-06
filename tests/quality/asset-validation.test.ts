@@ -1,9 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
-import {
-  isOversizedAsset,
-  validateManifest,
-} from "../../scripts/quality/asset-validation.mjs";
+import { isOversizedAsset, validateManifest } from "../../scripts/quality/asset-validation.mjs";
 
 describe("asset manifest validation", () => {
   test("accepts structurally approved metadata when file IO is not requested", () => {
@@ -33,9 +30,7 @@ describe("asset manifest validation", () => {
   for (const mode of ["pass", "fail"] as const) {
     test(`asset byte budget ${mode} fixture`, () => {
       const filename = mode === "pass" ? "size.json" : "oversized.json";
-      const fixture = JSON.parse(
-        readFileSync(`tests/fixtures/assets/${mode}/${filename}`, "utf8"),
-      );
+      const fixture = JSON.parse(readFileSync(`tests/fixtures/assets/${mode}/${filename}`, "utf8"));
       expect(isOversizedAsset(fixture.bytes)).toBe(fixture.oversized);
     });
   }

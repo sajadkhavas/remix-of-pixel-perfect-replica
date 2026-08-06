@@ -14,27 +14,24 @@ for (const route of routes) {
     await page.waitForTimeout(400);
 
     const running = await page.evaluate(() =>
-      document
-        .getAnimations({ subtree: true })
-        .flatMap((animation, index) => {
-          const timing = animation.effect?.getComputedTiming();
-          const target = animation.effect && "target" in animation.effect
+      document.getAnimations({ subtree: true }).flatMap((animation, index) => {
+        const timing = animation.effect?.getComputedTiming();
+        const target =
+          animation.effect && "target" in animation.effect
             ? (animation.effect.target as Element | null)
             : null;
-          const iterations = Number(timing?.iterations ?? 1);
-          const duration = Number(timing?.duration ?? 0);
-          if (animation.playState !== "running" || (iterations !== Infinity && duration <= 1000)) {
-            return [];
-          }
-          const selector = target
-            ? `${target.tagName.toLowerCase()}${target.id ? `#${target.id}` : ""}${
-                target.classList.length
-                  ? `.${[...target.classList].slice(0, 3).join(".")}`
-                  : ""
-              }`
-            : `animation-${index}`;
-          return [{ selector, duration, iterations }];
-        }),
+        const iterations = Number(timing?.iterations ?? 1);
+        const duration = Number(timing?.duration ?? 0);
+        if (animation.playState !== "running" || (iterations !== Infinity && duration <= 1000)) {
+          return [];
+        }
+        const selector = target
+          ? `${target.tagName.toLowerCase()}${target.id ? `#${target.id}` : ""}${
+              target.classList.length ? `.${[...target.classList].slice(0, 3).join(".")}` : ""
+            }`
+          : `animation-${index}`;
+        return [{ selector, duration, iterations }];
+      }),
     );
 
     const defects: BrowserDefect[] = running.map((item) => ({

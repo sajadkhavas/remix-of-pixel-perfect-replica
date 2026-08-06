@@ -17,8 +17,12 @@ function sum(files) {
 export function collectBuildMetrics(root = process.cwd()) {
   const client = recursiveFiles(path.resolve(root, "dist/client"));
   const server = recursiveFiles(path.resolve(root, "dist/server"));
-  if (client.length === 0 || server.length === 0) throw new Error("Production dist output is missing. Run `bun run build` before the budget gate.");
-  const byExtension = (entries, extensions) => entries.filter((file) => extensions.includes(path.extname(file).toLowerCase()));
+  if (client.length === 0 || server.length === 0)
+    throw new Error(
+      "Production dist output is missing. Run `bun run build` before the budget gate.",
+    );
+  const byExtension = (entries, extensions) =>
+    entries.filter((file) => extensions.includes(path.extname(file).toLowerCase()));
   const clientJs = byExtension(client, [".js", ".mjs"]);
   const css = byExtension(client, [".css"]);
   const images = byExtension(client, [".png", ".jpg", ".jpeg", ".webp", ".avif", ".gif", ".svg"]);
@@ -41,8 +45,15 @@ export function evaluateBudget(metrics, budget) {
   const violations = [];
   for (const [metric, limit] of Object.entries(budget.hardLimits)) {
     const value = metrics[metric];
-    if (typeof value !== "number") violations.push({ metric, value: null, limit, reason: "Metric is missing." });
-    else if (value > limit) violations.push({ metric, value, limit, reason: `${metric} exceeds hard limit by ${value - limit} bytes/items.` });
+    if (typeof value !== "number")
+      violations.push({ metric, value: null, limit, reason: "Metric is missing." });
+    else if (value > limit)
+      violations.push({
+        metric,
+        value,
+        limit,
+        reason: `${metric} exceeds hard limit by ${value - limit} bytes/items.`,
+      });
   }
   return violations;
 }

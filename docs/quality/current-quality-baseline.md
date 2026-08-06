@@ -36,17 +36,17 @@ A baseline finding is not an approval. New, moved, expired, or unowned findings 
 
 Measured from emitted production output after F14A tooling:
 
-| Metric | Current |
-| --- | ---: |
-| Client JS total | 827,737 B |
-| Largest client chunk | 576,551 B |
-| CSS total | 97,878 B |
-| Server JS total | 179,076 B |
-| Image bytes | 1,680,909 B |
-| Font bytes | 0 B emitted |
-| JS chunks | 29 |
-| Images | 11 |
-| Largest image | 673,220 B |
+| Metric               |     Current |
+| -------------------- | ----------: |
+| Client JS total      |   827,737 B |
+| Largest client chunk |   576,551 B |
+| CSS total            |    97,878 B |
+| Server JS total      |   179,076 B |
+| Image bytes          | 1,680,909 B |
+| Font bytes           | 0 B emitted |
+| JS chunks            |          29 |
+| Images               |          11 |
+| Largest image        |   673,220 B |
 
 Hard limits permit only a small regression over this prototype. Future targets are separately documented in `quality/performance-budget.json`.
 

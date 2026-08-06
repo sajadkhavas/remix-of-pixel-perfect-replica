@@ -52,7 +52,8 @@ function violation(manifestText, asset, rule, detail) {
     excerptHash: shortHash(`${asset.id ?? "missing"}:${asset.path ?? "missing"}:${rule}:${detail}`),
     owner: asset.owner ?? "F3A/F5",
     reason: detail,
-    removalCondition: "Supply verified asset metadata and approved responsive production derivatives.",
+    removalCondition:
+      "Supply verified asset metadata and approved responsive production derivatives.",
     expiry: "2026-10-01",
   };
 }
@@ -86,58 +87,161 @@ export function validateManifest(manifest, options = {}) {
   }
 
   for (const asset of manifest.assets) {
-    if (!asset.id) violations.push(violation(manifestText, asset, "missing-id", "Asset requires a stable ID."));
+    if (!asset.id)
+      violations.push(violation(manifestText, asset, "missing-id", "Asset requires a stable ID."));
     if (!asset.path) {
-      violations.push(violation(manifestText, asset, "missing-path", "Asset requires a repository path."));
+      violations.push(
+        violation(manifestText, asset, "missing-path", "Asset requires a repository path."),
+      );
       continue;
     }
-    if (!asset.source) violations.push(violation(manifestText, asset, "missing-source", "Asset source is not recorded."));
+    if (!asset.source)
+      violations.push(
+        violation(manifestText, asset, "missing-source", "Asset source is not recorded."),
+      );
     if (!asset.licenseStatus || asset.licenseStatus === "unverified") {
-      violations.push(violation(manifestText, asset, "unverified-license", "Asset license is unverified."));
+      violations.push(
+        violation(manifestText, asset, "unverified-license", "Asset license is unverified."),
+      );
     }
-    if (!asset.identity) violations.push(violation(manifestText, asset, "missing-identity", "Asset has no verified product/brand identity."));
-    if (!asset.alt) violations.push(violation(manifestText, asset, "missing-alt-metadata", "Asset has no approved alt metadata."));
+    if (!asset.identity)
+      violations.push(
+        violation(
+          manifestText,
+          asset,
+          "missing-identity",
+          "Asset has no verified product/brand identity.",
+        ),
+      );
+    if (!asset.alt)
+      violations.push(
+        violation(
+          manifestText,
+          asset,
+          "missing-alt-metadata",
+          "Asset has no approved alt metadata.",
+        ),
+      );
     if (!Array.isArray(asset.responsiveVariants) || asset.responsiveVariants.length === 0) {
-      violations.push(violation(manifestText, asset, "missing-responsive-variants", "Asset has no responsive derivative list."));
+      violations.push(
+        violation(
+          manifestText,
+          asset,
+          "missing-responsive-variants",
+          "Asset has no responsive derivative list.",
+        ),
+      );
     }
     if (/hero|category/i.test(asset.usage ?? "") && !asset.mobileCrop) {
-      violations.push(violation(manifestText, asset, "missing-mobile-crop", "Hero/category use requires a dedicated mobile crop."));
+      violations.push(
+        violation(
+          manifestText,
+          asset,
+          "missing-mobile-crop",
+          "Hero/category use requires a dedicated mobile crop.",
+        ),
+      );
     }
     if (asset.format === "png" && /hero|category/i.test(asset.usage ?? "")) {
-      violations.push(violation(manifestText, asset, "legacy-heavy-format", "Hero/category raster remains PNG rather than approved AVIF/WebP."));
+      violations.push(
+        violation(
+          manifestText,
+          asset,
+          "legacy-heavy-format",
+          "Hero/category raster remains PNG rather than approved AVIF/WebP.",
+        ),
+      );
     }
     if ((asset.usage ?? "").includes("+") || (asset.usage ?? "").includes(";")) {
-      violations.push(violation(manifestText, asset, "multi-identity-or-role-usage", "One file is assigned to multiple product identities or incompatible roles."));
+      violations.push(
+        violation(
+          manifestText,
+          asset,
+          "multi-identity-or-role-usage",
+          "One file is assigned to multiple product identities or incompatible roles.",
+        ),
+      );
     }
     if (asset.productionApproved !== true) {
-      violations.push(violation(manifestText, asset, "not-production-approved", "Asset remains development-only."));
+      violations.push(
+        violation(
+          manifestText,
+          asset,
+          "not-production-approved",
+          "Asset remains development-only.",
+        ),
+      );
     }
     if (release && asset.productionApproved !== true) {
-      violations.push(violation(manifestText, asset, "release-blocked-asset", "Release mode forbids an unapproved asset."));
+      violations.push(
+        violation(
+          manifestText,
+          asset,
+          "release-blocked-asset",
+          "Release mode forbids an unapproved asset.",
+        ),
+      );
     }
 
     const absolute = path.resolve(root, asset.path);
     if (!existsSync(absolute)) {
-      violations.push(violation(manifestText, asset, "missing-file", "Manifest path does not exist."));
+      violations.push(
+        violation(manifestText, asset, "missing-file", "Manifest path does not exist."),
+      );
       continue;
     }
     const buffer = readFileSync(absolute);
     const bytes = statSync(absolute).size;
     if (asset.bytes !== bytes) {
-      violations.push(violation(manifestText, asset, "byte-size-mismatch", `Manifest bytes=${asset.bytes}; actual=${bytes}.`));
+      violations.push(
+        violation(
+          manifestText,
+          asset,
+          "byte-size-mismatch",
+          `Manifest bytes=${asset.bytes}; actual=${bytes}.`,
+        ),
+      );
     }
     if (isOversizedAsset(bytes)) {
-      violations.push(violation(manifestText, asset, "oversized-raster", `Asset is ${bytes} bytes; optimization review required.`));
+      violations.push(
+        violation(
+          manifestText,
+          asset,
+          "oversized-raster",
+          `Asset is ${bytes} bytes; optimization review required.`,
+        ),
+      );
     }
     const dimensions = imageDimensions(buffer, asset.format);
     if (!dimensions) {
-      violations.push(violation(manifestText, asset, "unreadable-dimensions", "Image dimensions could not be verified from the file header."));
+      violations.push(
+        violation(
+          manifestText,
+          asset,
+          "unreadable-dimensions",
+          "Image dimensions could not be verified from the file header.",
+        ),
+      );
     } else if (dimensions.width !== asset.width || dimensions.height !== asset.height) {
-      violations.push(violation(manifestText, asset, "dimension-mismatch", `Manifest=${asset.width}x${asset.height}; actual=${dimensions.width}x${dimensions.height}.`));
+      violations.push(
+        violation(
+          manifestText,
+          asset,
+          "dimension-mismatch",
+          `Manifest=${asset.width}x${asset.height}; actual=${dimensions.width}x${dimensions.height}.`,
+        ),
+      );
     }
     const hash = createHash("sha256").update(buffer).digest("hex");
     if (hashes.has(hash)) {
-      violations.push(violation(manifestText, asset, "duplicate-content-hash", `Binary duplicates ${hashes.get(hash)}.`));
+      violations.push(
+        violation(
+          manifestText,
+          asset,
+          "duplicate-content-hash",
+          `Binary duplicates ${hashes.get(hash)}.`,
+        ),
+      );
     } else {
       hashes.set(hash, asset.path);
     }

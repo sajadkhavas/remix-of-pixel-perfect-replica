@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "baselineSha": "b0d8e9ba1d0156d18ccb68258a9a650490931d89",
+  "registries": {
+    "lintWarnings": {
+      "count": 8,
+      "byOwner": {
+        "F3B": 6,
+        "F6": 1,
+        "F8": 1
+      },
+      "byRule": {
+        "react-refresh/only-export-components": 7,
+        "unassigned": 1
+      },
+      "byImpact": {
+        "unassigned": 8
+      }
+    },
+    "forbiddenCopy": {
+      "count": 31,
+      "byOwner": {
+        "F4": 6,
+        "F7": 3,
+        "F8": 22
+      },
+      "byRule": {
+        "demo-copy": 3,
+        "hardcoded-review-count": 12,
+        "hardcoded-satisfaction-stat": 3,
+        "placeholder-address": 2,
+        "placeholder-email": 2,
+        "placeholder-phone": 2,
+        "unsupported-authenticity-claim": 6,
+        "unsupported-free-shipping": 1
+      },
+      "byImpact": {
+        "unassigned": 31
+      }
+    },
+    "linkIntegrity": {
+      "count": 3,
+      "byOwner": {
+        "F4": 1,
+        "F6": 1,
+        "F8": 1
+      },
+      "byRule": {
+        "button-without-static-action": 2,
+        "placeholder-hash-link": 1
+      },
+      "byImpact": {
+        "unassigned": 3
+      }
+    },
+    "assetViolations": {
+      "count": 83,
+      "byOwner": {
+        "F4/Asset": 29,
+        "F4/F5/F8": 8,
+        "F5/Asset": 46
+      },
+      "byRule": {
+        "legacy-heavy-format": 3,
+        "missing-alt-metadata": 11,
+        "missing-identity": 11,
+        "missing-mobile-crop": 4,
+        "missing-responsive-variants": 11,
+        "missing-source": 11,
+        "multi-identity-or-role-usage": 8,
+        "not-production-approved": 11,
+        "oversized-raster": 2,
+        "unverified-license": 11
+      },
+      "byImpact": {
+        "unassigned": 83
+      }
+    },
+    "routeSmoke": {
+      "count": 10,
+      "byOwner": {
+        "F7": 2,
+        "F8": 4,
+        "F9": 4
+      },
+      "byRule": {
+        "route:no-primary-link": 10
+      },
+      "byImpact": {
+        "moderate": 10
+      }
+    },
+    "accessibility": {
+      "count": 803,
+      "byOwner": {
+        "F4": 196,
+        "F5": 70,
+        "F6": 98,
+        "F7": 60,
+        "F8": 178,
+        "F9": 201
+      },
+      "byRule": {
+        "axe:color-contrast": 81,
+        "axe:label": 10,
+        "axe:select-name": 4,
+        "custom:touch-target": 708
+      },
+      "byImpact": {
+        "critical": 14,
+        "moderate": 708,
+        "serious": 81
+      }
+    },
+    "reducedMotion": {
+      "count": 59,
+      "byOwner": {
+        "F4": 26,
+        "F5": 9,
+        "F8": 24
+      },
+      "byRule": {
+        "reduced-motion:running-long-animation": 59
+      },
+      "byImpact": {
+        "serious": 59
+      }
+    },
+    "keyboard": {
+      "count": 1,
+      "byOwner": {
+        "F4": 1
+      },
+      "byRule": {
+        "keyboard:mobile-menu-enter-does-not-open": 1
+      },
+      "byImpact": {
+        "critical": 1
+      }
+    }
+  },
+  "totalTrackedDebt": 998,
+  "performance": {
+    "schemaVersion": 1,
+    "measuredAt": "2026-08-06T06:11:21.231Z",
+    "metrics": {
+      "clientJsTotal": 827737,
+      "largestClientChunk": 576551,
+      "cssTotal": 97878,
+      "serverJsTotal": 179076,
+      "imageBytes": 1680909,
+      "fontBytes": 0,
+      "jsChunkCount": 29,
+      "imageCount": 11,
+      "largestImage": 673220
+    },
+    "violations": [],
+    "fieldDataAvailable": false,
+    "lighthouseExecuted": false
+  }
+}

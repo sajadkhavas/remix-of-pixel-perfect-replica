@@ -54,7 +54,10 @@ for (const route of routes) {
         expiry,
       });
     }
-    if ((await page.locator("body").count()) !== 1 || !(await page.locator("body").innerText()).trim()) {
+    if (
+      (await page.locator("body").count()) !== 1 ||
+      !(await page.locator("body").innerText()).trim()
+    ) {
       defects.push({
         route,
         project: testInfo.project.name,
@@ -104,7 +107,8 @@ for (const route of routes) {
         impact: "moderate",
         owner,
         reason: "No non-placeholder link is available in the main route content.",
-        removalCondition: "Provide a valid primary or recovery navigation link when the route requires one.",
+        removalCondition:
+          "Provide a valid primary or recovery navigation link when the route requires one.",
         expiry,
       });
     } else {

@@ -14,7 +14,9 @@ import {
 function routeRegex(pattern) {
   const source = pattern
     .split("/")
-    .map((segment) => (segment.startsWith("$") ? "[^/]+" : segment.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")))
+    .map((segment) =>
+      segment.startsWith("$") ? "[^/]+" : segment.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+    )
     .join("/");
   return new RegExp(`^${source}/?$`);
 }
@@ -22,19 +24,29 @@ function routeRegex(pattern) {
 export function classifyInternalPath(value, registry) {
   if (!value.startsWith("/")) return "external-or-relative";
   if (registry.invalid.some((item) => routeRegex(item.pattern).test(value))) return "invalid";
-  if (registry.implemented.some((item) => routeRegex(item.pattern).test(value))) return "implemented";
-  if (registry.finalArchitecture.some((item) => routeRegex(typeof item === "string" ? item : item.pattern).test(value))) return "planned";
+  if (registry.implemented.some((item) => routeRegex(item.pattern).test(value)))
+    return "implemented";
+  if (
+    registry.finalArchitecture.some((item) =>
+      routeRegex(typeof item === "string" ? item : item.pattern).test(value),
+    )
+  )
+    return "planned";
   return "unknown";
 }
 
 export function scanLinkText(file, text, registry) {
   const findings = [];
-  const attribute = /\b(href|to)\s*=\s*(?:"([^"]*)"|'([^']*)'|\{\s*"([^"]*)"\s*\}|\{\s*'([^']*)'\s*\})/g;
+  const attribute =
+    /\b(href|to)\s*=\s*(?:"([^"]*)"|'([^']*)'|\{\s*"([^"]*)"\s*\}|\{\s*'([^']*)'\s*\})/g;
   for (const match of text.matchAll(attribute)) {
     const value = match.slice(2).find((item) => item !== undefined) ?? "";
     const index = match.index ?? 0;
     const position = lineColumn(text, index);
-    const excerpt = text.slice(Math.max(0, index - 25), Math.min(text.length, index + match[0].length + 25));
+    const excerpt = text.slice(
+      Math.max(0, index - 25),
+      Math.min(text.length, index + match[0].length + 25),
+    );
     let rule = null;
     if (value === "#") rule = "placeholder-hash-link";
     else if (value.trim() === "") rule = "empty-link-target";
@@ -55,12 +67,14 @@ export function scanLinkText(file, text, registry) {
       excerpt: excerpt.replace(/\s+/g, " ").trim().slice(0, 180),
       owner: ownerForFile(file),
       reason: "The target is empty, placeholder, invalid, unknown, or planned but not implemented.",
-      removalCondition: "Owning phase supplies a valid implemented destination or removes the false affordance.",
+      removalCondition:
+        "Owning phase supplies a valid implemented destination or removes the false affordance.",
       expiry: "2026-10-01",
     });
   }
 
-  const blankExternal = /<a\b(?=[^>]*target\s*=\s*["']_blank["'])(?![^>]*rel\s*=\s*["'][^"']*(?:noopener|noreferrer))[^>]*>/g;
+  const blankExternal =
+    /<a\b(?=[^>]*target\s*=\s*["']_blank["'])(?![^>]*rel\s*=\s*["'][^"']*(?:noopener|noreferrer))[^>]*>/g;
   for (const match of text.matchAll(blankExternal)) {
     const index = match.index ?? 0;
     const position = lineColumn(text, index);
@@ -90,7 +104,8 @@ export function scanLinkText(file, text, registry) {
       excerptHash: shortHash(match[0]),
       excerpt: match[0].replace(/\s+/g, " ").slice(0, 180),
       owner: ownerForFile(file),
-      reason: "Static inspection found a button without an action, submit type, or form association.",
+      reason:
+        "Static inspection found a button without an action, submit type, or form association.",
       removalCondition: "Add the real action/submit contract or use non-interactive markup.",
       expiry: "2026-10-01",
     });
@@ -98,7 +113,10 @@ export function scanLinkText(file, text, registry) {
   return findings;
 }
 
-export function scanLinkRepository(directory = "src", registry = readJson("quality/route-coverage.json")) {
+export function scanLinkRepository(
+  directory = "src",
+  registry = readJson("quality/route-coverage.json"),
+) {
   return walkFiles(directory, { extensions: SOURCE_EXTENSIONS }).flatMap((file) =>
     scanLinkText(file, readFileSync(path.resolve(file), "utf8"), registry),
   );
