@@ -1,60 +1,13 @@
-name: F14A Final Format Sync
+name: F14A Bootstrap Retired
 
 on:
-  push:
-    branches:
-      - phase/f14a-quality-harness
-    paths:
-      - ".github/workflows/**"
-      - "docs/quality/**"
-      - "e2e/**"
-      - "eslint.config.js"
-      - "package.json"
-      - "playwright.config.*"
-      - "quality/**"
-      - "scripts/a11y/**"
-      - "scripts/performance/**"
-      - "scripts/quality/**"
-      - "tests/**"
+  workflow_dispatch:
 
 permissions:
-  contents: write
-
-concurrency:
-  group: f14a-final-quality-sync-${{ github.ref }}
-  cancel-in-progress: false
+  contents: read
 
 jobs:
-  sync:
-    if: ${{ !contains(github.event.head_commit.message, '[skip quality-sync]') }}
+  retired:
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
     steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-          ref: phase/f14a-quality-harness
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.2.22
-      - run: bun install --frozen-lockfile
-      - name: Refresh summary and format F14A changes
-        env:
-          FORMAT_BASE_REF: b0d8e9ba1d0156d18ccb68258a9a650490931d89
-        run: |
-          node scripts/quality/report-summary.mjs --write
-          bun run format
-          bun run format:check
-      - name: Commit synchronized output
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-          if git diff --quiet; then
-            echo "No synchronized changes."
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .github/workflows docs/quality package.json playwright.config.ts eslint.config.js scripts/quality scripts/performance tests quality
-          git commit -m "chore(f14a): format harness and refresh summary [skip quality-sync]"
-          git push origin HEAD:phase/f14a-quality-harness
+      - run: echo "F14A capture and format bootstrap has been retired; use Frontend Quality."
