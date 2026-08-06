@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "baselineSha": "b0d8e9ba1d0156d18ccb68258a9a650490931d89",
-  "generatedFrom": "github-actions:31072592630",
+  "baselineSha": "dc4bb9ecbe5deed590d251a33e460f893df6b221",
+  "generatedFrom": "supervisor-gate2-integration",
   "expiresOn": "2026-10-01",
   "warnings": [
     {
@@ -17,7 +17,7 @@
     },
     {
       "file": "src/components/ui/badge.tsx",
-      "line": 32,
+      "line": 37,
       "column": 17,
       "rule": "react-refresh/only-export-components",
       "messageIncludes": "Fast refresh only works",
@@ -28,7 +28,7 @@
     },
     {
       "file": "src/components/ui/button.tsx",
-      "line": 49,
+      "line": 112,
       "column": 18,
       "rule": "react-refresh/only-export-components",
       "messageIncludes": "Fast refresh only works",
