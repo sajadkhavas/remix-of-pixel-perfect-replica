@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "baselineSha": "b0d8e9ba1d0156d18ccb68258a9a650490931d89",
+  "units": "bytes except counts",
+  "hardLimits": {
+    "clientJsTotal": 850000,
+    "largestClientChunk": 590000,
+    "cssTotal": 105000,
+    "serverJsTotal": 190000,
+    "imageBytes": 1720000,
+    "fontBytes": 100000,
+    "jsChunkCount": 31,
+    "imageCount": 11,
+    "largestImage": 690000
+  },
+  "futureTargets": {
+    "clientJsTotal": 650000,
+    "largestClientChunk": 350000,
+    "cssTotal": 85000,
+    "serverJsTotal": 160000,
+    "imageBytes": 950000,
+    "fontBytes": 80000,
+    "jsChunkCount": 35,
+    "imageCount": 20,
+    "largestImage": 250000
+  },
+  "notes": [
+    "Hard limits pass the measured Gate 1 baseline but permit only a small regression margin.",
+    "Future targets are directional and are not silently substituted for release gates.",
+    "F14B owns Lighthouse and production-like lab measurement; no field data currently exists."
+  ]
+}

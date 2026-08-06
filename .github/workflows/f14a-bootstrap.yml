@@ -1,4 +1,4 @@
-name: F14A Scanner Baseline Sync
+name: F14A Exact Baseline Capture
 
 on:
   push:
@@ -6,22 +6,25 @@ on:
       - phase/f14a-quality-harness
     paths:
       - scripts/quality/**
+      - scripts/performance/**
+      - tests/browser/**
       - quality/route-coverage.json
+      - quality/performance-budget.json
       - .github/workflows/f14a-bootstrap.yml
 
 permissions:
   contents: write
 
 concurrency:
-  group: f14a-baseline-sync-${{ github.ref }}
+  group: f14a-exact-baseline-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  sync-scanner-baselines:
-    name: Capture exact scanner debt
+  capture:
+    name: Capture source, asset, browser, and motion debt
     if: ${{ !contains(github.event.head_commit.message, '[skip baseline-sync]') }}
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    timeout-minutes: 25
 
     steps:
       - name: Checkout branch
@@ -29,30 +32,47 @@ jobs:
         with:
           fetch-depth: 0
           ref: phase/f14a-quality-harness
-
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.2.22
-
       - name: Install locked dependencies
         run: bun install --frozen-lockfile
-
-      - name: Capture exact source debt
+      - name: Capture source and asset debt
         run: |
           node scripts/quality/forbidden-copy.mjs --write-baseline
           node scripts/quality/link-integrity.mjs --write-baseline
-
-      - name: Commit generated baselines when changed
+          node scripts/quality/asset-validation.mjs --write-baseline
+      - name: Build and measure budget
+        run: |
+          bun run build
+          node scripts/performance/check-budget.mjs
+      - name: Install Chromium
+        run: bunx playwright install --with-deps chromium
+      - name: Capture accessibility and reduced-motion debt
+        env:
+          UPDATE_QUALITY_BASELINES: "1"
+        run: |
+          bunx playwright test tests/browser/accessibility.spec.ts --project=desktop-chromium --project=mobile-chromium
+          bunx playwright test tests/browser/reduced-motion.spec.ts --project=reduced-motion
+      - name: Commit generated exact baselines
         shell: bash
         run: |
           set -Eeuo pipefail
-          if git diff --quiet -- quality/forbidden-copy-baseline.json quality/link-integrity-baseline.json; then
-            echo "Scanner baselines already synchronized."
+          paths=(
+            quality/forbidden-copy-baseline.json
+            quality/link-integrity-baseline.json
+            quality/asset-violation-baseline.json
+            quality/accessibility-baseline.json
+            quality/reduced-motion-baseline.json
+            quality/performance-current.json
+          )
+          if git diff --quiet -- "${paths[@]}"; then
+            echo "All baselines are already synchronized."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add quality/forbidden-copy-baseline.json quality/link-integrity-baseline.json
-          git commit -m "feat(f14a): capture exact scanner debt [skip baseline-sync]"
+          git add "${paths[@]}"
+          git commit -m "feat(f14a): capture exact quality debt [skip baseline-sync]"
           git push origin HEAD:phase/f14a-quality-harness

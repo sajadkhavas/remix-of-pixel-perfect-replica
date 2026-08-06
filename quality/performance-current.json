@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "measuredAt": "2026-08-06T04:56:07Z",
+  "metrics": {
+    "clientJsTotal": 827600,
+    "largestClientChunk": 576550,
+    "cssTotal": 97860,
+    "serverJsTotal": 178910,
+    "imageBytes": 1680860,
+    "fontBytes": 0,
+    "jsChunkCount": 29,
+    "imageCount": 11,
+    "largestImage": 673220
+  },
+  "violations": [],
+  "fieldDataAvailable": false,
+  "lighthouseExecuted": false,
+  "source": "GitHub Actions run 31072592630; rounded from Vite emitted-size report."
+}

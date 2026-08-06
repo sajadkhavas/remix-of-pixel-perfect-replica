@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 2,
+  "assets": [
+    {
+      "id": "bad",
+      "path": "",
+      "source": null,
+      "licenseStatus": "unverified",
+      "format": "png",
+      "usage": "Hero + Product",
+      "productionApproved": false
+    }
+  ]
+}
