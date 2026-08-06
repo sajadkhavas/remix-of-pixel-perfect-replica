@@ -26,10 +26,23 @@ const current = reports.flatMap((report) =>
     })),
 );
 const errors = reports.flatMap((report) =>
-  report.messages.filter((message) => message.severity === 2),
+  report.messages
+    .filter((message) => message.severity === 2)
+    .map((message) => ({
+      file: path.relative(process.cwd(), report.filePath).replaceAll(path.sep, "/"),
+      line: message.line,
+      column: message.column,
+      rule: message.ruleId,
+      message: message.message,
+    })),
 );
 if (errors.length > 0) {
-  console.error(`ESLint reported ${errors.length} error(s).`);
+  console.error(`ESLint reported ${errors.length} error(s):`);
+  for (const error of errors) {
+    console.error(
+      `- ${error.file}:${error.line}:${error.column} ${error.rule ?? "parse-error"} ${error.message}`,
+    );
+  }
   process.exit(1);
 }
 
@@ -61,19 +74,23 @@ const toolingWarnings = current.filter((item) =>
   /^(scripts|tests|e2e|playwright\.config\.ts|eslint\.config\.js|quality)\b/.test(item.file),
 );
 
-if (resolved.length > 0)
+if (resolved.length > 0) {
   console.log(
     `${resolved.length} lint baseline warning(s) resolved; remove their registry entries.`,
   );
+}
 if (newWarnings.length || expired.length || toolingWarnings.length) {
-  for (const warning of newWarnings)
+  for (const warning of newWarnings) {
     console.error(
       `New lint warning: ${warning.file}:${warning.line}:${warning.column} ${warning.rule ?? "directive"} ${warning.message}`,
     );
-  for (const warning of expired)
+  }
+  for (const warning of expired) {
     console.error(`Expired lint baseline: ${warning.file}:${warning.line}`);
-  for (const warning of toolingWarnings)
+  }
+  for (const warning of toolingWarnings) {
     console.error(`F14A tooling warning: ${warning.file}:${warning.line}`);
+  }
   process.exit(1);
 }
 console.log(`Lint governance: PASS (${current.length} exact existing warning(s), 0 new).`);
