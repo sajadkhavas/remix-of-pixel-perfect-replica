@@ -5,10 +5,7 @@ export type PhysicalSide = "left" | "right";
 const FIRST_STRONG_ISOLATE = "\u2068";
 const POP_DIRECTIONAL_ISOLATE = "\u2069";
 
-export function resolveLogicalSide(
-  side: LogicalSide,
-  direction: InterfaceDirection,
-): PhysicalSide {
+export function resolveLogicalSide(side: LogicalSide, direction: InterfaceDirection): PhysicalSide {
   if (direction === "rtl") {
     return side === "start" ? "right" : "left";
   }
@@ -21,10 +18,7 @@ export function isolateBidi(value: string | number): string {
 }
 
 export function isBidiIsolated(value: string): boolean {
-  const hasOpeningIsolate = value.startsWith(FIRST_STRONG_ISOLATE);
-  const hasClosingIsolate = value.endsWith(POP_DIRECTIONAL_ISOLATE);
-
-  return hasOpeningIsolate && hasClosingIsolate;
+  return value.startsWith(FIRST_STRONG_ISOLATE) && value.endsWith(POP_DIRECTIONAL_ISOLATE);
 }
 
 export function joinBidiSegments(
