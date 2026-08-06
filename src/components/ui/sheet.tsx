@@ -16,15 +16,11 @@ const SheetPortal = SheetPrimitive.Portal;
 type SheetOverlayElement = React.ElementRef<typeof SheetPrimitive.Overlay>;
 type SheetOverlayProps = React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>;
 type SheetContentElement = React.ElementRef<typeof SheetPrimitive.Content>;
-type SheetPrimitiveContentProps = React.ComponentPropsWithoutRef<
-  typeof SheetPrimitive.Content
->;
+type SheetPrimitiveContentProps = React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>;
 type SheetTitleElement = React.ElementRef<typeof SheetPrimitive.Title>;
 type SheetTitleProps = React.ComponentPropsWithoutRef<typeof SheetPrimitive.Title>;
 type SheetDescriptionElement = React.ElementRef<typeof SheetPrimitive.Description>;
-type SheetDescriptionProps = React.ComponentPropsWithoutRef<
-  typeof SheetPrimitive.Description
->;
+type SheetDescriptionProps = React.ComponentPropsWithoutRef<typeof SheetPrimitive.Description>;
 
 const SheetOverlay = React.forwardRef<SheetOverlayElement, SheetOverlayProps>(
   ({ className, ...props }, ref) => (
@@ -45,12 +41,14 @@ const sheetVariants = cva(
   {
     variants: {
       side: {
-        top: "inset-x-0 top-0 flex-col border-b data-[state=closed]:animate-out data-[state=closed]:slide-out-to-top data-[state=open]:animate-in data-[state=open]:slide-in-from-top",
+        top:
+          "inset-x-0 top-0 flex-col border-b data-[state=closed]:animate-out data-[state=closed]:slide-out-to-top data-[state=open]:animate-in data-[state=open]:slide-in-from-top",
         bottom:
           "inset-x-0 bottom-0 flex-col border-t pb-[max(1.5rem,env(safe-area-inset-bottom))] data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom",
         start: "ds-sheet-start h-full w-[min(92vw,24rem)] flex-col",
         end: "ds-sheet-end h-full w-[min(92vw,24rem)] flex-col",
-        left: "inset-y-0 left-0 h-full w-[min(92vw,24rem)] flex-col border-r data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left data-[state=open]:animate-in data-[state=open]:slide-in-from-left",
+        left:
+          "inset-y-0 left-0 h-full w-[min(92vw,24rem)] flex-col border-r data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left data-[state=open]:animate-in data-[state=open]:slide-in-from-left",
         right:
           "inset-y-0 right-0 h-full w-[min(92vw,24rem)] flex-col border-l data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=open]:animate-in data-[state=open]:slide-in-from-right",
       },
