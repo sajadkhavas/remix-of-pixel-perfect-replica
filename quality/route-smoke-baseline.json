@@ -1,5 +1,116 @@
 {
   "schemaVersion": 1,
   "baselineSha": "b0d8e9ba1d0156d18ccb68258a9a650490931d89",
-  "defects": []
+  "defects": [
+    {
+      "route": "/auth",
+      "project": "desktop-chromium",
+      "rule": "route:no-primary-link",
+      "selector": "main",
+      "impact": "moderate",
+      "owner": "F7",
+      "reason": "No non-placeholder link is available in the main route content.",
+      "removalCondition": "Provide a valid primary or recovery navigation link when the route requires one.",
+      "expiry": "2026-10-01"
+    },
+    {
+      "route": "/auth",
+      "project": "mobile-chromium",
+      "rule": "route:no-primary-link",
+      "selector": "main",
+      "impact": "moderate",
+      "owner": "F7",
+      "reason": "No non-placeholder link is available in the main route content.",
+      "removalCondition": "Provide a valid primary or recovery navigation link when the route requires one.",
+      "expiry": "2026-10-01"
+    },
+    {
+      "route": "/blog",
+      "project": "desktop-chromium",
+      "rule": "route:no-primary-link",
+      "selector": "main",
+      "impact": "moderate",
+      "owner": "F8",
+      "reason": "No non-placeholder link is available in the main route content.",
+      "removalCondition": "Provide a valid primary or recovery navigation link when the route requires one.",
+      "expiry": "2026-10-01"
+    },
+    {
+      "route": "/blog",
+      "project": "mobile-chromium",
+      "rule": "route:no-primary-link",
+      "selector": "main",
+      "impact": "moderate",
+      "owner": "F8",
+      "reason": "No non-placeholder link is available in the main route content.",
+      "removalCondition": "Provide a valid primary or recovery navigation link when the route requires one.",
+      "expiry": "2026-10-01"
+    },
+    {
+      "route": "/contact",
+      "project": "desktop-chromium",
+      "rule": "route:no-primary-link",
+      "selector": "main",
+      "impact": "moderate",
+      "owner": "F9",
+      "reason": "No non-placeholder link is available in the main route content.",
+      "removalCondition": "Provide a valid primary or recovery navigation link when the route requires one.",
+      "expiry": "2026-10-01"
+    },
+    {
+      "route": "/contact",
+      "project": "mobile-chromium",
+      "rule": "route:no-primary-link",
+      "selector": "main",
+      "impact": "moderate",
+      "owner": "F9",
+      "reason": "No non-placeholder link is available in the main route content.",
+      "removalCondition": "Provide a valid primary or recovery navigation link when the route requires one.",
+      "expiry": "2026-10-01"
+    },
+    {
+      "route": "/faq",
+      "project": "desktop-chromium",
+      "rule": "route:no-primary-link",
+      "selector": "main",
+      "impact": "moderate",
+      "owner": "F9",
+      "reason": "No non-placeholder link is available in the main route content.",
+      "removalCondition": "Provide a valid primary or recovery navigation link when the route requires one.",
+      "expiry": "2026-10-01"
+    },
+    {
+      "route": "/faq",
+      "project": "mobile-chromium",
+      "rule": "route:no-primary-link",
+      "selector": "main",
+      "impact": "moderate",
+      "owner": "F9",
+      "reason": "No non-placeholder link is available in the main route content.",
+      "removalCondition": "Provide a valid primary or recovery navigation link when the route requires one.",
+      "expiry": "2026-10-01"
+    },
+    {
+      "route": "/services",
+      "project": "desktop-chromium",
+      "rule": "route:no-primary-link",
+      "selector": "main",
+      "impact": "moderate",
+      "owner": "F8",
+      "reason": "No non-placeholder link is available in the main route content.",
+      "removalCondition": "Provide a valid primary or recovery navigation link when the route requires one.",
+      "expiry": "2026-10-01"
+    },
+    {
+      "route": "/services",
+      "project": "mobile-chromium",
+      "rule": "route:no-primary-link",
+      "selector": "main",
+      "impact": "moderate",
+      "owner": "F8",
+      "reason": "No non-placeholder link is available in the main route content.",
+      "removalCondition": "Provide a valid primary or recovery navigation link when the route requires one.",
+      "expiry": "2026-10-01"
+    }
+  ]
 }
