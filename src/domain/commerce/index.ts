@@ -133,11 +133,11 @@ export function clampQuantity(
 
   if (hardMax < rule.min) return hardMax;
 
-  const normalized =
+  const cappedRequested = Math.min(Math.max(rule.min, safeRequested), hardMax);
+  return (
     rule.min +
-    Math.floor((Math.max(rule.min, safeRequested) - rule.min) / rule.increment) * rule.increment;
-
-  return Math.min(normalized, hardMax);
+    Math.floor((cappedRequested - rule.min) / rule.increment) * rule.increment
+  );
 }
 
 export function makeLineId(productId: EntityId, variantId: EntityId): string {
