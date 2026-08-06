@@ -22,9 +22,12 @@ const alertVariants = cva(
   },
 );
 
-export interface AlertProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof alertVariants> {
+type AlertRootProps = React.HTMLAttributes<HTMLDivElement>;
+type AlertVariantProps = VariantProps<typeof alertVariants>;
+type AlertTitleProps = React.HTMLAttributes<HTMLHeadingElement>;
+type AlertDescriptionProps = React.HTMLAttributes<HTMLDivElement>;
+
+export interface AlertProps extends AlertRootProps, AlertVariantProps {
   live?: "off" | "polite" | "assertive";
 }
 
@@ -41,31 +44,29 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 );
 Alert.displayName = "Alert";
 
-const AlertTitle = React.forwardRef<
-  HTMLHeadingElement,
-  React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
-  <h5
-    ref={ref}
-    className={cn("col-start-2 font-semibold leading-snug text-text-primary", className)}
-    {...props}
-  />
-));
+const AlertTitle = React.forwardRef<HTMLHeadingElement, AlertTitleProps>(
+  ({ className, ...props }, ref) => (
+    <h5
+      ref={ref}
+      className={cn("col-start-2 font-semibold leading-snug text-text-primary", className)}
+      {...props}
+    />
+  ),
+);
 AlertTitle.displayName = "AlertTitle";
 
-const AlertDescription = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "col-start-2 text-sm leading-relaxed text-text-secondary [&_a]:font-semibold [&_a]:text-accent-primary [&_a]:underline-offset-4 [&_a:hover]:underline",
-      className,
-    )}
-    {...props}
-  />
-));
+const AlertDescription = React.forwardRef<HTMLDivElement, AlertDescriptionProps>(
+  ({ className, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        "col-start-2 text-sm leading-relaxed text-text-secondary [&_a]:font-semibold [&_a]:text-accent-primary [&_a]:underline-offset-4 [&_a:hover]:underline",
+        className,
+      )}
+      {...props}
+    />
+  ),
+);
 AlertDescription.displayName = "AlertDescription";
 
 export { Alert, AlertTitle, AlertDescription, alertVariants };

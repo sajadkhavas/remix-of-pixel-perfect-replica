@@ -42,9 +42,10 @@ const buttonVariants = cva(
   },
 );
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+type NativeButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
+type ButtonVariantProps = VariantProps<typeof buttonVariants>;
+
+export interface ButtonProps extends NativeButtonProps, ButtonVariantProps {
   asChild?: boolean;
   loading?: boolean;
   loadingText?: React.ReactNode;

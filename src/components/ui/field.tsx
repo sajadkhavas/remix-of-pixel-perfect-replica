@@ -14,6 +14,12 @@ type FieldContextValue = {
   required: boolean;
 };
 
+type LabelElement = React.ElementRef<typeof Label>;
+type LabelProps = React.ComponentPropsWithoutRef<typeof Label>;
+type SlotElement = React.ElementRef<typeof Slot>;
+type SlotProps = React.ComponentPropsWithoutRef<typeof Slot>;
+type ParagraphProps = React.HTMLAttributes<HTMLParagraphElement>;
+
 const FieldContext = React.createContext<FieldContextValue | null>(null);
 
 function useFieldContext(componentName: string) {
@@ -75,99 +81,95 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
 );
 Field.displayName = "Field";
 
-const FieldLabel = React.forwardRef<
-  React.ElementRef<typeof Label>,
-  React.ComponentPropsWithoutRef<typeof Label>,
->(({ className, children, ...props }, ref) => {
-  const { controlId, disabled, invalid, required } = useFieldContext("FieldLabel");
+const FieldLabel = React.forwardRef<LabelElement, LabelProps>(
+  ({ className, children, ...props }, ref) => {
+    const { controlId, disabled, invalid, required } = useFieldContext("FieldLabel");
 
-  return (
-    <Label
-      ref={ref}
-      htmlFor={controlId}
-      className={cn(
-        "text-sm font-semibold text-text-primary",
-        disabled && "text-text-disabled",
-        invalid && "text-error",
-        className,
-      )}
-      {...props}
-    >
-      {children}
-      {required ? (
-        <span aria-hidden="true" className="ms-1 text-error">
-          *
-        </span>
-      ) : null}
-    </Label>
-  );
-});
+    return (
+      <Label
+        ref={ref}
+        htmlFor={controlId}
+        className={cn(
+          "text-sm font-semibold text-text-primary",
+          disabled && "text-text-disabled",
+          invalid && "text-error",
+          className,
+        )}
+        {...props}
+      >
+        {children}
+        {required ? (
+          <span aria-hidden="true" className="ms-1 text-error">
+            *
+          </span>
+        ) : null}
+      </Label>
+    );
+  },
+);
 FieldLabel.displayName = "FieldLabel";
 
-const FieldControl = React.forwardRef<
-  React.ElementRef<typeof Slot>,
-  React.ComponentPropsWithoutRef<typeof Slot>,
->(({ "aria-describedby": ariaDescribedBy, ...props }, ref) => {
-  const { controlId, descriptionId, errorId, invalid, disabled, readOnly, required } =
-    useFieldContext("FieldControl");
-  const describedBy = [ariaDescribedBy, descriptionId, invalid ? errorId : null]
-    .filter(Boolean)
-    .join(" ");
+const FieldControl = React.forwardRef<SlotElement, SlotProps>(
+  ({ "aria-describedby": ariaDescribedBy, ...props }, ref) => {
+    const { controlId, descriptionId, errorId, invalid, disabled, readOnly, required } =
+      useFieldContext("FieldControl");
+    const describedBy = [ariaDescribedBy, descriptionId, invalid ? errorId : null]
+      .filter(Boolean)
+      .join(" ");
 
-  return (
-    <Slot
-      ref={ref}
-      id={controlId}
-      aria-describedby={describedBy || undefined}
-      aria-disabled={disabled || undefined}
-      aria-invalid={invalid || undefined}
-      aria-readonly={readOnly || undefined}
-      aria-required={required || undefined}
-      {...props}
-    />
-  );
-});
+    return (
+      <Slot
+        ref={ref}
+        id={controlId}
+        aria-describedby={describedBy || undefined}
+        aria-disabled={disabled || undefined}
+        aria-invalid={invalid || undefined}
+        aria-readonly={readOnly || undefined}
+        aria-required={required || undefined}
+        {...props}
+      />
+    );
+  },
+);
 FieldControl.displayName = "FieldControl";
 
-const FieldDescription = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>,
->(({ className, ...props }, ref) => {
-  const { descriptionId } = useFieldContext("FieldDescription");
+const FieldDescription = React.forwardRef<HTMLParagraphElement, ParagraphProps>(
+  ({ className, ...props }, ref) => {
+    const { descriptionId } = useFieldContext("FieldDescription");
 
-  return (
-    <p
-      ref={ref}
-      id={descriptionId}
-      className={cn("text-sm leading-relaxed text-text-muted", className)}
-      {...props}
-    />
-  );
-});
+    return (
+      <p
+        ref={ref}
+        id={descriptionId}
+        className={cn("text-sm leading-relaxed text-text-muted", className)}
+        {...props}
+      />
+    );
+  },
+);
 FieldDescription.displayName = "FieldDescription";
 
-const FieldError = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>,
->(({ className, children, ...props }, ref) => {
-  const { errorId, invalid } = useFieldContext("FieldError");
+const FieldError = React.forwardRef<HTMLParagraphElement, ParagraphProps>(
+  ({ className, children, ...props }, ref) => {
+    const { errorId, invalid } = useFieldContext("FieldError");
 
-  if (!invalid || !children) {
-    return null;
-  }
+    if (!invalid || !children) {
+      return null;
+    }
 
-  return (
-    <p
-      ref={ref}
-      id={errorId}
-      role="alert"
-      className={cn("text-sm font-medium leading-relaxed text-error", className)}
-      {...props}
-    >
-      {children}
-    </p>
-  );
-});
+    return (
+      <p
+        ref={ref}
+        id={errorId}
+        role="alert"
+        className={cn("text-sm font-medium leading-relaxed text-error", className)}
+        {...props}
+      >
+        {children}
+      </p>
+    );
+  },
+);
 FieldError.displayName = "FieldError";
 
 export { Field, FieldLabel, FieldControl, FieldDescription, FieldError };

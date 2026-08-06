@@ -10,6 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 
 type StatusTone = "info" | "success" | "warning" | "error";
+type StatusMessageBaseProps = Omit<AlertProps, "variant" | "live" | "title">;
 
 const toneConfig = {
   info: { icon: Info, live: "polite" as const },
@@ -18,8 +19,7 @@ const toneConfig = {
   error: { icon: AlertCircle, live: "assertive" as const },
 };
 
-export interface StatusMessageProps
-  extends Omit<AlertProps, "variant" | "live" | "title"> {
+export interface StatusMessageProps extends StatusMessageBaseProps {
   tone?: StatusTone;
   title: React.ReactNode;
   description?: React.ReactNode;
