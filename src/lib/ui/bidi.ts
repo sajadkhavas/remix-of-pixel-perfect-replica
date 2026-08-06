@@ -21,7 +21,9 @@ export function isolateBidi(value: string | number): string {
 }
 
 export function isBidiIsolated(value: string): boolean {
-  return value.startsWith(FIRST_STRONG_ISOLATE) && value.endsWith(POP_DIRECTIONAL_ISOLATE);
+  return (
+    value.startsWith(FIRST_STRONG_ISOLATE) && value.endsWith(POP_DIRECTIONAL_ISOLATE)
+  );
 }
 
 export function joinBidiSegments(

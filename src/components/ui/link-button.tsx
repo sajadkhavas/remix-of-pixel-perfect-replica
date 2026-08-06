@@ -11,7 +11,10 @@ export interface LinkButtonProps
 }
 
 const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
-  ({ className, variant, size, width, disabled = false, href, onClick, ...props }, ref) => {
+  (
+    { className, variant, size, width, disabled = false, href, onClick, ...props },
+    ref,
+  ) => {
     const handleClick: React.MouseEventHandler<HTMLAnchorElement> = (event) => {
       if (disabled) {
         event.preventDefault();

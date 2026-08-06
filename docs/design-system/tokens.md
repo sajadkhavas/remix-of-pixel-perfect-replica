@@ -10,31 +10,28 @@ Prototype aliases such as `gold`, `night`, and `card-dark` remain temporarily av
 
 ### Surfaces
 
-| Token | Role |
-| --- | --- |
-| `background-canvas` | Default application canvas. |
-| `background-surface` | Calm commerce sections and cards. |
-| `background-elevated` | Popovers, dialogs, drawers, and raised controls. |
-| `background-inverse` | Porcelain editorial chapter or inverse surface. |
-| `background-overlay` | Modal and drawer backdrop. |
+- `background-canvas`: default application canvas.
+- `background-surface`: calm commerce sections and cards.
+- `background-elevated`: popovers, dialogs, drawers, and raised controls.
+- `background-inverse`: porcelain editorial chapter or inverse surface.
+- `background-overlay`: modal and drawer backdrop.
 
 ### Text
 
-| Token | Role |
-| --- | --- |
-| `text-primary` | Product names, prices, headings, and essential body copy. |
-| `text-secondary` | Supporting body copy and specifications. |
-| `text-muted` | Non-essential metadata; never stock, price, or legal text. |
-| `text-inverse` | Text on inverse light surfaces. |
-| `text-disabled` | Legible unavailable-control text. |
+- `text-primary`: product names, prices, headings, and essential body copy.
+- `text-secondary`: supporting body copy and specifications.
+- `text-muted`: non-essential metadata; never stock, price, or legal text.
+- `text-inverse`: text on inverse light surfaces.
+- `text-disabled`: legible unavailable-control text.
 
-### Borders
+### Borders and focus
 
 - `border-subtle`: ordinary separation.
 - `border-default`: control boundary.
 - `border-strong`: selected or emphasized boundary.
+- `focus-ring`: an independent blue signal with a canvas offset.
 
-Focus does not reuse a border or brass token. `focus-ring` is a separate blue signal with a canvas offset.
+Focus does not reuse a border or brass token.
 
 ### Accent
 
@@ -47,28 +44,25 @@ Normal prices and ordinary primary text do not automatically use accent color.
 
 ### Status
 
-| Token | Meaning | Required companion |
-| --- | --- | --- |
-| `status-success` | Completed or available. | Text and/or icon. |
-| `status-warning` | Attention or inventory-backed warning. | Explicit message. |
-| `status-error` | Validation or operation failure. | Cause and recovery. |
-| `status-info` | Neutral operational information. | Descriptive text. |
+- `status-success`: completed or available. Pair it with text and/or an icon.
+- `status-warning`: attention or inventory-backed warning. Pair it with an explicit message.
+- `status-error`: validation or operation failure. Include cause and recovery.
+- `status-info`: neutral operational information. Include descriptive text.
 
-### System and product states
+### System and product display states
 
 - `selection`, `skeleton-base`, and `skeleton-highlight` are system roles.
-- `product-sale`, `product-new`, `product-limited`, and `product-out-of-stock` are display roles only. They do not authorize a badge or claim. Data and evidence rules remain owned by the product domain and content registry.
+- `product-sale`, `product-new`, `product-limited`, and `product-out-of-stock` are display roles only.
+- Product display roles do not authorize a badge or claim. Data and evidence rules remain owned by the product domain and content registry.
 
 ## Typography
 
 ### Families
 
-| Role | Family |
-| --- | --- |
-| Persian display, heading, and body | Vazirmatn Variable with system sans fallback. |
-| Latin UI | Inter/system sans. |
-| Brand wordmark or limited collection name | Playfair Display. |
-| Reference, SKU, caliber, and technical serial | DM Mono. |
+- Persian display, heading, and body: Vazirmatn Variable with system sans fallback.
+- Latin UI: Inter or system sans.
+- Brand wordmark or limited collection name: Playfair Display.
+- Reference, SKU, caliber, and technical serial: DM Mono.
 
 Playfair Display is not the default Persian heading font. DM Mono is not the default price font.
 
@@ -102,13 +96,11 @@ The conceptual base is 4px, with product-facing rhythm centered on 8, 12, 16, 24
 
 ### Containers
 
-| Token | Maximum | Use |
-| --- | ---: | --- |
-| `container-compact` | 720px | FAQ, legal, auth, focused forms. |
-| `container-content` | 960px | Article and narrative content. |
-| `container-commerce` | 1280px | Shop, cart, account, ordinary commerce. |
-| `container-wide` | 1440px | Home and media-led product layouts. |
-| `content-measure` | 608px | Readable Persian paragraph measure. |
+- `container-compact`: 720px for FAQ, legal, auth, and focused forms.
+- `container-content`: 960px for article and narrative content.
+- `container-commerce`: 1280px for shop, cart, account, and ordinary commerce.
+- `container-wide`: 1440px for home and media-led product layouts.
+- `content-measure`: 608px for readable Persian paragraph measure.
 
 `.ds-container` supplies fluid logical gutters. Width modifiers constrain the maximum without changing reading order.
 
@@ -125,7 +117,8 @@ The conceptual base is 4px, with product-facing rhythm centered on 8, 12, 16, 24
 - Large control height: 48px.
 - Minimum touch target: 44×44px.
 - `.safe-area-top`, `.safe-area-bottom`, and `.safe-area-inline` use environment insets.
-- Sticky offsets exist for desktop and mobile shell coordination; feature owners may not invent conflicting global offsets.
+- Sticky offsets exist for desktop and mobile shell coordination.
+- Feature owners may not invent conflicting global offsets.
 
 ## Shape, depth, and layers
 
@@ -137,7 +130,7 @@ The conceptual base is 4px, with product-facing rhythm centered on 8, 12, 16, 24
 - `radius-dialog`: 12px.
 - `radius-round`: fully rounded controls.
 
-The previous global zero radius is removed. Editorial precision uses restrained geometry rather than either sharp-everywhere or pill-everywhere styling.
+The previous global zero radius is removed. Editorial precision uses restrained geometry rather than sharp-everywhere or pill-everywhere styling.
 
 ### Border and shadow
 
@@ -150,32 +143,28 @@ The previous global zero radius is removed. Editorial precision uses restrained 
 
 ### Z-index
 
-| Token | Value | Scope |
-| --- | ---: | --- |
-| `z-base` | 0 | Document flow. |
-| `z-raised` | 10 | Raised local surface. |
-| `z-sticky` | 30 | Sticky controls and shell. |
-| `z-overlay` | 50 | Dialog and drawer. |
-| `z-toast` | 70 | Toast above overlays when appropriate. |
+- `z-base`: 0 for document flow.
+- `z-raised`: 10 for a raised local surface.
+- `z-sticky`: 30 for sticky controls and shell.
+- `z-overlay`: 50 for dialog and drawer.
+- `z-toast`: 70 for toast above overlays when appropriate.
 
 Arbitrary `z-[9999]` values are prohibited unless an integration decision changes this contract.
 
 ## Motion
 
-| Token | Value | Use |
-| --- | ---: | --- |
-| `duration-instant` | 80ms | Press feedback. |
-| `duration-fast` | 140ms | Exit and small state change. |
-| `duration-normal` | 220ms | Dialog, drawer, popover, and ordinary entry. |
-| `duration-slow` | 360ms | Limited editorial reveal. |
-| `ease-standard` | Standard state transition. |
-| `ease-enter` | Decelerating entry. |
-| `ease-exit` | Accelerating exit. |
-| `motion-distance-small` | 8px | Small spatial relationship. |
-| `motion-distance-medium` | 16px | Maximum shared UI travel. |
-| `motion-scale-pressed` | 0.98 | Optional press feedback. |
+- `duration-instant`: 80ms for press feedback.
+- `duration-fast`: 140ms for exit and small state changes.
+- `duration-normal`: 220ms for dialog, drawer, popover, and ordinary entry.
+- `duration-slow`: 360ms for limited editorial reveal.
+- `ease-standard`: standard state transition.
+- `ease-enter`: decelerating entry.
+- `ease-exit`: accelerating exit.
+- `motion-distance-small`: 8px for a small spatial relationship.
+- `motion-distance-medium`: 16px as the maximum shared UI travel.
+- `motion-scale-pressed`: 0.98 for optional press feedback.
 
-Shared motion classes are limited to fade, scale, and logical start/end sheet transitions. Reduced-motion turns content into its final static composition and pauses autoplay-marked elements.
+Shared motion classes are limited to fade, scale, and logical start/end sheet transitions. Reduced motion turns content into its final static composition and pauses autoplay-marked elements.
 
 ## Opacity and icons
 

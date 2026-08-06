@@ -14,9 +14,11 @@ function subscribe(callback: () => void): () => void {
 }
 
 function getSnapshot(): boolean {
-  return typeof window !== "undefined" &&
+  return (
+    typeof window !== "undefined" &&
     typeof window.matchMedia === "function" &&
-    window.matchMedia(REDUCED_MOTION_QUERY).matches;
+    window.matchMedia(REDUCED_MOTION_QUERY).matches
+  );
 }
 
 function getServerSnapshot(): boolean {

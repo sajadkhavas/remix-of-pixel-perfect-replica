@@ -1,16 +1,7 @@
 import { describe, expect, test } from "bun:test";
 
-import {
-  designTokenGroups,
-  semanticColorTokens,
-  cssVariableForToken,
-} from "./tokens";
-import {
-  isolateBidi,
-  isBidiIsolated,
-  joinBidiSegments,
-  resolveLogicalSide,
-} from "./bidi";
+import { designTokenGroups, semanticColorTokens, cssVariableForToken } from "./tokens";
+import { isolateBidi, isBidiIsolated, joinBidiSegments, resolveLogicalSide } from "./bidi";
 
 describe("design token registry", () => {
   test("contains unique semantic color roles", () => {

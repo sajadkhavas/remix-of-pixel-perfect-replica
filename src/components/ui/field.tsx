@@ -77,7 +77,7 @@ Field.displayName = "Field";
 
 const FieldLabel = React.forwardRef<
   React.ElementRef<typeof Label>,
-  React.ComponentPropsWithoutRef<typeof Label>
+  React.ComponentPropsWithoutRef<typeof Label>,
 >(({ className, children, ...props }, ref) => {
   const { controlId, disabled, invalid, required } = useFieldContext("FieldLabel");
 
@@ -106,7 +106,7 @@ FieldLabel.displayName = "FieldLabel";
 
 const FieldControl = React.forwardRef<
   React.ElementRef<typeof Slot>,
-  React.ComponentPropsWithoutRef<typeof Slot>
+  React.ComponentPropsWithoutRef<typeof Slot>,
 >(({ "aria-describedby": ariaDescribedBy, ...props }, ref) => {
   const { controlId, descriptionId, errorId, invalid, disabled, readOnly, required } =
     useFieldContext("FieldControl");
@@ -131,7 +131,7 @@ FieldControl.displayName = "FieldControl";
 
 const FieldDescription = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+  React.HTMLAttributes<HTMLParagraphElement>,
 >(({ className, ...props }, ref) => {
   const { descriptionId } = useFieldContext("FieldDescription");
 
@@ -148,7 +148,7 @@ FieldDescription.displayName = "FieldDescription";
 
 const FieldError = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+  React.HTMLAttributes<HTMLParagraphElement>,
 >(({ className, children, ...props }, ref) => {
   const { errorId, invalid } = useFieldContext("FieldError");
 

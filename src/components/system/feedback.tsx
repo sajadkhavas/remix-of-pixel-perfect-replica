@@ -18,7 +18,8 @@ const toneConfig = {
   error: { icon: AlertCircle, live: "assertive" as const },
 };
 
-export interface StatusMessageProps extends Omit<AlertProps, "variant" | "live" | "title"> {
+export interface StatusMessageProps
+  extends Omit<AlertProps, "variant" | "live" | "title"> {
   tone?: StatusTone;
   title: React.ReactNode;
   description?: React.ReactNode;
@@ -89,7 +90,9 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
       ) : null}
       <div className="grid max-w-md gap-2">
         <h2 className="text-lg font-semibold text-text-primary">{title}</h2>
-        {description ? <p className="text-sm leading-relaxed text-text-secondary">{description}</p> : null}
+        {description ? (
+          <p className="text-sm leading-relaxed text-text-secondary">{description}</p>
+        ) : null}
       </div>
       {action ? <div className="flex flex-wrap justify-center gap-2">{action}</div> : null}
     </section>

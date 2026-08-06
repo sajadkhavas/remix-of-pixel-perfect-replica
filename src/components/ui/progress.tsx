@@ -12,7 +12,7 @@ export interface ProgressProps
 
 const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
-  ProgressProps
+  ProgressProps,
 >(({ className, indicatorClassName, value = 0, ...props }, ref) => {
   const normalizedValue = Math.min(100, Math.max(0, value ?? 0));
 
