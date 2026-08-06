@@ -4,7 +4,7 @@
   "defects": [
     {
       "route": "/",
-      "project": "keyboard-only",
+      "project": "keyboard-only:mobile-menu",
       "rule": "keyboard:mobile-menu-enter-does-not-open",
       "selector": "button[aria-label=\"منو\"]",
       "impact": "critical",
