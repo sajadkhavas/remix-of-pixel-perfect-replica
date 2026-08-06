@@ -2,13 +2,13 @@
 
 ## Containers
 
-| سطح | Max width | کاربرد |
-|---|---:|---|
-| Compact | 720px | FAQ، legal، auth، long form |
-| Content | 960px | article، about narrative |
-| Commerce | 1280px | shop، cart، account |
-| Wide | 1440px | homepage/product gallery |
-| Full bleed | viewport | hero/media chapter محدود |
+| سطح        | Max width | کاربرد                      |
+| ---------- | --------: | --------------------------- |
+| Compact    |     720px | FAQ، legal، auth، long form |
+| Content    |     960px | article، about narrative    |
+| Commerce   |    1280px | shop، cart، account         |
+| Wide       |    1440px | homepage/product gallery    |
+| Full bleed |  viewport | hero/media chapter محدود    |
 
 ## Grid
 
@@ -22,6 +22,7 @@
 
 Base unit مفهومی 4px؛ spacingهای product-facing از مجموعه 8, 12, 16, 24, 32, 48, 64, 96.  
 Section spacing:
+
 - desktop commerce: 64–96px
 - desktop editorial: 96–144px
 - mobile commerce: 40–64px
@@ -29,13 +30,13 @@ Section spacing:
 
 ## Product grids
 
-| Context | Desktop | Tablet | Mobile |
-|---|---|---|---|
-| Shop | 4 columns | 3 | 2؛ در ≤360 یک ستون در صورت تراکم متن |
-| Featured | 4 | 2–3 | horizontal rail یا 2 |
-| Recently viewed | 4–5 | 3 | 2 یا rail |
-| Wishlist | 4 | 3 | 2 |
-| Compare selection | 3–4 | 2 | 1–2 |
+| Context           | Desktop   | Tablet | Mobile                               |
+| ----------------- | --------- | ------ | ------------------------------------ |
+| Shop              | 4 columns | 3      | 2؛ در ≤360 یک ستون در صورت تراکم متن |
+| Featured          | 4         | 2–3    | horizontal rail یا 2                 |
+| Recently viewed   | 4–5       | 3      | 2 یا rail                            |
+| Wishlist          | 4         | 3      | 2                                    |
+| Compare selection | 3–4       | 2      | 1–2                                  |
 
 Card gap mobile حداقل 12px و desktop 20–24px؛ gap 2–8px برای commerce ممنوع.
 

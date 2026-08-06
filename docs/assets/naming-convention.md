@@ -33,6 +33,7 @@
 ## Product subject
 
 `{brand}-{family}-{reference}`؛ reference در صورت نبود با SKU داخلی جایگزین:
+
 - `product-seiko-presage-srpb41-front-01-v1.avif`
 - `product-kronos-sku-0042-front-01-v1.avif`
 

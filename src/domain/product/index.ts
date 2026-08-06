@@ -1,4 +1,13 @@
-import type { DateRange, EntityId, ISODateTime, LocalizedText, MediaAsset, Money, SEOFields, Slug } from "../shared";
+import type {
+  DateRange,
+  EntityId,
+  ISODateTime,
+  LocalizedText,
+  MediaAsset,
+  Money,
+  SEOFields,
+  Slug,
+} from "../shared";
 
 export type ProductStatus = "draft" | "active" | "unavailable" | "discontinued" | "archived";
 export type ProductBadge = "new" | "limited-edition" | "exclusive" | "sale" | "preorder";
@@ -41,7 +50,13 @@ export interface ProductPricing {
   readonly adjustment?: PriceAdjustment;
 }
 
-export type InventoryStatus = "in-stock" | "low-stock" | "out-of-stock" | "backorder" | "preorder" | "not-tracked";
+export type InventoryStatus =
+  | "in-stock"
+  | "low-stock"
+  | "out-of-stock"
+  | "backorder"
+  | "preorder"
+  | "not-tracked";
 
 export interface ProductInventory {
   readonly tracking: "tracked" | "not-tracked";
@@ -85,7 +100,15 @@ export interface ProductSpecification {
     | Readonly<{ type: "number"; value: number; unit?: string }>
     | Readonly<{ type: "boolean"; value: boolean }>
     | Readonly<{ type: "list"; values: readonly string[] }>;
-  readonly group: "movement" | "case" | "dial" | "strap" | "dimensions" | "features" | "compatibility" | "other";
+  readonly group:
+    | "movement"
+    | "case"
+    | "dial"
+    | "strap"
+    | "dimensions"
+    | "features"
+    | "compatibility"
+    | "other";
   readonly filterValueKeys?: readonly string[];
   readonly sortOrder: number;
 }
@@ -167,8 +190,13 @@ export function isSameCurrency(a: Money, b: Money): boolean {
 }
 
 export function isValidPricing(pricing: ProductPricing): boolean {
-  if (!Number.isSafeInteger(pricing.listPrice.amountMinor) || pricing.listPrice.amountMinor < 0) return false;
-  if (!Number.isSafeInteger(pricing.effectivePrice.amountMinor) || pricing.effectivePrice.amountMinor < 0) return false;
+  if (!Number.isSafeInteger(pricing.listPrice.amountMinor) || pricing.listPrice.amountMinor < 0)
+    return false;
+  if (
+    !Number.isSafeInteger(pricing.effectivePrice.amountMinor) ||
+    pricing.effectivePrice.amountMinor < 0
+  )
+    return false;
   if (!isSameCurrency(pricing.listPrice, pricing.effectivePrice)) return false;
   if (pricing.salePrice) {
     if (!isSameCurrency(pricing.listPrice, pricing.salePrice)) return false;
@@ -179,7 +207,8 @@ export function isValidPricing(pricing: ProductPricing): boolean {
 }
 
 export function isPurchasableVariant(variant: ProductVariant): boolean {
-  const stockAllowsPurchase = variant.inventory.tracking === "not-tracked" || variant.inventory.status !== "out-of-stock";
+  const stockAllowsPurchase =
+    variant.inventory.tracking === "not-tracked" || variant.inventory.status !== "out-of-stock";
   return variant.status === "active" && isValidPricing(variant.pricing) && stockAllowsPurchase;
 }
 

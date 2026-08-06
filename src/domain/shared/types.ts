@@ -41,7 +41,13 @@ export interface SEOFields {
   readonly robots?: "index,follow" | "noindex,follow" | "noindex,nofollow";
   readonly imageUrl?: string;
   readonly keywords?: readonly string[];
-  readonly structuredDataType?: "Product" | "ProductGroup" | "Brand" | "CollectionPage" | "Article" | "FAQPage";
+  readonly structuredDataType?:
+    | "Product"
+    | "ProductGroup"
+    | "Brand"
+    | "CollectionPage"
+    | "Article"
+    | "FAQPage";
 }
 
 export interface MediaDimensions {

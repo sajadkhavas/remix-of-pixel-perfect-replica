@@ -53,40 +53,40 @@ faceted navigation می‌تواند URLهای بسیار زیاد و تکرار
 
 ## منابع اصلی
 
-| منبع | URL | کاربرد در این فاز |
-|---|---|---|
-| Google Search Central — Merchant Listing | https://developers.google.com/search/docs/appearance/structured-data/merchant-listing | صحت price، availability، shipping، returns و reviews |
-| Google Search Central — Product Structured Data | https://developers.google.com/search/docs/appearance/structured-data/product | ساختار داده محصول و محدودیت‌های review |
-| Google Search Central — Product Variants | https://developers.google.com/search/docs/appearance/structured-data/product-variants | مدل‌سازی variant و تغییر قیمت/موجودی |
-| Google Search Central — Ecommerce Site Structure | https://developers.google.com/search/docs/specialty/ecommerce/help-google-understand-your-ecommerce-site-structure | معماری لینک داخلی |
-| Google Search Central — Faceted Navigation | https://developers.google.com/search/docs/crawling-indexing/crawling-managing-faceted-navigation | کنترل crawl URLهای فیلتر |
-| Google Search Central — Canonicalization | https://developers.google.com/search/docs/crawling-indexing/canonicalization | canonical صفحات مشابه |
-| Google Search Central — noindex | https://developers.google.com/search/docs/crawling-indexing/block-indexing | کنترل indexability |
-| Google Search Central — URL Structure | https://developers.google.com/search/docs/crawling-indexing/url-structure | URL خوانا و پایدار |
-| Google Search Central — Title Links | https://developers.google.com/search/docs/appearance/title-link | title یکتا و توصیفی |
-| Google Search Central — Snippets | https://developers.google.com/search/docs/appearance/snippet | meta description دقیق |
-| Google Search Central — SEO Starter Guide | https://developers.google.com/search/docs/fundamentals/seo-starter-guide | اصول محتوای قابل فهم و لینک‌دهی |
-| Baymard — Product Page UX 2026 | https://baymard.com/lists/product-page-ux | نیازهای تصمیم‌گیری PDP |
-| Baymard — Product Descriptions | https://baymard.com/blog/product-descriptions | عمق مشخصات و شرح محصول |
-| Baymard — Ecommerce Search UX 2026 | https://baymard.com/lists/ecommerce-search | حالات جست‌وجو و پیشنهادها |
-| Baymard — Applied Filters | https://baymard.com/blog/how-to-design-applied-filters | نمایش و حذف فیلتر |
-| Baymard — Returns UX | https://baymard.com/blog/return-policy | دسترسی به شرایط بازگشت |
-| Nielsen Norman Group — Be Succinct | https://www.nngroup.com/articles/be-succinct-writing-for-the-web/ | اختصار و اسکن‌پذیری |
-| Nielsen Norman Group — List Entries | https://www.nngroup.com/articles/list-entries/ | اولویت اطلاعات در کارت/لیست |
-| W3C WCAG 2.2 — Error Identification | https://www.w3.org/WAI/WCAG22/Understanding/error-identification | خطای متنی و مشخص |
-| W3C WCAG 2.2 — Headings and Labels | https://www.w3.org/WAI/WCAG22/Understanding/headings-and-labels | عنوان/label توصیفی |
-| W3C WAI — Form Instructions | https://www.w3.org/WAI/tutorials/forms/instructions/ | فرمت ورودی و required |
+| منبع                                             | URL                                                                                                                | کاربرد در این فاز                                    |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------- |
+| Google Search Central — Merchant Listing         | https://developers.google.com/search/docs/appearance/structured-data/merchant-listing                              | صحت price، availability، shipping، returns و reviews |
+| Google Search Central — Product Structured Data  | https://developers.google.com/search/docs/appearance/structured-data/product                                       | ساختار داده محصول و محدودیت‌های review               |
+| Google Search Central — Product Variants         | https://developers.google.com/search/docs/appearance/structured-data/product-variants                              | مدل‌سازی variant و تغییر قیمت/موجودی                 |
+| Google Search Central — Ecommerce Site Structure | https://developers.google.com/search/docs/specialty/ecommerce/help-google-understand-your-ecommerce-site-structure | معماری لینک داخلی                                    |
+| Google Search Central — Faceted Navigation       | https://developers.google.com/search/docs/crawling-indexing/crawling-managing-faceted-navigation                   | کنترل crawl URLهای فیلتر                             |
+| Google Search Central — Canonicalization         | https://developers.google.com/search/docs/crawling-indexing/canonicalization                                       | canonical صفحات مشابه                                |
+| Google Search Central — noindex                  | https://developers.google.com/search/docs/crawling-indexing/block-indexing                                         | کنترل indexability                                   |
+| Google Search Central — URL Structure            | https://developers.google.com/search/docs/crawling-indexing/url-structure                                          | URL خوانا و پایدار                                   |
+| Google Search Central — Title Links              | https://developers.google.com/search/docs/appearance/title-link                                                    | title یکتا و توصیفی                                  |
+| Google Search Central — Snippets                 | https://developers.google.com/search/docs/appearance/snippet                                                       | meta description دقیق                                |
+| Google Search Central — SEO Starter Guide        | https://developers.google.com/search/docs/fundamentals/seo-starter-guide                                           | اصول محتوای قابل فهم و لینک‌دهی                      |
+| Baymard — Product Page UX 2026                   | https://baymard.com/lists/product-page-ux                                                                          | نیازهای تصمیم‌گیری PDP                               |
+| Baymard — Product Descriptions                   | https://baymard.com/blog/product-descriptions                                                                      | عمق مشخصات و شرح محصول                               |
+| Baymard — Ecommerce Search UX 2026               | https://baymard.com/lists/ecommerce-search                                                                         | حالات جست‌وجو و پیشنهادها                            |
+| Baymard — Applied Filters                        | https://baymard.com/blog/how-to-design-applied-filters                                                             | نمایش و حذف فیلتر                                    |
+| Baymard — Returns UX                             | https://baymard.com/blog/return-policy                                                                             | دسترسی به شرایط بازگشت                               |
+| Nielsen Norman Group — Be Succinct               | https://www.nngroup.com/articles/be-succinct-writing-for-the-web/                                                  | اختصار و اسکن‌پذیری                                  |
+| Nielsen Norman Group — List Entries              | https://www.nngroup.com/articles/list-entries/                                                                     | اولویت اطلاعات در کارت/لیست                          |
+| W3C WCAG 2.2 — Error Identification              | https://www.w3.org/WAI/WCAG22/Understanding/error-identification                                                   | خطای متنی و مشخص                                     |
+| W3C WCAG 2.2 — Headings and Labels               | https://www.w3.org/WAI/WCAG22/Understanding/headings-and-labels                                                    | عنوان/label توصیفی                                   |
+| W3C WAI — Form Instructions                      | https://www.w3.org/WAI/tutorials/forms/instructions/                                                               | فرمت ورودی و required                                |
 
 ## منابع تحلیل بازار و معماری ساعت
 
-| نمونه | URL | مشاهده معماری؛ نه منبع ادعا برای KRONOS |
-|---|---|---|
-| Watch Online | https://www.watchonline.shop/ | دسته‌های جنسیت/برند/سبک، راهنمای خرید در دسته‌ها، زبان رایج «اصل/گارانتی» |
-| Watch Online — Men | https://www.watchonline.shop/watch/mens | intent ترکیبی transactional + buying guide |
-| Raiamark | https://raiamark.com/ | ورود از مردانه/زنانه/بچگانه، فهرست برند و بودجه |
-| Rolex — Purchasing | https://www.rolex.com/buying-a-rolex/purchasing-a-rolex | تفکیک انتخاب، مشخصات، تنظیم بند، جعبه و guarantee در منبع رسمی |
-| Rolex — Guarantee | https://www.rolex.com/en-us/buying-a-rolex/the-rolex-guarantee | نشان می‌دهد guarantee رسمی به retailer رسمی و کارت تکمیل‌شده وابسته است |
-| Rolex — Care FAQ | https://www.rolex.com/en-us/watch-care-and-service/faq | معماری محتوای post-purchase و محدودیت توصیه‌های مدل‌محور |
+| نمونه              | URL                                                            | مشاهده معماری؛ نه منبع ادعا برای KRONOS                                   |
+| ------------------ | -------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Watch Online       | https://www.watchonline.shop/                                  | دسته‌های جنسیت/برند/سبک، راهنمای خرید در دسته‌ها، زبان رایج «اصل/گارانتی» |
+| Watch Online — Men | https://www.watchonline.shop/watch/mens                        | intent ترکیبی transactional + buying guide                                |
+| Raiamark           | https://raiamark.com/                                          | ورود از مردانه/زنانه/بچگانه، فهرست برند و بودجه                           |
+| Rolex — Purchasing | https://www.rolex.com/buying-a-rolex/purchasing-a-rolex        | تفکیک انتخاب، مشخصات، تنظیم بند، جعبه و guarantee در منبع رسمی            |
+| Rolex — Guarantee  | https://www.rolex.com/en-us/buying-a-rolex/the-rolex-guarantee | نشان می‌دهد guarantee رسمی به retailer رسمی و کارت تکمیل‌شده وابسته است   |
+| Rolex — Care FAQ   | https://www.rolex.com/en-us/watch-care-and-service/faq         | معماری محتوای post-purchase و محدودیت توصیه‌های مدل‌محور                  |
 
 ## محدودیت تحقیق
 

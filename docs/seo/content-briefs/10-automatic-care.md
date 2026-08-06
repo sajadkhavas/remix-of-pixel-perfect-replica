@@ -8,25 +8,33 @@
 - **Priority:** P1
 
 ## Outline
+
 شروع پس از توقف؛ کوک دستی؛ تنظیم تاریخ/زمان با caveat؛ میدان مغناطیسی؛ آب و ضربه؛ تمیزکاری؛ ذخیره‌سازی؛ نشانه‌های سرویس.
 
 ## Questions answered
+
 چند دور کوک لازم است؟ watch winder ضروری است؟ چه زمانی توقف غیرعادی است؟
 
 ## Products/categories to link
+
 `/guides/automatic-watch`، `/guides/watch-care`، `/guides/mechanical-service`، Product manual/source.
 
 ## Recommended schema
+
 `Article`، `BreadcrumbList`، FAQ قابل‌مشاهده.
 
 ## E-E-A-T requirements
+
 راهنمای سازنده بر توصیه عمومی اولویت دارد؛ از عدد ثابت برای همه کالیبرها پرهیز شود.
 
 ## Required expert review
+
 متخصص موتور مکانیکی.
 
 ## Suggested CTA
+
 **راهنمای مدل ساعت خود را بررسی کنید**
 
 ## Cannibalization notes
+
 Guide «ساعت اتوماتیک چیست» آموزشی پیش از خرید؛ این صفحه post-purchase است.

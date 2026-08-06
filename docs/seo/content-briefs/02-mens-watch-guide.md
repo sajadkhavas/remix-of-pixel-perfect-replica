@@ -8,9 +8,11 @@
 - **Priority:** P1
 
 ## هدف
+
 کمک به انتخاب بر اساس کاربرد و ابعاد، بدون کلیشه جنسیتی یا ادعای فروش.
 
 ## Outline
+
 1. هدف استفاده
 2. اندازه مچ و قطر/lug-to-lug
 3. سبک رسمی، روزمره و اسپرت
@@ -20,25 +22,33 @@
 7. سناریوهای انتخاب
 
 ## Questions answered
+
 قطر مناسب چیست؟ برای محل کار چه مدلی مناسب است؟ اسپرت و رسمی چه تفاوتی دارند؟
 
 ## Products/categories to link
+
 `/watches/men`، `/guides/watch-size`، `/watches/classic`، `/watches/sport`
 
 ## Recommended schema
+
 `Article` و `BreadcrumbList`.
 
 ## E-E-A-T requirements
+
 ابعاد منبع‌دار، نمونه‌های متنوع، توضیح اینکه جنسیت taxonomy بازاری است نه محدودیت.
 
 ## Required expert review
+
 بازبینی UX/محتوا برای پرهیز از کلیشه جنسیتی.
 
 ## Suggested CTA
+
 **مشاهده ساعت‌های مردانه**
 
 ## Cannibalization notes
+
 Category مالک keyword خرید؛ این brief مالک «راهنمای انتخاب» است.
 
 ## Acceptance
+
 اعتبارسنجی intent، نبود claim بدون evidence، لینک دوطرفه، منبع رسمی، بازبینی و CTA واقعی.

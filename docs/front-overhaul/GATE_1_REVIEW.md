@@ -12,12 +12,12 @@ Gate 1 reviewed the complete outputs of F0, F1, F2, and F3A against their assign
 
 ## Final decisions
 
-| Phase | Final phase SHA | Decision | Integration result |
-|---|---|---|---|
-| F0 — Production Foundation | `3d910a5501abd77470403bd667b947a709229102` | APPROVED | Used as the initial `integration/front-200` base |
-| F1 — Brand, Content and Keyword Architecture | `b8c3920c8fdddaa3b1d3fa33214e27626c35d3c7` | APPROVED_WITH_RECONCILIATION | Integrated through PR #12; route naming is governed by this document and F2 |
-| F2 — Information Architecture and Data Contracts | `0c7d711b1550c4613977f10095b7b6303d821ac3` | APPROVED_AFTER_SUPERVISOR_HARDENING | Integrated through PR #13; persistence validation hardened on integration |
-| F3A — Visual Direction and Asset Strategy | `247021a753efbfe0bda92438782f466dc7c2269c` | APPROVED | Integrated through PR #14 |
+| Phase                                            | Final phase SHA                            | Decision                            | Integration result                                                          |
+| ------------------------------------------------ | ------------------------------------------ | ----------------------------------- | --------------------------------------------------------------------------- |
+| F0 — Production Foundation                       | `3d910a5501abd77470403bd667b947a709229102` | APPROVED                            | Used as the initial `integration/front-200` base                            |
+| F1 — Brand, Content and Keyword Architecture     | `b8c3920c8fdddaa3b1d3fa33214e27626c35d3c7` | APPROVED_WITH_RECONCILIATION        | Integrated through PR #12; route naming is governed by this document and F2 |
+| F2 — Information Architecture and Data Contracts | `0c7d711b1550c4613977f10095b7b6303d821ac3` | APPROVED_AFTER_SUPERVISOR_HARDENING | Integrated through PR #13; persistence validation hardened on integration   |
+| F3A — Visual Direction and Asset Strategy        | `247021a753efbfe0bda92438782f466dc7c2269c` | APPROVED                            | Integrated through PR #14                                                   |
 
 ## F0 review
 

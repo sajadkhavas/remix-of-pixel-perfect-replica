@@ -135,8 +135,7 @@ export function clampQuantity(
 
   const normalized =
     rule.min +
-    Math.floor((Math.max(rule.min, safeRequested) - rule.min) / rule.increment) *
-      rule.increment;
+    Math.floor((Math.max(rule.min, safeRequested) - rule.min) / rule.increment) * rule.increment;
 
   return Math.min(normalized, hardMax);
 }
@@ -151,8 +150,7 @@ export function sumMoney(values: readonly Money[]): Money | null {
   const first = values[0];
   if (
     !values.every(
-      (value) =>
-        value.currency === first.currency && value.fractionDigits === first.fractionDigits,
+      (value) => value.currency === first.currency && value.fractionDigits === first.fractionDigits,
     )
   ) {
     throw new Error("Cannot add money with different currencies or fraction digits");

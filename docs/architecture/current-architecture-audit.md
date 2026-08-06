@@ -13,22 +13,22 @@ F2 introduces independent domain contracts under `src/domain`, repository bounda
 
 ## Current route inventory
 
-| Current route file | Effective path | Current purpose | Main architectural issue |
-|---|---|---|---|
-| `index.tsx` | `/` | Homepage | Uses presentation sections and static catalog references without a page data contract. |
-| `shop.tsx` | `/shop` | Catalog listing, text search, category filter, sort | Search, category, and sort are local React state; URL does not preserve discovery state. |
-| `shop.$category.tsx` | `/shop/$category` | Category listing | Category accepts an unconstrained string; no shared taxonomy or indexability policy. |
-| `product.$id.tsx` | `/product/$id` | Product detail | Numeric ID is exposed in the URL; no product slug, variant identity, canonical rule, or structured-data contract. |
-| `brands.tsx` | `/brands` | Brand listing | No brand detail route or normalized brand entity. |
-| `wishlist.tsx` | `/wishlist` | Local wishlist | Persists numeric product IDs only; no versioning, validation, or variant distinction. |
-| `cart.tsx` | `/cart` | Local cart | Cart line is `{ id, qty }`; no variant, price snapshot, stock cap, currency, migration, or cross-tab contract. |
-| `auth.tsx` | `/auth` | Authentication presentation | No public/private route policy or redirect contract. |
-| `blog.tsx` | `/blog` | Editorial listing | Final IA requires `/magazine`; no article contract or redirect plan. |
-| `about.tsx` | `/about` | Informational page | No shared page metadata policy. |
-| `services.tsx` | `/services` | Services page | No content repository contract. |
-| `faq.tsx` | `/faq` | FAQ page | No FAQ structured-data decision record. |
-| `contact.tsx` | `/contact` | Contact page | No form/backend dependency contract. |
-| `__root.tsx` | root shell | Layout and document shell | SEO defaults exist at route level but there is no URL policy shared by child routes. |
+| Current route file   | Effective path    | Current purpose                                     | Main architectural issue                                                                                          |
+| -------------------- | ----------------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `index.tsx`          | `/`               | Homepage                                            | Uses presentation sections and static catalog references without a page data contract.                            |
+| `shop.tsx`           | `/shop`           | Catalog listing, text search, category filter, sort | Search, category, and sort are local React state; URL does not preserve discovery state.                          |
+| `shop.$category.tsx` | `/shop/$category` | Category listing                                    | Category accepts an unconstrained string; no shared taxonomy or indexability policy.                              |
+| `product.$id.tsx`    | `/product/$id`    | Product detail                                      | Numeric ID is exposed in the URL; no product slug, variant identity, canonical rule, or structured-data contract. |
+| `brands.tsx`         | `/brands`         | Brand listing                                       | No brand detail route or normalized brand entity.                                                                 |
+| `wishlist.tsx`       | `/wishlist`       | Local wishlist                                      | Persists numeric product IDs only; no versioning, validation, or variant distinction.                             |
+| `cart.tsx`           | `/cart`           | Local cart                                          | Cart line is `{ id, qty }`; no variant, price snapshot, stock cap, currency, migration, or cross-tab contract.    |
+| `auth.tsx`           | `/auth`           | Authentication presentation                         | No public/private route policy or redirect contract.                                                              |
+| `blog.tsx`           | `/blog`           | Editorial listing                                   | Final IA requires `/magazine`; no article contract or redirect plan.                                              |
+| `about.tsx`          | `/about`          | Informational page                                  | No shared page metadata policy.                                                                                   |
+| `services.tsx`       | `/services`       | Services page                                       | No content repository contract.                                                                                   |
+| `faq.tsx`            | `/faq`            | FAQ page                                            | No FAQ structured-data decision record.                                                                           |
+| `contact.tsx`        | `/contact`        | Contact page                                        | No form/backend dependency contract.                                                                              |
+| `__root.tsx`         | root shell        | Layout and document shell                           | SEO defaults exist at route level but there is no URL policy shared by child routes.                              |
 
 Missing final-architecture routes include `/search`, `/brands/$brandSlug`, compare, checkout, account subsections, magazine article routes, guides, policy pages, authenticity, warranty, shipping/returns, and payment information.
 
@@ -146,18 +146,18 @@ Current metadata provides titles and some descriptions, but the following polici
 
 ## Baseline risk rating
 
-| Area | Risk | Reason |
-|---|---|---|
-| Product identity | High | Public URLs use numeric IDs and no slug contract exists. |
-| Variant readiness | Critical | Variants cannot be represented anywhere in product or cart state. |
-| Discovery state | High | Local-only state breaks deep links, refresh, history, and SEO policy. |
-| Pricing | High | Currency and validity semantics are absent. |
-| Inventory | High | Single number is insufficient for stock and order rules. |
-| Persistence | High | Unversioned and unvalidated localStorage. |
-| SEO URL policy | High | No canonical/noindex decision system. |
-| Fixtures/API migration | High | Routes consume static arrays directly. |
-| UI coupling | High | UI component owns the catalog type. |
-| Accessibility semantics | Medium | Breadcrumbs are ad hoc and stateful controls lack a common contract, but F2 does not alter UI. |
+| Area                    | Risk     | Reason                                                                                         |
+| ----------------------- | -------- | ---------------------------------------------------------------------------------------------- |
+| Product identity        | High     | Public URLs use numeric IDs and no slug contract exists.                                       |
+| Variant readiness       | Critical | Variants cannot be represented anywhere in product or cart state.                              |
+| Discovery state         | High     | Local-only state breaks deep links, refresh, history, and SEO policy.                          |
+| Pricing                 | High     | Currency and validity semantics are absent.                                                    |
+| Inventory               | High     | Single number is insufficient for stock and order rules.                                       |
+| Persistence             | High     | Unversioned and unvalidated localStorage.                                                      |
+| SEO URL policy          | High     | No canonical/noindex decision system.                                                          |
+| Fixtures/API migration  | High     | Routes consume static arrays directly.                                                         |
+| UI coupling             | High     | UI component owns the catalog type.                                                            |
+| Accessibility semantics | Medium   | Breadcrumbs are ad hoc and stateful controls lack a common contract, but F2 does not alter UI. |
 
 ## F2 architectural response
 

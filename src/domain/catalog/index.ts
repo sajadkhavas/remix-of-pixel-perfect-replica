@@ -1,4 +1,11 @@
-import type { BreadcrumbItem, EntityId, ImageMedia, LocalizedText, SEOFields, Slug } from "../shared";
+import type {
+  BreadcrumbItem,
+  EntityId,
+  ImageMedia,
+  LocalizedText,
+  SEOFields,
+  Slug,
+} from "../shared";
 
 export interface Brand {
   readonly id: EntityId;
@@ -73,12 +80,23 @@ export interface TaxonomyDefinition {
 }
 
 export interface CatalogBreadcrumbContext {
-  readonly type: "home" | "shop" | "category" | "brand" | "product" | "magazine" | "article" | "account" | "order";
+  readonly type:
+    | "home"
+    | "shop"
+    | "category"
+    | "brand"
+    | "product"
+    | "magazine"
+    | "article"
+    | "account"
+    | "order";
   readonly label: string;
   readonly href?: string;
 }
 
-export function createBreadcrumb(items: readonly CatalogBreadcrumbContext[]): readonly BreadcrumbItem[] {
+export function createBreadcrumb(
+  items: readonly CatalogBreadcrumbContext[],
+): readonly BreadcrumbItem[] {
   return items.map((item, index) => ({
     label: item.label,
     href: index === items.length - 1 ? undefined : item.href,
@@ -88,5 +106,10 @@ export function createBreadcrumb(items: readonly CatalogBreadcrumbContext[]): re
 }
 
 export function assertValidBreadcrumb(items: readonly BreadcrumbItem[]): boolean {
-  return items.length > 0 && items.every((item, index) => item.position === index + 1 && item.current === (index === items.length - 1));
+  return (
+    items.length > 0 &&
+    items.every(
+      (item, index) => item.position === index + 1 && item.current === (index === items.length - 1),
+    )
+  );
 }

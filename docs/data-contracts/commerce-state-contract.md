@@ -32,16 +32,16 @@ A cart line identifies both `productId` and `variantId`. It also stores a small 
 
 ## State entities
 
-| Entity | Identity | Purpose |
-|---|---|---|
-| `Cart` | one local cart | variant-aware line collection and currency |
-| `CartItem` | `lineId` | quantity, price snapshot, product snapshot, timestamps |
-| `WishlistItem` | product + optional preferred variant | durable interest without assuming purchase configuration |
-| `CompareItem` | product + optional variant | bounded comparison selection |
-| `RecentlyViewedItem` | product + optional variant | recency history, newest occurrence wins |
-| `CouponState` | discriminated union | empty/checking/valid/invalid without ambiguous booleans |
-| `ShippingSelection` | shipping method ID | selected method plus display/price snapshot |
-| `CheckoutDraft` | one draft | contact, address, shipping, note, and terms acceptance |
+| Entity               | Identity                             | Purpose                                                  |
+| -------------------- | ------------------------------------ | -------------------------------------------------------- |
+| `Cart`               | one local cart                       | variant-aware line collection and currency               |
+| `CartItem`           | `lineId`                             | quantity, price snapshot, product snapshot, timestamps   |
+| `WishlistItem`       | product + optional preferred variant | durable interest without assuming purchase configuration |
+| `CompareItem`        | product + optional variant           | bounded comparison selection                             |
+| `RecentlyViewedItem` | product + optional variant           | recency history, newest occurrence wins                  |
+| `CouponState`        | discriminated union                  | empty/checking/valid/invalid without ambiguous booleans  |
+| `ShippingSelection`  | shipping method ID                   | selected method plus display/price snapshot              |
+| `CheckoutDraft`      | one draft                            | contact, address, shipping, note, and terms acceptance   |
 
 ## Persistence envelope
 

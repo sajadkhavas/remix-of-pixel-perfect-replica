@@ -2,40 +2,40 @@
 
 ## 1. URL normalization
 
-| Concern | Policy |
-|---|---|
-| Scheme/host | One production HTTPS origin is canonical; non-canonical hosts redirect at the edge. The host is deployment configuration, not hard-coded in domain contracts. |
-| Case | Paths and parameter keys/enum values are lowercase. Mixed-case requests permanently redirect to lowercase where safe. |
-| Trailing slash | Only `/` has a trailing slash. Other trailing-slash forms permanently redirect to the slashless path. |
-| Slug language | Stable ASCII English/transliterated kebab-case slugs; Persian names remain page copy. Do not encode mutable translated names into IDs. |
-| Separators | Hyphen separates words. No spaces, underscores, duplicate hyphens, or filename extensions. |
-| IDs | Product and brand URLs use slugs, not database IDs. Opaque order IDs are permitted only on private routes. |
-| Query order | Search parameters serialize in the stable contract order. Multi-values are unique and sorted. |
-| Defaults | Default search values are omitted from the URL. |
-| Tracking | `utm_*`, `gclid`, `fbclid`, and equivalent tracking keys are excluded from canonical URLs and should not be propagated by internal links. |
-| Fragments | UI fragments do not affect canonical identity and are not sent to servers. |
+| Concern        | Policy                                                                                                                                                        |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Scheme/host    | One production HTTPS origin is canonical; non-canonical hosts redirect at the edge. The host is deployment configuration, not hard-coded in domain contracts. |
+| Case           | Paths and parameter keys/enum values are lowercase. Mixed-case requests permanently redirect to lowercase where safe.                                         |
+| Trailing slash | Only `/` has a trailing slash. Other trailing-slash forms permanently redirect to the slashless path.                                                         |
+| Slug language  | Stable ASCII English/transliterated kebab-case slugs; Persian names remain page copy. Do not encode mutable translated names into IDs.                        |
+| Separators     | Hyphen separates words. No spaces, underscores, duplicate hyphens, or filename extensions.                                                                    |
+| IDs            | Product and brand URLs use slugs, not database IDs. Opaque order IDs are permitted only on private routes.                                                    |
+| Query order    | Search parameters serialize in the stable contract order. Multi-values are unique and sorted.                                                                 |
+| Defaults       | Default search values are omitted from the URL.                                                                                                               |
+| Tracking       | `utm_*`, `gclid`, `fbclid`, and equivalent tracking keys are excluded from canonical URLs and should not be propagated by internal links.                     |
+| Fragments      | UI fragments do not affect canonical identity and are not sent to servers.                                                                                    |
 
 ## 2. Page-type policy
 
-| Page type | Robots | Canonical | Notes |
-|---|---|---|---|
-| Home | `index,follow` | self | One canonical origin. |
-| Base shop | `index,follow` | self | Must provide useful standalone content and products. |
-| Approved clean category/audience/style/movement landing | `index,follow` when useful | self | Uses clean route, not query alias. Empty/thin pages become noindex until useful. |
-| Brand directory | `index,follow` | self | Pagination, if used, follows pagination policy. |
-| Brand detail | `index,follow` when useful | self canonical slug | Empty placeholders are noindex. Unsupported official claims must not be emitted. |
-| Active product | `index,follow` | self canonical product slug | Variant selection normally does not create duplicate indexable URLs. |
-| Temporarily unavailable product | usually `index,follow` | self | Keep indexable when page remains useful, return date/alternatives exist, and product is expected back. |
-| Discontinued product with demand, support, or alternatives | `index,follow` or time-limited index | self | Explain status and link successors. Reassess when page no longer serves users. |
-| Deleted product with clear replacement | redirect | replacement | 301 only when replacement is genuinely equivalent. |
-| Deleted product without replacement | not indexable | none | Return 410 for intentional permanent removal when operationally supported; otherwise 404. |
-| Magazine/guide index and published content | `index,follow` | self | Draft/preview content is noindex and access controlled. |
-| Informational/legal policy page | `index,follow` | self | Legal pages require version/effective date where relevant. |
-| Search results | `noindex,follow` | clean `/search` or no canonical when no equivalent exists | Do not make internal search result sets indexable. |
-| Arbitrary filtered URL | `noindex,follow` | base/clean landing only when substantially equivalent; otherwise normalized self canonical plus noindex | Canonical is not crawl control. |
-| Sort/view-only URL | `noindex,follow` | URL without sort/view | Internal links should prefer default form. |
-| Compare, wishlist, cart | `noindex,follow` | clean self | User/session state; no tracking or item IDs in canonical. |
-| Checkout/account/order/profile/address | `noindex,nofollow` | clean self or omitted on private response | Authentication, privacy, and transactional pages. |
+| Page type                                                  | Robots                               | Canonical                                                                                               | Notes                                                                                                  |
+| ---------------------------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Home                                                       | `index,follow`                       | self                                                                                                    | One canonical origin.                                                                                  |
+| Base shop                                                  | `index,follow`                       | self                                                                                                    | Must provide useful standalone content and products.                                                   |
+| Approved clean category/audience/style/movement landing    | `index,follow` when useful           | self                                                                                                    | Uses clean route, not query alias. Empty/thin pages become noindex until useful.                       |
+| Brand directory                                            | `index,follow`                       | self                                                                                                    | Pagination, if used, follows pagination policy.                                                        |
+| Brand detail                                               | `index,follow` when useful           | self canonical slug                                                                                     | Empty placeholders are noindex. Unsupported official claims must not be emitted.                       |
+| Active product                                             | `index,follow`                       | self canonical product slug                                                                             | Variant selection normally does not create duplicate indexable URLs.                                   |
+| Temporarily unavailable product                            | usually `index,follow`               | self                                                                                                    | Keep indexable when page remains useful, return date/alternatives exist, and product is expected back. |
+| Discontinued product with demand, support, or alternatives | `index,follow` or time-limited index | self                                                                                                    | Explain status and link successors. Reassess when page no longer serves users.                         |
+| Deleted product with clear replacement                     | redirect                             | replacement                                                                                             | 301 only when replacement is genuinely equivalent.                                                     |
+| Deleted product without replacement                        | not indexable                        | none                                                                                                    | Return 410 for intentional permanent removal when operationally supported; otherwise 404.              |
+| Magazine/guide index and published content                 | `index,follow`                       | self                                                                                                    | Draft/preview content is noindex and access controlled.                                                |
+| Informational/legal policy page                            | `index,follow`                       | self                                                                                                    | Legal pages require version/effective date where relevant.                                             |
+| Search results                                             | `noindex,follow`                     | clean `/search` or no canonical when no equivalent exists                                               | Do not make internal search result sets indexable.                                                     |
+| Arbitrary filtered URL                                     | `noindex,follow`                     | base/clean landing only when substantially equivalent; otherwise normalized self canonical plus noindex | Canonical is not crawl control.                                                                        |
+| Sort/view-only URL                                         | `noindex,follow`                     | URL without sort/view                                                                                   | Internal links should prefer default form.                                                             |
+| Compare, wishlist, cart                                    | `noindex,follow`                     | clean self                                                                                              | User/session state; no tracking or item IDs in canonical.                                              |
+| Checkout/account/order/profile/address                     | `noindex,nofollow`                   | clean self or omitted on private response                                                               | Authentication, privacy, and transactional pages.                                                      |
 
 ## 3. Product canonical and variant policy
 
@@ -80,15 +80,15 @@ Approval requires unique intent, unique copy, stable inventory, search demand, i
 
 ## 5. Query-parameter canonical handling
 
-| Parameter class | Canonical treatment | Robots effect |
-|---|---|---|
-| `q` | remove; canonical to clean `/search` only when that page is the best equivalent, otherwise omit canonical | noindex |
-| Filter dimensions | remove when canonicalizing to an equivalent base/curated page; otherwise keep normalized self canonical | noindex |
-| `sort` | remove | noindex when non-default |
-| `view` | remove | noindex when non-default |
-| `page` | retain for valid unfiltered pagination | indexable only for clean listing pagination |
-| Tracking/affiliate click IDs | remove | inherit clean page |
-| Unknown parameters | remove and preferably redirect/replace to normalized URL | inherit normalized state |
+| Parameter class              | Canonical treatment                                                                                       | Robots effect                               |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| `q`                          | remove; canonical to clean `/search` only when that page is the best equivalent, otherwise omit canonical | noindex                                     |
+| Filter dimensions            | remove when canonicalizing to an equivalent base/curated page; otherwise keep normalized self canonical   | noindex                                     |
+| `sort`                       | remove                                                                                                    | noindex when non-default                    |
+| `view`                       | remove                                                                                                    | noindex when non-default                    |
+| `page`                       | retain for valid unfiltered pagination                                                                    | indexable only for clean listing pagination |
+| Tracking/affiliate click IDs | remove                                                                                                    | inherit clean page                          |
+| Unknown parameters           | remove and preferably redirect/replace to normalized URL                                                  | inherit normalized state                    |
 
 ## 6. Pagination
 
@@ -111,13 +111,13 @@ Approval requires unique intent, unique copy, stable inventory, search demand, i
 
 ## 8. Empty and unavailable collections
 
-| State | HTTP | Robots/canonical | UX |
-|---|---:|---|---|
-| Valid category with temporary zero inventory and useful content | 200 | `noindex,follow` until products return; self canonical | explain temporary state, show relevant alternatives/content |
-| Category intentionally retired with equivalent successor | 301 | successor canonical | redirect one hop |
-| Category retired without successor | 410 or 404 | none | helpful navigation |
-| Unknown category slug | 404 | no index | do not redirect all unknowns to `/shop` |
-| Empty filtered combination | 200 | noindex; policy canonical | preserve filters and offer removal actions |
+| State                                                           |       HTTP | Robots/canonical                                       | UX                                                          |
+| --------------------------------------------------------------- | ---------: | ------------------------------------------------------ | ----------------------------------------------------------- |
+| Valid category with temporary zero inventory and useful content |        200 | `noindex,follow` until products return; self canonical | explain temporary state, show relevant alternatives/content |
+| Category intentionally retired with equivalent successor        |        301 | successor canonical                                    | redirect one hop                                            |
+| Category retired without successor                              | 410 or 404 | none                                                   | helpful navigation                                          |
+| Unknown category slug                                           |        404 | no index                                               | do not redirect all unknowns to `/shop`                     |
+| Empty filtered combination                                      |        200 | noindex; policy canonical                              | preserve filters and offer removal actions                  |
 
 ## 9. Duplicate and redirect policy
 

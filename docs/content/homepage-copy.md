@@ -1,9 +1,11 @@
 # مشخصات کامل محتوای صفحه اصلی KRONOS
 
 ## نقش صفحه
+
 صفحه اصلی باید جایگاه برند را روشن کند، مسیر ورود به Category/Brand/Guide بدهد و بدون اعتماد مصنوعی استاندارد اطلاعات را نشان دهد.
 
 ## H1 نهایی
+
 **ساعتی متناسب با سبک، کاربرد و بودجه شما**
 
 فقط یک H1. شعار «ساعت را آگاهانه انتخاب کنید» display line است. Hero نباید چند H1 ناسازگار داشته باشد.
@@ -11,6 +13,7 @@
 ## Section specifications
 
 ### 1. Announcement bar
+
 - **Section goal:** هدایت به راهنمای مفید بدون ادعای کمپین
 - **Eyebrow:** پیش از انتخاب
 - **Heading:** مقاومت آب هر مدل را در مشخصات همان محصول بررسی کنید.
@@ -23,6 +26,7 @@
 - **SEO role:** لینک داخلی به guide
 
 ### 2. Hero
+
 - **Section goal:** تعریف ارزش و ورود به فروشگاه
 - **Eyebrow:** راهنمای انتخاب و خرید ساعت
 - **Heading:** ساعتی متناسب با سبک، کاربرد و بودجه شما
@@ -35,6 +39,7 @@
 - **SEO role:** H1 اصلی؛ لینک PLP و pillar guide
 
 ### 3. Gender entry
+
 - **Section goal:** مسیر رایج بازار بدون تحمیل کلیشه
 - **Eyebrow:** شروع بر اساس دسته
 - **Heading:** انتخاب را از مدل‌های مردانه یا زنانه شروع کنید
@@ -47,6 +52,7 @@
 - **SEO role:** لینک categoryها و size guide
 
 ### 4. Main collections
+
 - **Section goal:** ورود به taxonomy اصلی
 - **Eyebrow:** کالکشن‌ها
 - **Heading:** ساعت‌ها را بر اساس نوع و کاربرد بررسی کنید
@@ -59,6 +65,7 @@
 - **SEO role:** خوشه‌سازی category
 
 ### 5. Featured products
+
 - **Section goal:** نمایش مدل بر اساس قاعده روشن
 - **Eyebrow:** مدل‌های منتخب برای بررسی
 - **Heading:** چند مدل برای شروع مقایسه
@@ -71,6 +78,7 @@
 - **SEO role:** لینک Product و Compare
 
 ### 6. Shop by style
+
 - **Section goal:** انتخاب بر اساس موقعیت
 - **Eyebrow:** انتخاب بر اساس سبک
 - **Heading:** ساعت مناسب موقعیت خود را پیدا کنید
@@ -83,6 +91,7 @@
 - **SEO role:** long-tail style intent
 
 ### 7. Brands
+
 - **Section goal:** ورود به صفحات برند
 - **Eyebrow:** راهنمای برندها
 - **Heading:** برندها را از فناوری تا طراحی بشناسید
@@ -95,6 +104,7 @@
 - **SEO role:** Brand hub discovery
 
 ### 8. New arrivals
+
 - **Section goal:** additions واقعی
 - **Eyebrow:** تازه‌افزوده‌شده
 - **Heading:** مدل‌هایی که به‌تازگی ثبت شده‌اند
@@ -107,6 +117,7 @@
 - **SEO role:** freshness discovery
 
 ### 9. Editorial story
+
 - **Section goal:** تفاوت محتوایی برند
 - **Eyebrow:** روش KRONOS
 - **Heading:** جزئیات را فقط فهرست نمی‌کنیم؛ معنایشان را توضیح می‌دهیم
@@ -119,6 +130,7 @@
 - **SEO role:** برند و E-E-A-T
 
 ### 10. Buying guide
+
 - **Section goal:** کاهش سردرگمی
 - **Eyebrow:** از اینجا شروع کنید
 - **Heading:** راهنمای خرید ساعت مچی
@@ -131,6 +143,7 @@
 - **SEO role:** pillar/cluster links
 
 ### 11. Services
+
 - **Section goal:** فقط خدمات واقعی
 - **Eyebrow:** خدمات تأییدشده
 - **Heading:** شرایط هر خدمت باید پیش از درخواست روشن باشد
@@ -143,6 +156,7 @@
 - **SEO role:** Service/support
 
 ### 12. Trust
+
 - **Section goal:** استاندارد ادعا
 - **Eyebrow:** استاندارد اعتماد
 - **Heading:** هر ادعا باید پشتوانه قابل‌بررسی داشته باشد
@@ -155,6 +169,7 @@
 - **SEO role:** About/Policy trust links
 
 ### 13. Articles
+
 - **Section goal:** ورود به محتوای کاربردی
 - **Eyebrow:** مجله KRONOS
 - **Heading:** برای انتخاب، استفاده و نگهداری بهتر از ساعت
@@ -167,6 +182,7 @@
 - **SEO role:** Editorial clusters
 
 ### 14. Newsletter
+
 - **Section goal:** بازگشت کاربر با رضایت روشن
 - **Eyebrow:** راهنماهای تازه در ایمیل شما
 - **Heading:** محتوای کاربردی KRONOS را دریافت کنید
@@ -179,6 +195,7 @@
 - **SEO role:** Retention
 
 ### 15. Footer
+
 - **Section goal:** navigation و اطلاعات کسب‌وکار
 - **Eyebrow:** KRONOS
 - **Heading:** ساعت را آگاهانه انتخاب کنید.
@@ -191,13 +208,17 @@
 - **SEO role:** Sitewide links
 
 ## ترتیب Desktop
+
 Announcement، Hero، Gender، Collections، Featured، Style، Brands، New Arrivals مشروط، Editorial، Guide، Services مشروط، Trust، Articles، Newsletter مشروط، Footer.
 
 ## ترتیب Mobile
+
 Announcement، Hero، Collections، Gender، Featured، Guide، Style، Brands، Articles، Trust، conditional sections، Footer.
 
 ## داده‌های لازم
+
 Featured: rule + products؛ New: published_at/inventory؛ Brands: status؛ Services: approved registry؛ Newsletter: provider/consent/privacy؛ Footer: verified config؛ Policies: approved URLs. Fallback همه موارد مشروط: section hidden.
 
 ## Copy QA
+
 بدون «بهترین/برترین/تضمینی»، CTA واقعی، نسخه موبایل معنادار، هیچ count/قیمت/موجودی بی‌منبع.

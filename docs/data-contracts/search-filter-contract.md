@@ -8,26 +8,26 @@ This guarantees refresh, deep-link, back/forward, shareability, deterministic ca
 
 ## Parameter contract
 
-| URL key | Domain type | Default | Parser and normalization | Invalid value | Canonical/indexability |
-|---|---|---:|---|---|---|
-| `q` | trimmed string, max 120 chars | absent | collapse whitespace; preserve user language | remove | `/search` and query-bearing discovery URLs are `noindex,follow`; omit from canonical |
-| `category` | ASCII kebab-case slug | absent | lowercase; slug validation | remove | a durable category must use `/shop/$categorySlug`; query form is noindex |
-| `brand` | sorted unique slug list | `[]` | comma-separated, lowercase, valid slugs | drop invalid members | faceted URL: noindex; canonical normally base listing |
-| `audience` | sorted unique key list | `[]` | comma-separated taxonomy keys | drop invalid members | noindex unless represented by an approved clean landing route such as `/shop/men` |
-| `style` | sorted unique key list | `[]` | comma-separated taxonomy keys | drop invalid members | noindex unless an approved clean landing route exists |
-| `movement` | sorted unique key list | `[]` | comma-separated taxonomy keys | drop invalid members | noindex unless an approved clean landing route exists |
-| `priceMin` | non-negative integer minor-unit amount | absent | finite integer; swap with max when reversed | remove | noindex; remove from canonical |
-| `priceMax` | non-negative integer minor-unit amount | absent | finite integer; swap with min when reversed | remove | noindex; remove from canonical |
-| `caseSize` | sorted unique number list (10–100 mm) | `[]` | comma-separated numbers | drop invalid members | noindex; remove from canonical |
-| `caseMaterial` | sorted unique key list | `[]` | comma-separated taxonomy keys | drop invalid members | noindex; remove from canonical |
-| `strapMaterial` | sorted unique key list | `[]` | comma-separated taxonomy keys | drop invalid members | noindex; remove from canonical |
-| `dialColor` | sorted unique key list | `[]` | comma-separated taxonomy keys | drop invalid members | noindex; remove from canonical |
-| `waterResistance` | sorted unique key list | `[]` | comma-separated taxonomy keys | drop invalid members | noindex; remove from canonical |
-| `availability` | list of `in-stock`, `low-stock`, `preorder`, `backorder` | `[]` | comma-separated allowlist | drop invalid members | noindex; remove from canonical |
-| `discount` | boolean | `false` | `1` or `true` => true | false | noindex; remove from canonical |
-| `sort` | `SortValue` | route-dependent (`relevance` for search; `newest` for catalog) | allowlist | fallback | non-default sort: noindex and strip from canonical |
-| `page` | integer 1–10000 | `1` | truncate finite number | 1 | clean unfiltered pagination is indexable and self-canonical; filtered/search pagination remains noindex |
-| `view` | `grid` or `list` | `grid` | allowlist | grid | noindex and strip from canonical when non-default |
+| URL key           | Domain type                                              |                                                        Default | Parser and normalization                    | Invalid value        | Canonical/indexability                                                                                  |
+| ----------------- | -------------------------------------------------------- | -------------------------------------------------------------: | ------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------- |
+| `q`               | trimmed string, max 120 chars                            |                                                         absent | collapse whitespace; preserve user language | remove               | `/search` and query-bearing discovery URLs are `noindex,follow`; omit from canonical                    |
+| `category`        | ASCII kebab-case slug                                    |                                                         absent | lowercase; slug validation                  | remove               | a durable category must use `/shop/$categorySlug`; query form is noindex                                |
+| `brand`           | sorted unique slug list                                  |                                                           `[]` | comma-separated, lowercase, valid slugs     | drop invalid members | faceted URL: noindex; canonical normally base listing                                                   |
+| `audience`        | sorted unique key list                                   |                                                           `[]` | comma-separated taxonomy keys               | drop invalid members | noindex unless represented by an approved clean landing route such as `/shop/men`                       |
+| `style`           | sorted unique key list                                   |                                                           `[]` | comma-separated taxonomy keys               | drop invalid members | noindex unless an approved clean landing route exists                                                   |
+| `movement`        | sorted unique key list                                   |                                                           `[]` | comma-separated taxonomy keys               | drop invalid members | noindex unless an approved clean landing route exists                                                   |
+| `priceMin`        | non-negative integer minor-unit amount                   |                                                         absent | finite integer; swap with max when reversed | remove               | noindex; remove from canonical                                                                          |
+| `priceMax`        | non-negative integer minor-unit amount                   |                                                         absent | finite integer; swap with min when reversed | remove               | noindex; remove from canonical                                                                          |
+| `caseSize`        | sorted unique number list (10–100 mm)                    |                                                           `[]` | comma-separated numbers                     | drop invalid members | noindex; remove from canonical                                                                          |
+| `caseMaterial`    | sorted unique key list                                   |                                                           `[]` | comma-separated taxonomy keys               | drop invalid members | noindex; remove from canonical                                                                          |
+| `strapMaterial`   | sorted unique key list                                   |                                                           `[]` | comma-separated taxonomy keys               | drop invalid members | noindex; remove from canonical                                                                          |
+| `dialColor`       | sorted unique key list                                   |                                                           `[]` | comma-separated taxonomy keys               | drop invalid members | noindex; remove from canonical                                                                          |
+| `waterResistance` | sorted unique key list                                   |                                                           `[]` | comma-separated taxonomy keys               | drop invalid members | noindex; remove from canonical                                                                          |
+| `availability`    | list of `in-stock`, `low-stock`, `preorder`, `backorder` |                                                           `[]` | comma-separated allowlist                   | drop invalid members | noindex; remove from canonical                                                                          |
+| `discount`        | boolean                                                  |                                                        `false` | `1` or `true` => true                       | false                | noindex; remove from canonical                                                                          |
+| `sort`            | `SortValue`                                              | route-dependent (`relevance` for search; `newest` for catalog) | allowlist                                   | fallback             | non-default sort: noindex and strip from canonical                                                      |
+| `page`            | integer 1–10000                                          |                                                            `1` | truncate finite number                      | 1                    | clean unfiltered pagination is indexable and self-canonical; filtered/search pagination remains noindex |
+| `view`            | `grid` or `list`                                         |                                                         `grid` | allowlist                                   | grid                 | noindex and strip from canonical when non-default                                                       |
 
 ## Serialization
 
@@ -66,29 +66,29 @@ A later route phase should use `validateSearch` to call `parseDiscoverySearch`, 
 
 ## Sort semantics
 
-| URL value | Persian label | Semantics | Required data | Fallback | Indexability effect |
-|---|---|---|---|---|---|
-| `relevance` | مرتبط‌ترین | Search ranking score; meaningful only with `q` | search score and ranking version | `newest` | noindex; strip from canonical |
-| `newest` | جدیدترین | `releasedAt` descending, then `publishedAt`, then stable ID | valid release/publish date | `popular` | noindex; strip from canonical |
-| `price-asc` | ارزان‌ترین | effective comparable price ascending | normalized price in selected currency | `newest` | noindex; strip from canonical |
-| `price-desc` | گران‌ترین | effective comparable price descending | normalized price in selected currency | `newest` | noindex; strip from canonical |
-| `popular` | محبوب‌ترین | documented popularity score over a defined time window | analytics/order-derived score | `newest` | noindex; strip from canonical |
-| `best-rated` | بالاترین امتیاز | rating adjusted for minimum count, not raw average alone | rating value and count | `popular` | noindex; strip from canonical |
-| `discount` | بیشترین تخفیف | active discount percentage descending | valid list and sale prices | `newest` | noindex; strip from canonical |
+| URL value    | Persian label   | Semantics                                                   | Required data                         | Fallback  | Indexability effect           |
+| ------------ | --------------- | ----------------------------------------------------------- | ------------------------------------- | --------- | ----------------------------- |
+| `relevance`  | مرتبط‌ترین      | Search ranking score; meaningful only with `q`              | search score and ranking version      | `newest`  | noindex; strip from canonical |
+| `newest`     | جدیدترین        | `releasedAt` descending, then `publishedAt`, then stable ID | valid release/publish date            | `popular` | noindex; strip from canonical |
+| `price-asc`  | ارزان‌ترین      | effective comparable price ascending                        | normalized price in selected currency | `newest`  | noindex; strip from canonical |
+| `price-desc` | گران‌ترین       | effective comparable price descending                       | normalized price in selected currency | `newest`  | noindex; strip from canonical |
+| `popular`    | محبوب‌ترین      | documented popularity score over a defined time window      | analytics/order-derived score         | `newest`  | noindex; strip from canonical |
+| `best-rated` | بالاترین امتیاز | rating adjusted for minimum count, not raw average alone    | rating value and count                | `popular` | noindex; strip from canonical |
+| `discount`   | بیشترین تخفیف   | active discount percentage descending                       | valid list and sale prices            | `newest`  | noindex; strip from canonical |
 
 “Newest” must not be exposed when dates are absent or unreliable. “Popular” must not be mislabeled as “best selling” unless its source is actual sales data.
 
 ## SEO decision matrix
 
-| State | Robots | Canonical |
-|---|---|---|
-| base `/shop` or approved clean landing route | `index,follow` | self |
-| unfiltered `page=N` | `index,follow` | self, retaining `page=N` |
-| query `q` | `noindex,follow` | clean search route without query, or omit canonical when no equivalent exists |
-| arbitrary facets | `noindex,follow` | base category only when substantially duplicate; otherwise normalized self canonical plus noindex |
-| sort/view only | `noindex,follow` | URL without sort/view |
-| facets plus pagination | `noindex,follow` | normalized policy target; never imply page 2 equals page 1 |
-| tracking parameters | inherit clean page | remove tracking keys |
+| State                                        | Robots             | Canonical                                                                                         |
+| -------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------- |
+| base `/shop` or approved clean landing route | `index,follow`     | self                                                                                              |
+| unfiltered `page=N`                          | `index,follow`     | self, retaining `page=N`                                                                          |
+| query `q`                                    | `noindex,follow`   | clean search route without query, or omit canonical when no equivalent exists                     |
+| arbitrary facets                             | `noindex,follow`   | base category only when substantially duplicate; otherwise normalized self canonical plus noindex |
+| sort/view only                               | `noindex,follow`   | URL without sort/view                                                                             |
+| facets plus pagination                       | `noindex,follow`   | normalized policy target; never imply page 2 equals page 1                                        |
+| tracking parameters                          | inherit clean page | remove tracking keys                                                                              |
 
 Canonical is not used as the only crawl-control mechanism. Internal navigation should avoid generating unbounded facet combinations, robots rules may disallow known infinite patterns, and only curated clean landing pages are linked as indexable destinations.
 
