@@ -13,6 +13,8 @@ const registries = [
   ["keyboard", "quality/keyboard-baseline.json", "defects"],
 ];
 
+const QUALITY_BASELINE_SHA = "f8e48e839a7ac43a5b7088254dde4441c4232c35";
+
 function sortedCounts(entries, field) {
   const counts = new Map();
   for (const entry of entries) {
@@ -25,7 +27,7 @@ function sortedCounts(entries, field) {
 export function buildQualitySummary() {
   const result = {
     schemaVersion: 1,
-    baselineSha: "b0d8e9ba1d0156d18ccb68258a9a650490931d89",
+    baselineSha: QUALITY_BASELINE_SHA,
     registries: {},
     totalTrackedDebt: 0,
     performance: readJson("quality/performance-current.json"),
