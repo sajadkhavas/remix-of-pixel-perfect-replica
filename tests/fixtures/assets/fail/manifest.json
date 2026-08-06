@@ -2,8 +2,21 @@
   "schemaVersion": 2,
   "assets": [
     {
-      "id": "bad",
+      "id": "missing-path",
       "path": "",
+      "source": "controlled-fixture",
+      "licenseStatus": "approved",
+      "identity": "fixture-missing-path",
+      "alt": "نمونه کنترل‌شده",
+      "responsiveVariants": ["fixture-mobile.png"],
+      "mobileCrop": "fixture-mobile.png",
+      "format": "png",
+      "usage": "Product fixture",
+      "productionApproved": true
+    },
+    {
+      "id": "unapproved-metadata",
+      "path": "missing.png",
       "source": null,
       "licenseStatus": "unverified",
       "format": "png",
