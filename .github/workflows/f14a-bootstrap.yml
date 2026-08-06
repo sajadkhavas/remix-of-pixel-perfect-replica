@@ -1,82 +1,41 @@
-name: F14A Exact Baseline Capture
+name: F14A Final Format Sync
 
 on:
-  push:
-    branches:
-      - phase/f14a-quality-harness
-    paths:
-      - scripts/quality/**
-      - scripts/performance/**
-      - tests/browser/**
-      - quality/route-coverage.json
-      - quality/performance-budget.json
-      - .github/workflows/f14a-bootstrap.yml
+  workflow_dispatch:
 
 permissions:
   contents: write
 
-concurrency:
-  group: f14a-exact-baseline-${{ github.ref }}
-  cancel-in-progress: false
-
 jobs:
-  capture:
-    name: Capture exact source, asset, browser, keyboard, and motion debt
-    if: ${{ !contains(github.event.head_commit.message, '[skip baseline-sync]') }}
+  sync:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
-
+    timeout-minutes: 12
     steps:
-      - name: Checkout branch
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           ref: phase/f14a-quality-harness
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.2.22
-      - name: Install locked dependencies
-        run: bun install --frozen-lockfile
-      - name: Capture source and asset debt
-        run: |
-          node scripts/quality/forbidden-copy.mjs --write-baseline
-          node scripts/quality/link-integrity.mjs --write-baseline
-          node scripts/quality/asset-validation.mjs --write-baseline
-      - name: Build and measure budget
-        run: |
-          bun run build
-          node scripts/performance/check-budget.mjs
-      - name: Install Chromium
-        run: bunx playwright install --with-deps chromium
-      - name: Capture browser debt
+      - run: bun install --frozen-lockfile
+      - name: Refresh summary and format F14A changes
         env:
-          UPDATE_QUALITY_BASELINES: "1"
+          FORMAT_BASE_REF: b0d8e9ba1d0156d18ccb68258a9a650490931d89
         run: |
-          bunx playwright test tests/browser/route-smoke.spec.ts --project=desktop-chromium --project=mobile-chromium
-          bunx playwright test tests/browser/accessibility.spec.ts --project=desktop-chromium --project=mobile-chromium
-          bunx playwright test tests/browser/reduced-motion.spec.ts --project=reduced-motion
-          bunx playwright test tests/browser/keyboard.spec.ts --project=keyboard-only
-      - name: Commit generated exact baselines
+          node scripts/quality/report-summary.mjs --write
+          bun run format
+          bun run format:check
+      - name: Commit synchronized output
         shell: bash
         run: |
           set -Eeuo pipefail
-          paths=(
-            quality/forbidden-copy-baseline.json
-            quality/link-integrity-baseline.json
-            quality/asset-violation-baseline.json
-            quality/route-smoke-baseline.json
-            quality/accessibility-baseline.json
-            quality/reduced-motion-baseline.json
-            quality/keyboard-baseline.json
-            quality/performance-current.json
-          )
-          if git diff --quiet -- "${paths[@]}"; then
-            echo "All baselines are already synchronized."
+          if git diff --quiet; then
+            echo "No synchronized changes."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add "${paths[@]}"
-          git commit -m "test(f14a): capture route and keyboard debt [skip baseline-sync]"
+          git add .github/workflows docs/quality package.json playwright.config.ts eslint.config.js scripts/quality scripts/performance tests quality
+          git commit -m "chore(f14a): format harness and refresh summary [skip quality-sync]"
           git push origin HEAD:phase/f14a-quality-harness
