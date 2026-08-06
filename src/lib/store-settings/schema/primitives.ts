@@ -1,10 +1,6 @@
 import { z } from "zod";
 
-export const STORE_SETTING_ENVIRONMENTS = [
-  "development",
-  "staging",
-  "production",
-] as const;
+export const STORE_SETTING_ENVIRONMENTS = ["development", "staging", "production"] as const;
 
 export const CLAIM_STATUSES = [
   "confirmed",
@@ -34,12 +30,8 @@ export const trimString = (minimum = 1, maximum = 240) =>
   z.string().trim().min(minimum).max(maximum);
 
 export const isoDateTimeSchema = z.string().datetime({ offset: true });
-export const localeSchema = z
-  .string()
-  .regex(/^[a-z]{2,3}(?:-[A-Z]{2})?$/, "Invalid locale code");
-export const countryCodeSchema = z
-  .string()
-  .regex(/^[A-Z]{2}$/, "Country code must be ISO alpha-2");
+export const localeSchema = z.string().regex(/^[a-z]{2,3}(?:-[A-Z]{2})?$/, "Invalid locale code");
+export const countryCodeSchema = z.string().regex(/^[A-Z]{2}$/, "Country code must be ISO alpha-2");
 export const relativePathSchema = z
   .string()
   .trim()
@@ -70,14 +62,8 @@ export function isHttpsUrl(value: string): boolean {
   }
 }
 
-export const httpUrlSchema = z
-  .string()
-  .url()
-  .refine(isHttpUrl, "Only HTTP(S) URLs are allowed");
-export const httpsUrlSchema = z
-  .string()
-  .url()
-  .refine(isHttpsUrl, "Only HTTPS URLs are allowed");
+export const httpUrlSchema = z.string().url().refine(isHttpUrl, "Only HTTP(S) URLs are allowed");
+export const httpsUrlSchema = z.string().url().refine(isHttpsUrl, "Only HTTPS URLs are allowed");
 export const publicAssetSourceSchema = z
   .string()
   .trim()

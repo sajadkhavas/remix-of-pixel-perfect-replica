@@ -1,9 +1,5 @@
 import { z } from "zod";
-import {
-  CLAIM_STATUSES,
-  isoDateTimeSchema,
-  trimString,
-} from "./primitives";
+import { CLAIM_STATUSES, isoDateTimeSchema, trimString } from "./primitives";
 
 export const PublicEvidenceSchema = z
   .object({
@@ -14,10 +10,7 @@ export const PublicEvidenceSchema = z
   })
   .strict()
   .superRefine((value, context) => {
-    if (
-      value.expiresAt &&
-      Date.parse(value.expiresAt) <= Date.parse(value.verifiedAt)
-    ) {
+    if (value.expiresAt && Date.parse(value.expiresAt) <= Date.parse(value.verifiedAt)) {
       context.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["expiresAt"],
@@ -43,7 +36,10 @@ export function validateConfirmedValue(
 
 export const EvidenceAwareClaimSchema = z
   .object({
-    id: z.string().trim().regex(/^[a-z0-9]+(?:[._-][a-z0-9]+)*$/),
+    id: z
+      .string()
+      .trim()
+      .regex(/^[a-z0-9]+(?:[._-][a-z0-9]+)*$/),
     status: confirmationStatusSchema,
     sourceText: trimString(1, 500).optional(),
     evidence: PublicEvidenceSchema.optional(),
@@ -70,15 +66,11 @@ export const EvidenceAwareClaimSchema = z
       }
     }
 
-    if (
-      claim.onMissingEvidence === "use-neutral-fallback" &&
-      !claim.neutralFallbackText
-    ) {
+    if (claim.onMissingEvidence === "use-neutral-fallback" && !claim.neutralFallbackText) {
       context.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["neutralFallbackText"],
-        message:
-          "Neutral fallback text is required when fallback presentation is enabled",
+        message: "Neutral fallback text is required when fallback presentation is enabled",
       });
     }
 

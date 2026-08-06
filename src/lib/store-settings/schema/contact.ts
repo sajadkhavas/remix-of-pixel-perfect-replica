@@ -42,11 +42,12 @@ export const legalSchema = z
 
 const phoneSchema = z
   .object({
-    id: z.string().trim().regex(/^[a-z0-9]+(?:[._-][a-z0-9]+)*$/),
-    label: trimString(1, 80),
-    e164: z
+    id: z
       .string()
-      .regex(/^\+[1-9]\d{7,14}$/, "Phone number must use E.164 format"),
+      .trim()
+      .regex(/^[a-z0-9]+(?:[._-][a-z0-9]+)*$/),
+    label: trimString(1, 80),
+    e164: z.string().regex(/^\+[1-9]\d{7,14}$/, "Phone number must use E.164 format"),
     displayValue: trimString(1, 80).optional(),
     status: confirmationStatusSchema,
     evidence: PublicEvidenceSchema.optional(),
@@ -56,7 +57,10 @@ const phoneSchema = z
 
 const emailSchema = z
   .object({
-    id: z.string().trim().regex(/^[a-z0-9]+(?:[._-][a-z0-9]+)*$/),
+    id: z
+      .string()
+      .trim()
+      .regex(/^[a-z0-9]+(?:[._-][a-z0-9]+)*$/),
     label: trimString(1, 80),
     address: z.string().trim().email().max(254),
     status: confirmationStatusSchema,

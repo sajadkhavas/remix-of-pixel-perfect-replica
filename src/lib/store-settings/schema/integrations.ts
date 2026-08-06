@@ -17,7 +17,11 @@ export const EnamadSettingsSchema = z
   .object({
     enabled: z.boolean(),
     provider: z.enum(ENAMAD_PROVIDER_ALLOWLIST),
-    publicIdentifier: z.string().trim().regex(/^[A-Za-z0-9_-]{3,160}$/).optional(),
+    publicIdentifier: z
+      .string()
+      .trim()
+      .regex(/^[A-Za-z0-9_-]{3,160}$/)
+      .optional(),
     verificationUrl: httpsUrlSchema.optional(),
     logoAsset: PublicAssetReferenceSchema.optional(),
     verifiedDomain: hostnameSchema.optional(),
@@ -105,8 +109,7 @@ export const paymentSchema = z
     }
 
     const hasOnlineProvider = enabledMethods.some(
-      (method) =>
-        method.providerId !== "cash-on-delivery" && method.providerId !== "bank-transfer",
+      (method) => method.providerId !== "cash-on-delivery" && method.providerId !== "bank-transfer",
     );
     if (value.checkoutMode === "online" && !hasOnlineProvider) {
       context.addIssue({
@@ -246,7 +249,10 @@ export const environmentSchema = z
     name: z.enum(STORE_SETTING_ENVIRONMENTS),
     source: z.enum(["static", "environment", "fixture"]),
     fixture: z.boolean(),
-    configurationVersion: z.string().trim().regex(/^\d+\.\d+\.\d+$/),
+    configurationVersion: z
+      .string()
+      .trim()
+      .regex(/^\d+\.\d+\.\d+$/),
     updatedAt: isoDateTimeSchema.optional(),
     capabilities: capabilitiesSchema,
   })

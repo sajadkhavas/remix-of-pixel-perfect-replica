@@ -235,8 +235,7 @@ export const PublicStoreSettingsSchema = z
     );
     requireVisibleConfiguration(
       settings.contentVisibility.paymentMethods,
-      settings.features.paymentMethods &&
-        settings.payment.methods.some((method) => method.enabled),
+      settings.features.paymentMethods && settings.payment.methods.some((method) => method.enabled),
       "paymentMethods",
       "Payment-method visibility requires the feature and at least one enabled method",
     );

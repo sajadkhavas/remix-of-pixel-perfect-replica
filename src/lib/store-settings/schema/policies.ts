@@ -92,7 +92,10 @@ export const authenticitySchema = createPolicySchema();
 
 const trustProviderSchema = z
   .object({
-    providerId: z.string().trim().regex(/^[a-z0-9]+(?:[._-][a-z0-9]+)*$/),
+    providerId: z
+      .string()
+      .trim()
+      .regex(/^[a-z0-9]+(?:[._-][a-z0-9]+)*$/),
     displayName: trimString(1, 120),
     enabled: z.boolean(),
     verificationUrl: httpsUrlSchema.optional(),

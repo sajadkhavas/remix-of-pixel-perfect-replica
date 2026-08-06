@@ -23,9 +23,9 @@ export function isTrustClaimVisible(
 ): boolean {
   return Boolean(
     claim &&
-      claim.status === "confirmed" &&
-      claim.sourceText?.trim() &&
-      hasCurrentEvidence(claim.evidence, now),
+    claim.status === "confirmed" &&
+    claim.sourceText?.trim() &&
+    hasCurrentEvidence(claim.evidence, now),
   );
 }
 
