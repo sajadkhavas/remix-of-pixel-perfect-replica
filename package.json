@@ -33,7 +33,8 @@
     "quality:assets": "node scripts/quality/asset-validation.mjs",
     "quality:assets:release": "node scripts/quality/asset-validation.mjs --release",
     "quality:performance": "node scripts/performance/check-budget.mjs",
-    "quality:scanners": "bun run quality:forbidden-copy && bun run quality:links && bun run quality:assets",
+    "quality:summary": "node scripts/quality/report-summary.mjs --check",
+    "quality:scanners": "bun run quality:forbidden-copy && bun run quality:links && bun run quality:assets && bun run quality:summary",
     "quality": "bun run format:check && bun run quality:lint && bun run typecheck && bun run test:run && bun run quality:scanners && bun run build && bun run quality:performance"
   },
   "dependencies": {
@@ -116,7 +117,7 @@
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.6",
-    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-hooks": "^5.2.6",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^15.15.0",
     "nitro": "3.0.260603-beta",
