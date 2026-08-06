@@ -134,10 +134,7 @@ export function clampQuantity(
   if (hardMax < rule.min) return hardMax;
 
   const cappedRequested = Math.min(Math.max(rule.min, safeRequested), hardMax);
-  return (
-    rule.min +
-    Math.floor((cappedRequested - rule.min) / rule.increment) * rule.increment
-  );
+  return rule.min + Math.floor((cappedRequested - rule.min) / rule.increment) * rule.increment;
 }
 
 export function makeLineId(productId: EntityId, variantId: EntityId): string {
