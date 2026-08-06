@@ -1,0 +1,60 @@
+import type { Brand } from "../../domain/catalog";
+
+const media = (id: string, role: "logo" | "hero", alt: string) => ({
+  type: "image" as const,
+  id,
+  url: new URL("../../assets/watch-luxury.png", import.meta.url).href,
+  alt,
+  dimensions: { width: 1200, height: 1200 },
+  sortOrder: 0,
+  role,
+});
+
+/** All names, stories, and claims in this file are fictional development data. */
+export const FIXTURE_BRANDS: readonly Brand[] = [
+  {
+    id: "brand_aurelius",
+    slug: "aurelius-geneve",
+    name: "Aurelius Genève",
+    localizedName: { default: "اورلیوس ژنو", values: { en: "Aurelius Genève", fa: "اورلیوس ژنو" } },
+    logo: media("media_brand_aurelius_logo", "logo", "نشان fixture اورلیوس ژنو"),
+    heroImage: media("media_brand_aurelius_hero", "hero", "تصویر fixture اورلیوس ژنو"),
+    originCountryCode: "CH",
+    foundedYear: 1984,
+    description: { default: "برند کاملاً خیالی برای توسعه و آزمون." },
+    story: { default: "تمام تاریخچه و ادعاهای این برند fixture هستند." },
+    officialStatus: { status: "unverified" },
+    seo: { title: "Aurelius Genève | Fixture", description: "Fictional development brand.", canonicalPath: "/brands/aurelius-geneve", robots: "noindex,follow", structuredDataType: "Brand" },
+    featured: true,
+    productCount: 1,
+    relatedArticleIds: ["article_fixture_heritage"],
+  },
+  {
+    id: "brand_kavian",
+    slug: "kavian-atelier",
+    name: "Kavian Atelier",
+    localizedName: { default: "کارگاه کاویان", values: { en: "Kavian Atelier", fa: "کارگاه کاویان" } },
+    logo: media("media_brand_kavian_logo", "logo", "نشان fixture کارگاه کاویان"),
+    originCountryCode: "IR",
+    description: { default: "برند خیالی برای پوشش داده RTL." },
+    officialStatus: { status: "unverified" },
+    seo: { title: "Kavian Atelier | Fixture", description: "Fictional development brand.", canonicalPath: "/brands/kavian-atelier", robots: "noindex,follow", structuredDataType: "Brand" },
+    featured: true,
+    productCount: 1,
+    relatedArticleIds: [],
+  },
+  {
+    id: "brand_orion",
+    slug: "orion-pulse",
+    name: "Orion Pulse",
+    localizedName: { default: "اوریون پالس" },
+    logo: media("media_brand_orion_logo", "logo", "نشان fixture اوریون پالس"),
+    originCountryCode: "JP",
+    description: { default: "برند هوشمند خیالی برای آزمون compatibility و variant." },
+    officialStatus: { status: "unverified" },
+    seo: { title: "Orion Pulse | Fixture", description: "Fictional smartwatch brand.", canonicalPath: "/brands/orion-pulse", robots: "noindex,follow", structuredDataType: "Brand" },
+    featured: false,
+    productCount: 1,
+    relatedArticleIds: [],
+  },
+] as const;
