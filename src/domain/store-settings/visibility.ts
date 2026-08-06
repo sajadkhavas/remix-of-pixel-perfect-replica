@@ -36,7 +36,11 @@ export function resolveClaimPresentation(
   if (!claim) return { kind: "hidden" };
 
   if (isTrustClaimVisible(claim, now)) {
-    return { kind: "claim", text: claim.sourceText!.trim(), claimId: claim.id };
+    return {
+      kind: "claim",
+      text: claim.sourceText!.trim(),
+      claimId: claim.id,
+    };
   }
 
   if (
