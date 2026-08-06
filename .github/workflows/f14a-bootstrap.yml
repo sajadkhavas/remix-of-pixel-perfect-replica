@@ -1,3 +1,1 @@
-# Retired F14A bootstrap marker.
-# The writable capture/format workflow has been removed from execution.
-# Use .github/workflows/frontend-quality.yml for all blocking quality gates.
+# This file intentionally contains no workflow definition.
