@@ -13,11 +13,11 @@ Gate 2 reviewed the complete outputs of F3B, F12, F13A, and F14A against assigne
 
 ## Final phase decisions
 
-| Phase | Final phase SHA | Decision | Integration result |
-| --- | --- | --- | --- |
-| F3B — Production Design System | `a7d5ac3f9f6a6ae97bc5f37388fe68e514107714` | `APPROVED_AFTER_INTEGRATION_VERIFICATION` | Integrated through PR #15; formatting and warning locations reconciled on integration |
-| F12 — Store Configuration and Integration Contract | `6d18f9c18a738345be61e687c3a5690a26332c00` | `APPROVED_AFTER_INTEGRATION_VERIFICATION` | Integrated through PR #16; all store-setting contract tests added to the combined gate |
-| F13A — Technical SEO Infrastructure | `8ed51895d7a765e156bd0a3420d56c2384dada40` | `APPROVED` | Integrated through PR #17; branch and combined contract suites passed |
+| Phase                                                 | Final phase SHA                            | Decision                                   | Integration result                                                                                                     |
+| ----------------------------------------------------- | ------------------------------------------ | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| F3B — Production Design System                        | `a7d5ac3f9f6a6ae97bc5f37388fe68e514107714` | `APPROVED_AFTER_INTEGRATION_VERIFICATION`  | Integrated through PR #15; formatting and warning locations reconciled on integration                                  |
+| F12 — Store Configuration and Integration Contract    | `6d18f9c18a738345be61e687c3a5690a26332c00` | `APPROVED_AFTER_INTEGRATION_VERIFICATION`  | Integrated through PR #16; all store-setting contract tests added to the combined gate                                 |
+| F13A — Technical SEO Infrastructure                   | `8ed51895d7a765e156bd0a3420d56c2384dada40` | `APPROVED`                                 | Integrated through PR #17; branch and combined contract suites passed                                                  |
 | F14A — Quality, Accessibility and Performance Harness | `b1ecc60333f61ad32f9f5f782188e74fedf94c8a` | `APPROVED_AFTER_SUPERVISOR_RECONCILIATION` | Integrated through PR #18; Wave 2 suites, action runtimes, exact warning baseline, and performance baseline reconciled |
 
 ## F3B review
@@ -132,32 +132,32 @@ The only static failure was the intentionally strict Gate 1 CSS ceiling. Gate 2 
 
 Gate 2 is a development gate, not a production-release approval.
 
-| Registry | Current exact debt |
-| --- | ---: |
-| Lint warnings | 8 |
-| Forbidden production copy | 31 |
-| Link integrity | 3 |
-| Asset violations | 83 |
-| Route smoke | 10 |
-| Accessibility | 803 |
-| Reduced motion | 59 |
-| Keyboard | 1 |
-| **Total tracked debt** | **998** |
+| Registry                  | Current exact debt |
+| ------------------------- | -----------------: |
+| Lint warnings             | 8                  |
+| Forbidden production copy | 31                 |
+| Link integrity            | 3                  |
+| Asset violations          | 83                 |
+| Route smoke               | 10                 |
+| Accessibility             | 803                |
+| Reduced motion            | 59                 |
+| Keyboard                  | 1                  |
+| **Total tracked debt**    | **998**            |
 
 Critical release blockers include 14 critical accessibility defects and one critical mobile-menu keyboard defect. There are also 81 serious contrast defects, 708 touch-target findings, 59 serious reduced-motion findings, temporary/unverified media, unsupported prototype claims, and placeholder interactions. These are assigned to the owning feature phases and are not waived by this gate.
 
 ## Performance snapshot
 
-| Metric | Gate 2 measurement |
-| --- | ---: |
-| Client JavaScript total | 827,737 bytes |
-| Largest client chunk | 576,551 bytes |
-| CSS total | 119,738 bytes |
-| Server JavaScript total | 179,076 bytes |
-| Image bytes | 1,680,909 bytes |
-| JavaScript chunks | 29 |
-| Images | 11 |
-| Largest image | 673,220 bytes |
+| Metric                  | Gate 2 measurement |
+| ----------------------- | -----------------: |
+| Client JavaScript total | 827,737 bytes      |
+| Largest client chunk    | 576,551 bytes      |
+| CSS total               | 119,738 bytes      |
+| Server JavaScript total | 179,076 bytes      |
+| Image bytes             | 1,680,909 bytes    |
+| JavaScript chunks       | 29                 |
+| Images                  | 11                 |
+| Largest image           | 673,220 bytes      |
 
 No Lighthouse result or field Core Web Vitals data exists yet. F14B remains responsible for production-like lab and field verification.
 
