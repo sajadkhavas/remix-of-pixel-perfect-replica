@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baselineSha": "b0d8e9ba1d0156d18ccb68258a9a650490931d89",
+  "baselineSha": "f8e48e839a7ac43a5b7088254dde4441c4232c35",
   "registries": {
     "lintWarnings": {
       "count": 8,
@@ -142,11 +142,11 @@
   "totalTrackedDebt": 998,
   "performance": {
     "schemaVersion": 1,
-    "measuredAt": "2026-08-06T06:11:21.231Z",
+    "measuredAt": "2026-08-06T15:41:59.149Z",
     "metrics": {
       "clientJsTotal": 827737,
       "largestClientChunk": 576551,
-      "cssTotal": 97878,
+      "cssTotal": 119738,
       "serverJsTotal": 179076,
       "imageBytes": 1680909,
       "fontBytes": 0,
