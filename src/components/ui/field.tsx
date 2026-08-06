@@ -156,10 +156,7 @@ function FieldDescriptionRender(
 const FieldDescription = React.forwardRef(FieldDescriptionRender);
 FieldDescription.displayName = "FieldDescription";
 
-function FieldErrorRender(
-  props: ParagraphProps,
-  ref: React.ForwardedRef<HTMLParagraphElement>,
-) {
+function FieldErrorRender(props: ParagraphProps, ref: React.ForwardedRef<HTMLParagraphElement>) {
   const { className, children, ...restProps } = props;
   const { errorId, invalid } = useFieldContext("FieldError");
 
