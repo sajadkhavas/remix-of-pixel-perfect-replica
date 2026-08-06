@@ -22,37 +22,35 @@ export interface StatusMessageProps extends StatusMessageBaseProps {
   icon?: React.ReactNode;
 }
 
-const StatusMessage = React.forwardRef<HTMLDivElement, StatusMessageProps>(
-  (
-    {
-      className,
-      tone = "info",
-      title,
-      description,
-      action,
-      icon,
-      children,
-      ...props
-    },
-    ref,
-  ) => {
-    const config = toneConfig[tone];
-    const Icon = config.icon;
+function StatusMessageRender(props: StatusMessageProps, ref: React.ForwardedRef<HTMLDivElement>) {
+  const {
+    className,
+    tone = "info",
+    title,
+    description,
+    action,
+    icon,
+    children,
+    ...restProps
+  } = props;
+  const config = toneConfig[tone];
+  const Icon = config.icon;
 
-    return (
-      <Alert ref={ref} variant={tone} live={config.live} className={className} {...props}>
-        {icon ?? <Icon aria-hidden="true" />}
-        <AlertTitle>{title}</AlertTitle>
-        {description || children || action ? (
-          <AlertDescription>
-            {description ?? children}
-            {action ? <div className="mt-3 flex flex-wrap gap-2">{action}</div> : null}
-          </AlertDescription>
-        ) : null}
-      </Alert>
-    );
-  },
-);
+  return (
+    <Alert ref={ref} variant={tone} live={config.live} className={className} {...restProps}>
+      {icon ?? <Icon aria-hidden="true" />}
+      <AlertTitle>{title}</AlertTitle>
+      {description || children || action ? (
+        <AlertDescription>
+          {description ?? children}
+          {action ? <div className="mt-3 flex flex-wrap gap-2">{action}</div> : null}
+        </AlertDescription>
+      ) : null}
+    </Alert>
+  );
+}
+
+const StatusMessage = React.forwardRef(StatusMessageRender);
 StatusMessage.displayName = "StatusMessage";
 
 export interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -63,8 +61,10 @@ export interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
   compact?: boolean;
 }
 
-const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
-  ({ className, title, description, action, icon, compact = false, ...props }, ref) => (
+function EmptyStateRender(props: EmptyStateProps, ref: React.ForwardedRef<HTMLDivElement>) {
+  const { className, title, description, action, icon, compact = false, ...restProps } = props;
+
+  return (
     <section
       ref={ref}
       aria-label={typeof title === "string" ? title : undefined}
@@ -73,7 +73,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
         compact ? "gap-3 p-6" : "gap-4 px-6 py-12",
         className,
       )}
-      {...props}
+      {...restProps}
     >
       {icon ? (
         <div
@@ -91,8 +91,10 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
       </div>
       {action ? <div className="flex flex-wrap justify-center gap-2">{action}</div> : null}
     </section>
-  ),
-);
+  );
+}
+
+const EmptyState = React.forwardRef(EmptyStateRender);
 EmptyState.displayName = "EmptyState";
 
 export interface ErrorStateProps extends Omit<EmptyStateProps, "icon"> {
@@ -100,18 +102,22 @@ export interface ErrorStateProps extends Omit<EmptyStateProps, "icon"> {
   errorId?: string;
 }
 
-const ErrorState = React.forwardRef<HTMLDivElement, ErrorStateProps>(
-  ({ className, icon, errorId, ...props }, ref) => (
+function ErrorStateRender(props: ErrorStateProps, ref: React.ForwardedRef<HTMLDivElement>) {
+  const { className, icon, errorId, ...restProps } = props;
+
+  return (
     <EmptyState
       ref={ref}
       role="alert"
       data-error-id={errorId}
       icon={icon ?? <AlertCircle />}
       className={cn("border-error/50", className)}
-      {...props}
+      {...restProps}
     />
-  ),
-);
+  );
+}
+
+const ErrorState = React.forwardRef(ErrorStateRender);
 ErrorState.displayName = "ErrorState";
 
 export { StatusMessage, EmptyState, ErrorState };
