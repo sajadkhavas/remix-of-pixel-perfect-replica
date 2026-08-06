@@ -1,0 +1,60 @@
+name: Gate 1 Format Once
+
+on:
+  push:
+    branches:
+      - integration/front-200
+    paths:
+      - .github/workflows/gate1-format-once.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gate1-format-once
+  cancel-in-progress: false
+
+jobs:
+  format-and-self-remove:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout integration branch
+        uses: actions/checkout@v5
+        with:
+          ref: integration/front-200
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22.16.0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.22
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Format all Gate 1 changed files
+        env:
+          FORMAT_BASE_REF: ${{ github.event.repository.default_branch }}
+        run: |
+          git fetch origin main --depth=1
+          export FORMAT_BASE_REF="$(git merge-base HEAD origin/main)"
+          bun run format
+
+      - name: Remove one-time workflow and commit
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          git rm .github/workflows/gate1-format-once.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "style(gate1): format integrated wave-one output"
+          git push origin HEAD:integration/front-200
