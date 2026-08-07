@@ -1,6 +1,11 @@
 import type { Money } from "@/domain/shared";
 import type { Product, ProductInventory } from "@/domain/product";
-import { getDefaultVariant, isPurchasableVariant, isValidPricing } from "@/domain/product";
+import {
+  getDefaultVariant,
+  isInventoryStateConsistent,
+  isPurchasableVariant,
+  isValidPricing,
+} from "@/domain/product";
 
 import {
   discountPercent,
@@ -34,6 +39,7 @@ export function productToCardViewModel(
   const variant = getDefaultVariant(product);
   const variantBelongsToProduct = variant?.productId === product.identity.id;
   const variantActive = variant?.status === "active";
+  const inventoryConsistent = variant ? isInventoryStateConsistent(variant.inventory) : false;
   const pricingValid = variant ? isValidPricing(variant.pricing) : false;
   const primaryImage = product.media.assets.find(
     (asset) => asset.type === "image" && asset.id === product.media.primaryMediaId,
@@ -60,6 +66,7 @@ export function productToCardViewModel(
     product.status === "active" &&
     variantBelongsToProduct &&
     variantActive &&
+    inventoryConsistent &&
     pricingValid
       ? {
           status: variant.inventory.status,
