@@ -1,18 +1,8 @@
-import { ShoppingCart, Menu, User, Heart } from "lucide-react";
+import { Heart, ShoppingCart, User } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 
-import { CATEGORIES } from "@/lib/catalog";
 import { useStore } from "@/lib/store-context";
-import { IconButton } from "@/components/ui/icon-button";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { MobileMenu } from "./MobileMenu";
 import {
   getAnnouncementText,
   PRIMARY_NAV_ITEMS,
@@ -110,74 +100,11 @@ export function Navbar() {
               ) : null}
             </Link>
 
-            <Sheet>
-              <SheetTrigger asChild>
-                <IconButton label="باز کردن منو" variant="ghost" size="icon" className="lg:hidden">
-                  <Menu aria-hidden="true" />
-                </IconButton>
-              </SheetTrigger>
-              <SheetContent side="end" className="gap-6 overflow-y-auto" dir="rtl">
-                <SheetHeader>
-                  <SheetTitle>{brandName}</SheetTitle>
-                  <SheetDescription>دسترسی به بخش‌های اصلی فروشگاه</SheetDescription>
-                </SheetHeader>
-
-                <div className="flex flex-col">
-                  {PRIMARY_NAV_ITEMS.map((item) => (
-                    <SheetClose asChild key={item.to}>
-                      <Link
-                        to={item.to}
-                        className="flex min-h-11 items-center border-b border-border-subtle px-2 py-3 text-base font-semibold text-text-primary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
-                      >
-                        {item.label}
-                      </Link>
-                    </SheetClose>
-                  ))}
-                </div>
-
-                <div>
-                  <p className="mb-2 text-xs font-semibold text-text-muted">دسته‌بندی‌ها</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {CATEGORIES.map((category) => (
-                      <SheetClose asChild key={category.slug}>
-                        <Link
-                          to="/shop/$category"
-                          params={{ category: category.slug }}
-                          className="flex min-h-11 items-center rounded-md border border-border-subtle px-3 py-2 text-sm text-text-secondary transition-colors hover:border-border-default hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
-                        >
-                          {category.name}
-                        </Link>
-                      </SheetClose>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="mt-auto flex flex-col gap-2">
-                  {showWishlist ? (
-                    <SheetClose asChild>
-                      <Link
-                        to="/wishlist"
-                        className="flex min-h-11 items-center gap-2 rounded-md px-2 text-text-secondary hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
-                      >
-                        <Heart className="size-5" aria-hidden="true" />
-                        علاقه‌مندی‌ها
-                      </Link>
-                    </SheetClose>
-                  ) : null}
-                  {showAccount ? (
-                    <SheetClose asChild>
-                      <Link
-                        to="/auth"
-                        className="flex min-h-11 items-center gap-2 rounded-md px-2 text-text-secondary hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
-                      >
-                        <User className="size-5" aria-hidden="true" />
-                        حساب کاربری
-                      </Link>
-                    </SheetClose>
-                  ) : null}
-                </div>
-              </SheetContent>
-            </Sheet>
+            <MobileMenu
+              brandName={brandName}
+              showWishlist={showWishlist}
+              showAccount={showAccount}
+            />
           </div>
         </div>
       </nav>
