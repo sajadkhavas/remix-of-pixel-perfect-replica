@@ -21,7 +21,7 @@ jobs:
         with:
           bun-version: 1.2.22
       - run: bun install --frozen-lockfile
-      - run: bun exec prettier --write src/components/layout/store-settings-runtime.ts src/components/layout/store-settings-context.tsx src/routes/__root.tsx
+      - run: bun x prettier --write src/components/layout/store-settings-runtime.ts src/components/layout/store-settings-context.tsx src/routes/__root.tsx
       - run: |
           git rm .github/workflows/gate3-f4-format-once.yml
           git config user.name "github-actions[bot]"
