@@ -2,7 +2,7 @@ import { describe, expect, test } from "bun:test";
 
 import { legacyWatchToCardViewModel } from "../../src/components/commerce/product-card-model";
 import { productToCardViewModel } from "../../src/components/commerce/product-card-product-adapter";
-import type { Product, ProductInventory } from "../../src/domain/product";
+import type { Product, ProductInventory, ProductVariant } from "../../src/domain/product";
 import type { Money } from "../../src/domain/shared";
 
 const NOW = "2026-08-07T00:00:00.000Z";
@@ -14,7 +14,10 @@ function formatMoney(money: Money): string {
 function createProduct(
   options: Readonly<{
     status?: Product["status"];
+    variantStatus?: ProductVariant["status"];
+    variantProductId?: string;
     inventoryStatus?: ProductInventory["status"];
+    inventoryTracking?: ProductInventory["tracking"];
     backorderable?: boolean;
     invalidPricing?: boolean;
   }> = {},
@@ -77,7 +80,7 @@ function createProduct(
     variants: [
       {
         id: "variant-42",
-        productId: "product-42",
+        productId: options.variantProductId ?? "product-42",
         sku: "SKU-42",
         optionValues: [],
         pricing: {
@@ -87,7 +90,7 @@ function createProduct(
           taxIncluded: true,
         },
         inventory: {
-          tracking: "tracked",
+          tracking: options.inventoryTracking ?? "tracked",
           status: options.inventoryStatus ?? "in-stock",
           availableQuantity: options.inventoryStatus === "out-of-stock" ? 0 : 4,
           backorderable: options.backorderable ?? false,
@@ -96,7 +99,7 @@ function createProduct(
           orderIncrement: 1,
         },
         mediaIds: ["media-42"],
-        status: "active",
+        status: options.variantStatus ?? "active",
         isDefault: true,
       },
     ],
@@ -189,6 +192,27 @@ describe("F8 product card model", () => {
     expect(invalidPricing.availability.purchasable).toBe(false);
   });
 
+  test("fails closed for inactive or mismatched default variants", () => {
+    const inactiveVariant = productToCardViewModel(
+      createProduct({ variantStatus: "unavailable" }),
+      "KRONOS",
+      formatMoney,
+    );
+    expect(inactiveVariant.availability).toEqual({
+      status: "unknown",
+      label: "ناموجود",
+      purchasable: false,
+    });
+
+    const mismatchedVariant = productToCardViewModel(
+      createProduct({ variantProductId: "another-product" }),
+      "KRONOS",
+      formatMoney,
+    );
+    expect(mismatchedVariant.price).toBeUndefined();
+    expect(mismatchedVariant.availability.purchasable).toBe(false);
+  });
+
   test("allows explicit backorders but rejects contradictory backorder state", () => {
     const allowed = productToCardViewModel(
       createProduct({ inventoryStatus: "out-of-stock", backorderable: true }),
@@ -208,6 +232,19 @@ describe("F8 product card model", () => {
     );
     expect(rejected.availability).toEqual({
       status: "backorder",
+      label: "ناموجود",
+      purchasable: false,
+    });
+  });
+
+  test("rejects contradictory tracking and inventory status", () => {
+    const contradictory = productToCardViewModel(
+      createProduct({ inventoryTracking: "not-tracked", inventoryStatus: "in-stock" }),
+      "KRONOS",
+      formatMoney,
+    );
+    expect(contradictory.availability).toEqual({
+      status: "unknown",
       label: "ناموجود",
       purchasable: false,
     });
