@@ -18,8 +18,12 @@ export function ContentPage({ eyebrow, title, intro, children }: ContentPageProp
               {eyebrow}
             </p>
           ) : null}
-          <h1 className="text-3xl font-bold leading-tight text-text-primary sm:text-5xl">{title}</h1>
-          <p className="mt-4 max-w-3xl text-sm leading-8 text-text-secondary sm:text-base">{intro}</p>
+          <h1 className="text-3xl font-bold leading-tight text-text-primary sm:text-5xl">
+            {title}
+          </h1>
+          <p className="mt-4 max-w-3xl text-sm leading-8 text-text-secondary sm:text-base">
+            {intro}
+          </p>
         </div>
       </header>
       <div className="container mx-auto max-w-5xl space-y-8 px-5 py-10 sm:px-8 sm:py-14">
@@ -52,8 +56,13 @@ export function UnconfiguredPolicyNotice({
   readonly children?: ReactNode;
 }) {
   return (
-    <div className="rounded-lg border border-border-default bg-background-elevated p-5" role="status">
-      <p className="font-semibold text-text-primary">{label} هنوز برای انتشار عمومی تأیید نشده است.</p>
+    <div
+      className="rounded-lg border border-border-default bg-background-elevated p-5"
+      role="status"
+    >
+      <p className="font-semibold text-text-primary">
+        {label} هنوز برای انتشار عمومی تأیید نشده است.
+      </p>
       <p className="mt-2 text-sm leading-7 text-text-secondary">
         تا زمان ثبت اطلاعات و شواهد لازم، جزئیات یا وعده‌ای از طرف فروشگاه نمایش داده نمی‌شود.
       </p>

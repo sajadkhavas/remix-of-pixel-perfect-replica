@@ -52,7 +52,8 @@ function ServicesPage() {
       title: "روش‌های پرداخت",
       to: "/payment-methods" as const,
       enabled:
-        settings.features.paymentMethods && settings.payment.methods.some((method) => method.enabled),
+        settings.features.paymentMethods &&
+        settings.payment.methods.some((method) => method.enabled),
       claim: { kind: "hidden" as const },
     },
   ].filter((service) => service.enabled);

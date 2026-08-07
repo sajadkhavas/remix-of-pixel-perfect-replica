@@ -10,13 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WishlistRouteImport } from './routes/wishlist'
+import { Route as WarrantyRouteImport } from './routes/warranty'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ShopRouteImport } from './routes/shop'
+import { Route as ShippingReturnsRouteImport } from './routes/shipping-returns'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as PurchaseTermsRouteImport } from './routes/purchase-terms'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PaymentMethodsRouteImport } from './routes/payment-methods'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as BrandsRouteImport } from './routes/brands'
 import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AuthenticityRouteImport } from './routes/authenticity'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -28,14 +35,44 @@ const WishlistRoute = WishlistRouteImport.update({
   path: '/wishlist',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WarrantyRoute = WarrantyRouteImport.update({
+  id: '/warranty',
+  path: '/warranty',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
   path: '/shop',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShippingReturnsRoute = ShippingReturnsRouteImport.update({
+  id: '/shipping-returns',
+  path: '/shipping-returns',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PurchaseTermsRoute = PurchaseTermsRouteImport.update({
+  id: '/purchase-terms',
+  path: '/purchase-terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentMethodsRoute = PaymentMethodsRouteImport.update({
+  id: '/payment-methods',
+  path: '/payment-methods',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -61,6 +98,11 @@ const BrandsRoute = BrandsRouteImport.update({
 const BlogRoute = BlogRouteImport.update({
   id: '/blog',
   path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticityRoute = AuthenticityRouteImport.update({
+  id: '/authenticity',
+  path: '/authenticity',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -93,13 +135,20 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/authenticity': typeof AuthenticityRoute
   '/blog': typeof BlogRoute
   '/brands': typeof BrandsRoute
   '/cart': typeof CartRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/payment-methods': typeof PaymentMethodsRoute
+  '/privacy': typeof PrivacyRoute
+  '/purchase-terms': typeof PurchaseTermsRoute
   '/services': typeof ServicesRoute
+  '/shipping-returns': typeof ShippingReturnsRoute
   '/shop': typeof ShopRouteWithChildren
+  '/terms': typeof TermsRoute
+  '/warranty': typeof WarrantyRoute
   '/wishlist': typeof WishlistRoute
   '/product/$id': typeof ProductIdRoute
   '/shop/$category': typeof ShopCategoryRoute
@@ -108,13 +157,20 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/authenticity': typeof AuthenticityRoute
   '/blog': typeof BlogRoute
   '/brands': typeof BrandsRoute
   '/cart': typeof CartRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/payment-methods': typeof PaymentMethodsRoute
+  '/privacy': typeof PrivacyRoute
+  '/purchase-terms': typeof PurchaseTermsRoute
   '/services': typeof ServicesRoute
+  '/shipping-returns': typeof ShippingReturnsRoute
   '/shop': typeof ShopRouteWithChildren
+  '/terms': typeof TermsRoute
+  '/warranty': typeof WarrantyRoute
   '/wishlist': typeof WishlistRoute
   '/product/$id': typeof ProductIdRoute
   '/shop/$category': typeof ShopCategoryRoute
@@ -124,13 +180,20 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/authenticity': typeof AuthenticityRoute
   '/blog': typeof BlogRoute
   '/brands': typeof BrandsRoute
   '/cart': typeof CartRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/payment-methods': typeof PaymentMethodsRoute
+  '/privacy': typeof PrivacyRoute
+  '/purchase-terms': typeof PurchaseTermsRoute
   '/services': typeof ServicesRoute
+  '/shipping-returns': typeof ShippingReturnsRoute
   '/shop': typeof ShopRouteWithChildren
+  '/terms': typeof TermsRoute
+  '/warranty': typeof WarrantyRoute
   '/wishlist': typeof WishlistRoute
   '/product/$id': typeof ProductIdRoute
   '/shop/$category': typeof ShopCategoryRoute
@@ -141,13 +204,20 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
+    | '/authenticity'
     | '/blog'
     | '/brands'
     | '/cart'
     | '/contact'
     | '/faq'
+    | '/payment-methods'
+    | '/privacy'
+    | '/purchase-terms'
     | '/services'
+    | '/shipping-returns'
     | '/shop'
+    | '/terms'
+    | '/warranty'
     | '/wishlist'
     | '/product/$id'
     | '/shop/$category'
@@ -156,13 +226,20 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
+    | '/authenticity'
     | '/blog'
     | '/brands'
     | '/cart'
     | '/contact'
     | '/faq'
+    | '/payment-methods'
+    | '/privacy'
+    | '/purchase-terms'
     | '/services'
+    | '/shipping-returns'
     | '/shop'
+    | '/terms'
+    | '/warranty'
     | '/wishlist'
     | '/product/$id'
     | '/shop/$category'
@@ -171,13 +248,20 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
+    | '/authenticity'
     | '/blog'
     | '/brands'
     | '/cart'
     | '/contact'
     | '/faq'
+    | '/payment-methods'
+    | '/privacy'
+    | '/purchase-terms'
     | '/services'
+    | '/shipping-returns'
     | '/shop'
+    | '/terms'
+    | '/warranty'
     | '/wishlist'
     | '/product/$id'
     | '/shop/$category'
@@ -187,13 +271,20 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
+  AuthenticityRoute: typeof AuthenticityRoute
   BlogRoute: typeof BlogRoute
   BrandsRoute: typeof BrandsRoute
   CartRoute: typeof CartRoute
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
+  PaymentMethodsRoute: typeof PaymentMethodsRoute
+  PrivacyRoute: typeof PrivacyRoute
+  PurchaseTermsRoute: typeof PurchaseTermsRoute
   ServicesRoute: typeof ServicesRoute
+  ShippingReturnsRoute: typeof ShippingReturnsRoute
   ShopRoute: typeof ShopRouteWithChildren
+  TermsRoute: typeof TermsRoute
+  WarrantyRoute: typeof WarrantyRoute
   WishlistRoute: typeof WishlistRoute
   ProductIdRoute: typeof ProductIdRoute
 }
@@ -207,6 +298,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WishlistRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/warranty': {
+      id: '/warranty'
+      path: '/warranty'
+      fullPath: '/warranty'
+      preLoaderRoute: typeof WarrantyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shop': {
       id: '/shop'
       path: '/shop'
@@ -214,11 +319,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShopRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/shipping-returns': {
+      id: '/shipping-returns'
+      path: '/shipping-returns'
+      fullPath: '/shipping-returns'
+      preLoaderRoute: typeof ShippingReturnsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services': {
       id: '/services'
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/purchase-terms': {
+      id: '/purchase-terms'
+      path: '/purchase-terms'
+      fullPath: '/purchase-terms'
+      preLoaderRoute: typeof PurchaseTermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payment-methods': {
+      id: '/payment-methods'
+      path: '/payment-methods'
+      fullPath: '/payment-methods'
+      preLoaderRoute: typeof PaymentMethodsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -254,6 +387,13 @@ declare module '@tanstack/react-router' {
       path: '/blog'
       fullPath: '/blog'
       preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/authenticity': {
+      id: '/authenticity'
+      path: '/authenticity'
+      fullPath: '/authenticity'
+      preLoaderRoute: typeof AuthenticityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -308,16 +448,33 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
+  AuthenticityRoute: AuthenticityRoute,
   BlogRoute: BlogRoute,
   BrandsRoute: BrandsRoute,
   CartRoute: CartRoute,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
+  PaymentMethodsRoute: PaymentMethodsRoute,
+  PrivacyRoute: PrivacyRoute,
+  PurchaseTermsRoute: PurchaseTermsRoute,
   ServicesRoute: ServicesRoute,
+  ShippingReturnsRoute: ShippingReturnsRoute,
   ShopRoute: ShopRouteWithChildren,
+  TermsRoute: TermsRoute,
+  WarrantyRoute: WarrantyRoute,
   WishlistRoute: WishlistRoute,
   ProductIdRoute: ProductIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
