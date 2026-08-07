@@ -1,213 +1,191 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingCart, Search, Menu, X, User, Heart, ChevronLeft } from "lucide-react";
+import { ShoppingCart, Menu, User, Heart } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { useStore } from "@/lib/store-context";
-import { CATEGORIES } from "@/lib/catalog";
 
-const NAV_ITEMS = [
-  { label: "فروشگاه", to: "/shop", sub: CATEGORIES.map((c) => ({ label: c.name, to: `/shop/${c.slug}` })) },
-  { label: "برندها", to: "/brands", sub: [] },
-  { label: "مجله", to: "/blog", sub: [] },
-  { label: "خدمات", to: "/services", sub: [] },
-  { label: "درباره", to: "/about", sub: [] },
-  { label: "تماس", to: "/contact", sub: [] },
-] as const;
+import { CATEGORIES } from "@/lib/catalog";
+import { useStore } from "@/lib/store-context";
+import { IconButton } from "@/components/ui/icon-button";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  getAnnouncementText,
+  PRIMARY_NAV_ITEMS,
+  shouldShowAccount,
+  shouldShowWishlist,
+} from "./navigation-model";
+import { usePublicStoreSettings } from "./store-settings-context";
 
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState<string | null>(null);
+  const settings = usePublicStoreSettings();
   const { cart, wishlist } = useStore();
-  const cartCount = cart.reduce((s, i) => s + i.qty, 0);
-
-  useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", fn, { passive: true });
-    return () => window.removeEventListener("scroll", fn);
-  }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
-  }, [menuOpen]);
+  const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
+  const announcement = getAnnouncementText(settings);
+  const showWishlist = shouldShowWishlist(settings);
+  const showAccount = shouldShowAccount(settings);
+  const brandName = settings.brand.shortName ?? settings.brand.name;
 
   return (
     <>
-      <div className="w-full py-2 text-center text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-[#8A8A8A] bg-[#080808] border-b border-[#1A1A1A] relative z-50 px-3">
-        ارسال رایگان بالای ۵۰ میلیون · ضمانت اصالت
-      </div>
+      {announcement ? (
+        <div className="border-b border-border-subtle bg-background-canvas px-4 py-2 text-center text-xs text-text-secondary">
+          {announcement}
+        </div>
+      ) : null}
 
-      <motion.nav
-        className="sticky top-0 left-0 right-0 z-40 px-4 sm:px-6 lg:px-8 py-3 lg:py-4"
-        animate={{
-          background: scrolled ? "rgba(8,8,8,0.92)" : "rgba(8,8,8,0.6)",
-          backdropFilter: "blur(20px)",
-        }}
-        transition={{ duration: 0.3 }}
-        style={{ borderBottom: "1px solid rgba(201,168,76,0.10)" }}
+      <nav
+        aria-label="ناوبری اصلی"
+        className="sticky top-0 z-[var(--z-sticky)] border-b border-border-subtle bg-background-canvas/90 px-4 py-3 backdrop-blur-[var(--blur-overlay)] sm:px-6 lg:px-8"
       >
-        <div
-          className="h-px w-full"
-          style={{
-            background:
-              "linear-gradient(90deg, transparent, #C9A84C 30%, #E8C96C 50%, #C9A84C 70%, transparent)",
-          }}
-        />
         <div className="container mx-auto flex items-center justify-between gap-4" dir="rtl">
-          <Link to="/" className="flex flex-col shrink-0">
-            <span className="text-[#C9A84C] text-lg sm:text-xl font-black tracking-[0.15em] uppercase" style={{ fontFamily: "Playfair Display, serif" }}>
-              KRONOS
+          <Link
+            to="/"
+            className="flex min-h-11 shrink-0 flex-col justify-center rounded-sm px-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+            aria-label={`${brandName}، صفحه اصلی`}
+          >
+            <span className="text-lg font-black uppercase tracking-[0.15em] text-accent-primary sm:text-xl">
+              {brandName}
             </span>
-            <span className="text-[#4A4A4A] text-[8px] sm:text-[9px] tracking-[0.3em] uppercase hidden sm:block">
-              فروشگاه ساعت
-            </span>
+            {settings.brand.localizedName ? (
+              <span className="hidden text-[10px] text-text-muted sm:block">
+                {settings.brand.localizedName}
+              </span>
+            ) : null}
           </Link>
 
-          <div className="hidden lg:flex items-center gap-8">
-            {NAV_ITEMS.map((item) => (
-              <div
-                key={item.label}
-                className="relative"
-                onMouseEnter={() => setActiveItem(item.label)}
-                onMouseLeave={() => setActiveItem(null)}
+          <div className="hidden items-center gap-2 lg:flex">
+            {PRIMARY_NAV_ITEMS.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                className="inline-flex min-h-11 items-center rounded-sm px-3 text-sm text-text-secondary transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+                activeProps={{ className: "text-accent-primary" }}
               >
-                <Link
-                  to={item.to}
-                  className="text-[#A8A8A8] hover:text-[#F0EDE8] text-xs tracking-[0.2em] uppercase transition-colors block py-2"
-                  activeProps={{ className: "text-[#C9A84C]" }}
-                >
-                  {item.label}
-                </Link>
-                <AnimatePresence>
-                  {activeItem === item.label && item.sub.length > 0 && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 8 }}
-                      transition={{ duration: 0.18 }}
-                      className="absolute top-full right-0 mt-2 min-w-[180px] border border-[#1E1E1E] bg-[#0C0C0C]/95 backdrop-blur-xl"
-                    >
-                      {item.sub.map((s) => (
-                        <Link
-                          key={s.to}
-                          to={s.to as never}
-                          className="block px-5 py-3 text-xs text-[#A8A8A8] hover:text-[#C9A84C] hover:bg-[#C9A84C08] transition-colors tracking-wider border-b border-[#1A1A1A] last:border-0"
-                        >
-                          {s.label}
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                {item.label}
+              </Link>
             ))}
           </div>
 
-          <div className="flex items-center gap-1 sm:gap-2">
-            <Link to="/shop" aria-label="جستجو" className="p-2 text-[#8A8A8A] hover:text-[#C9A84C] transition-colors">
-              <Search className="w-5 h-5" />
-            </Link>
-            <Link to="/wishlist" aria-label="علاقه‌مندی" className="relative p-2 text-[#8A8A8A] hover:text-[#C9A84C] transition-colors">
-              <Heart className="w-5 h-5" />
-              {wishlist.length > 0 && (
-                <span className="absolute -top-0.5 -left-0.5 w-4 h-4 text-[#080808] text-[9px] rounded-full font-black flex items-center justify-center bg-[#C9A84C]">
-                  {wishlist.length}
-                </span>
-              )}
-            </Link>
-            <Link to="/auth" aria-label="حساب" className="hidden sm:block p-2 text-[#8A8A8A] hover:text-[#C9A84C] transition-colors">
-              <User className="w-5 h-5" />
-            </Link>
-            <Link to="/cart" aria-label="سبد خرید" className="relative p-2 text-[#8A8A8A] hover:text-[#C9A84C] transition-colors">
-              <ShoppingCart className="w-5 h-5" />
-              {cartCount > 0 && (
-                <span className="absolute -top-0.5 -left-0.5 w-4 h-4 text-[#080808] text-[9px] rounded-full font-black flex items-center justify-center bg-[#C9A84C]">
+          <div className="flex items-center gap-1">
+            {showWishlist ? (
+              <Link
+                to="/wishlist"
+                aria-label="علاقه‌مندی‌ها"
+                className="relative inline-flex size-11 items-center justify-center rounded-md text-text-secondary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+              >
+                <Heart className="size-5" aria-hidden="true" />
+                {wishlist.length > 0 ? (
+                  <span className="absolute end-0 top-0 flex size-4 items-center justify-center rounded-full bg-accent-primary text-[9px] font-bold text-background-canvas">
+                    {wishlist.length}
+                  </span>
+                ) : null}
+              </Link>
+            ) : null}
+
+            {showAccount ? (
+              <Link
+                to="/auth"
+                aria-label="حساب کاربری"
+                className="hidden size-11 items-center justify-center rounded-md text-text-secondary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring sm:inline-flex"
+              >
+                <User className="size-5" aria-hidden="true" />
+              </Link>
+            ) : null}
+
+            <Link
+              to="/cart"
+              aria-label="سبد خرید"
+              className="relative inline-flex size-11 items-center justify-center rounded-md text-text-secondary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+            >
+              <ShoppingCart className="size-5" aria-hidden="true" />
+              {cartCount > 0 ? (
+                <span className="absolute end-0 top-0 flex size-4 items-center justify-center rounded-full bg-accent-primary text-[9px] font-bold text-background-canvas">
                   {cartCount}
                 </span>
-              )}
+              ) : null}
             </Link>
-            <button
-              className="lg:hidden p-2 text-[#A8A8A8] hover:text-[#C9A84C]"
-              onClick={() => setMenuOpen(true)}
-              aria-label="منو"
-            >
-              <Menu className="w-6 h-6" />
-            </button>
-          </div>
-        </div>
-      </motion.nav>
 
-      <AnimatePresence>
-        {menuOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm"
-              onClick={() => setMenuOpen(false)}
-            />
-            <motion.div
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ type: "spring", damping: 30, stiffness: 240 }}
-              className="fixed inset-y-0 right-0 w-[88%] max-w-sm z-[70] border-l border-[#1E1E1E] flex flex-col"
-              style={{ background: "#080808" }}
-              dir="rtl"
-            >
-              <div className="flex items-center justify-between p-5 border-b border-[#1A1A1A]">
-                <span className="text-[#C9A84C] text-lg font-black tracking-[0.15em] uppercase" style={{ fontFamily: "Playfair Display, serif" }}>
-                  KRONOS
-                </span>
-                <button onClick={() => setMenuOpen(false)} className="p-2 text-[#A8A8A8]" aria-label="بستن">
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-              <div className="flex-1 overflow-y-auto px-5 py-4">
-                {NAV_ITEMS.map((item, i) => (
-                  <div key={item.label}>
-                    <motion.div
-                      initial={{ x: 30, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1, transition: { delay: i * 0.05 } }}
-                    >
+            <Sheet>
+              <SheetTrigger asChild>
+                <IconButton
+                  label="باز کردن منو"
+                  variant="ghost"
+                  size="icon"
+                  className="lg:hidden"
+                >
+                  <Menu aria-hidden="true" />
+                </IconButton>
+              </SheetTrigger>
+              <SheetContent side="end" className="gap-6 overflow-y-auto" dir="rtl">
+                <SheetHeader>
+                  <SheetTitle>{brandName}</SheetTitle>
+                  <SheetDescription>دسترسی به بخش‌های اصلی فروشگاه</SheetDescription>
+                </SheetHeader>
+
+                <div className="flex flex-col">
+                  {PRIMARY_NAV_ITEMS.map((item) => (
+                    <SheetClose asChild key={item.to}>
                       <Link
                         to={item.to}
-                        onClick={() => setMenuOpen(false)}
-                        className="flex items-center justify-between text-[#F0EDE8] text-base font-bold py-4 border-b border-[#1A1A1A] hover:text-[#C9A84C] transition-colors"
+                        className="flex min-h-11 items-center border-b border-border-subtle px-2 py-3 text-base font-semibold text-text-primary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
                       >
                         {item.label}
-                        <ChevronLeft className="w-4 h-4 text-[#4A4A4A]" />
                       </Link>
-                    </motion.div>
-                    {item.sub.length > 0 && (
-                      <div className="pr-3 py-1 -mt-1 mb-2">
-                        {item.sub.map((s) => (
-                          <Link
-                            key={s.to}
-                            to={s.to as never}
-                            onClick={() => setMenuOpen(false)}
-                            className="block py-2 text-xs text-[#8A8A8A] hover:text-[#C9A84C]"
-                          >
-                            — {s.label}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
+                    </SheetClose>
+                  ))}
+                </div>
+
+                <div>
+                  <p className="mb-2 text-xs font-semibold text-text-muted">دسته‌بندی‌ها</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {CATEGORIES.map((category) => (
+                      <SheetClose asChild key={category.slug}>
+                        <Link
+                          to="/shop/$category"
+                          params={{ category: category.slug }}
+                          className="flex min-h-11 items-center rounded-md border border-border-subtle px-3 py-2 text-sm text-text-secondary transition-colors hover:border-border-default hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+                        >
+                          {category.name}
+                        </Link>
+                      </SheetClose>
+                    ))}
                   </div>
-                ))}
-                <Link
-                  to="/auth"
-                  onClick={() => setMenuOpen(false)}
-                  className="mt-6 block w-full py-3 text-center text-[#080808] bg-[#C9A84C] font-bold text-sm tracking-[0.2em] uppercase"
-                >
-                  ورود / ثبت‌نام
-                </Link>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+                </div>
+
+                <div className="mt-auto flex flex-col gap-2">
+                  {showWishlist ? (
+                    <SheetClose asChild>
+                      <Link
+                        to="/wishlist"
+                        className="flex min-h-11 items-center gap-2 rounded-md px-2 text-text-secondary hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+                      >
+                        <Heart className="size-5" aria-hidden="true" />
+                        علاقه‌مندی‌ها
+                      </Link>
+                    </SheetClose>
+                  ) : null}
+                  {showAccount ? (
+                    <SheetClose asChild>
+                      <Link
+                        to="/auth"
+                        className="flex min-h-11 items-center gap-2 rounded-md px-2 text-text-secondary hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+                      >
+                        <User className="size-5" aria-hidden="true" />
+                        حساب کاربری
+                      </Link>
+                    </SheetClose>
+                  ) : null}
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
+      </nav>
     </>
   );
 }
