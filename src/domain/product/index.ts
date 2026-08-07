@@ -208,15 +208,21 @@ export function isValidPricing(pricing: ProductPricing): boolean {
 
 export function isPurchasableVariant(variant: ProductVariant): boolean {
   const { inventory } = variant;
-  const stockAllowsPurchase =
-    inventory.tracking === "not-tracked" ||
-    inventory.status === "in-stock" ||
-    inventory.status === "low-stock" ||
-    inventory.status === "preorder" ||
-    ((inventory.status === "backorder" || inventory.status === "out-of-stock") &&
-      inventory.backorderable);
+  const untrackedInventoryIsConsistent =
+    inventory.tracking === "not-tracked" && inventory.status === "not-tracked";
+  const trackedInventoryAllowsPurchase =
+    inventory.tracking === "tracked" &&
+    (inventory.status === "in-stock" ||
+      inventory.status === "low-stock" ||
+      inventory.status === "preorder" ||
+      ((inventory.status === "backorder" || inventory.status === "out-of-stock") &&
+        inventory.backorderable));
 
-  return variant.status === "active" && isValidPricing(variant.pricing) && stockAllowsPurchase;
+  return (
+    variant.status === "active" &&
+    isValidPricing(variant.pricing) &&
+    (untrackedInventoryIsConsistent || trackedInventoryAllowsPurchase)
+  );
 }
 
 export function getDefaultVariant(product: Product): ProductVariant | undefined {
