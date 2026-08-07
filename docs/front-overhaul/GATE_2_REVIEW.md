@@ -134,15 +134,15 @@ Gate 2 is a development gate, not a production-release approval.
 
 | Registry                  | Current exact debt |
 | ------------------------- | -----------------: |
-| Lint warnings             | 8                  |
-| Forbidden production copy | 31                 |
-| Link integrity            | 3                  |
-| Asset violations          | 83                 |
-| Route smoke               | 10                 |
-| Accessibility             | 803                |
-| Reduced motion            | 59                 |
-| Keyboard                  | 1                  |
-| **Total tracked debt**    | **998**            |
+| Lint warnings             |                  8 |
+| Forbidden production copy |                 31 |
+| Link integrity            |                  3 |
+| Asset violations          |                 83 |
+| Route smoke               |                 10 |
+| Accessibility             |                803 |
+| Reduced motion            |                 59 |
+| Keyboard                  |                  1 |
+| **Total tracked debt**    |            **998** |
 
 Critical release blockers include 14 critical accessibility defects and one critical mobile-menu keyboard defect. There are also 81 serious contrast defects, 708 touch-target findings, 59 serious reduced-motion findings, temporary/unverified media, unsupported prototype claims, and placeholder interactions. These are assigned to the owning feature phases and are not waived by this gate.
 
@@ -150,14 +150,14 @@ Critical release blockers include 14 critical accessibility defects and one crit
 
 | Metric                  | Gate 2 measurement |
 | ----------------------- | -----------------: |
-| Client JavaScript total | 827,737 bytes      |
-| Largest client chunk    | 576,551 bytes      |
-| CSS total               | 119,738 bytes      |
-| Server JavaScript total | 179,076 bytes      |
-| Image bytes             | 1,680,909 bytes    |
-| JavaScript chunks       | 29                 |
-| Images                  | 11                 |
-| Largest image           | 673,220 bytes      |
+| Client JavaScript total |      827,737 bytes |
+| Largest client chunk    |      576,551 bytes |
+| CSS total               |      119,738 bytes |
+| Server JavaScript total |      179,076 bytes |
+| Image bytes             |    1,680,909 bytes |
+| JavaScript chunks       |                 29 |
+| Images                  |                 11 |
+| Largest image           |      673,220 bytes |
 
 No Lighthouse result or field Core Web Vitals data exists yet. F14B remains responsible for production-like lab and field verification.
 

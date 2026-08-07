@@ -1,112 +1,168 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { Instagram, Twitter, Send, Mail, Phone, MapPin } from "lucide-react";
-import { toast } from "sonner";
+import { Instagram, Linkedin, Mail, MessageCircle, Phone, Send, Youtube } from "lucide-react";
+import type { ComponentType } from "react";
 
-const COLS = [
+import type { SocialPlatform } from "@/domain/store-settings";
+import {
+  getConfirmedEmails,
+  getConfirmedPhones,
+  getConfirmedSocialLinks,
+  getVisiblePaymentMethods,
+} from "./navigation-model";
+import { usePublicStoreSettings } from "./store-settings-context";
+
+const FOOTER_COLUMNS = [
   {
     title: "فروشگاه",
     items: [
-      { label: "همه محصولات", to: "/shop" },
-      { label: "ساعت لوکس", to: "/shop/luxury" },
-      { label: "ساعت اسپرت", to: "/shop/sport" },
-      { label: "ساعت هوشمند", to: "/shop/smart" },
-      { label: "ساعت کلاسیک", to: "/shop/classic" },
+      { label: "همه ساعت‌ها", to: "/shop" },
+      { label: "برندها", to: "/brands" },
+      { label: "علاقه‌مندی‌ها", to: "/wishlist" },
     ],
   },
   {
-    title: "پشتیبانی",
+    title: "راهنما",
     items: [
       { label: "خدمات", to: "/services" },
-      { label: "سوالات متداول", to: "/faq" },
-      { label: "تماس با ما", to: "/contact" },
-      { label: "علاقه‌مندی‌ها", to: "/wishlist" },
-      { label: "سبد خرید", to: "/cart" },
+      { label: "پرسش‌های متداول", to: "/faq" },
+      { label: "تماس", to: "/contact" },
     ],
   },
   {
-    title: "درباره",
+    title: "KRONOS",
     items: [
-      { label: "داستان ما", to: "/about" },
-      { label: "برندها", to: "/brands" },
+      { label: "درباره ما", to: "/about" },
       { label: "مجله", to: "/blog" },
-      { label: "ورود / ثبت‌نام", to: "/auth" },
     ],
   },
 ] as const;
 
+const SOCIAL_ICONS: Partial<Record<SocialPlatform, ComponentType<{ className?: string }>>> = {
+  instagram: Instagram,
+  telegram: Send,
+  linkedin: Linkedin,
+  youtube: Youtube,
+  whatsapp: MessageCircle,
+};
+
 export function Footer() {
-  const [email, setEmail] = useState("");
+  const settings = usePublicStoreSettings();
+  const phones = getConfirmedPhones(settings);
+  const emails = getConfirmedEmails(settings);
+  const socialLinks = getConfirmedSocialLinks(settings);
+  const paymentMethods = getVisiblePaymentMethods(settings);
+  const showWishlist = settings.features.wishlist;
+  const brandName = settings.brand.shortName ?? settings.brand.name;
+  const currentYear = new Date().getFullYear().toLocaleString("fa-IR", { useGrouping: false });
+
   return (
-    <footer className="bg-[#060606] border-t border-[#1E1E1E] pt-14 pb-24 lg:pb-10 px-5 sm:px-8 mt-10" dir="rtl">
-      <div className="container mx-auto grid grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
+    <footer
+      className="mt-10 border-t border-border-subtle bg-background-canvas px-5 pb-24 pt-14 sm:px-8 lg:pb-10"
+      dir="rtl"
+    >
+      <div className="container mx-auto grid grid-cols-2 gap-8 lg:grid-cols-5 lg:gap-12">
         <div className="col-span-2">
-          <Link to="/" className="block mb-3">
-            <span className="text-[#C9A84C] text-2xl font-black tracking-[0.15em] uppercase" style={{ fontFamily: "Playfair Display, serif" }}>
-              KRONOS
-            </span>
-          </Link>
-          <p className="text-[#8A8A8A] text-xs sm:text-sm leading-loose mb-5 max-w-sm">
-            مرجع تخصصی ساعت‌های لوکس، اسپرت و هوشمند در ایران. ضمانت اصالت، ارسال امن و سرویس تخصصی.
-          </p>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (!email.includes("@")) return toast.error("ایمیل معتبر وارد کنید");
-              toast.success("به خبرنامه پیوستید ✓");
-              setEmail("");
-            }}
-            className="flex items-stretch gap-0 border border-[#1E1E1E] focus-within:border-[#C9A84C55] transition-colors max-w-sm"
+          <Link
+            to="/"
+            className="inline-flex min-h-11 items-center rounded-sm px-1 text-2xl font-black uppercase tracking-[0.15em] text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
           >
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="ایمیل شما"
-              className="flex-1 bg-transparent px-4 py-3 text-sm text-[#F0EDE8] placeholder-[#4A4A4A] outline-none min-w-0"
-            />
-            <button type="submit" className="px-4 bg-[#C9A84C] text-[#080808] hover:bg-[#E8C96C] transition-colors shrink-0" aria-label="عضویت">
-              <Send className="w-4 h-4" />
-            </button>
-          </form>
-          <div className="flex gap-3 mt-5">
-            {[Instagram, Twitter, Send].map((I, i) => (
-              <a key={i} href="#" className="w-9 h-9 border border-[#1E1E1E] hover:border-[#C9A84C] hover:text-[#C9A84C] text-[#8A8A8A] flex items-center justify-center transition-colors" aria-label="social">
-                <I className="w-4 h-4" />
-              </a>
-            ))}
-          </div>
+            {brandName}
+          </Link>
+          <p className="mt-2 max-w-md text-sm leading-7 text-text-secondary">
+            {settings.brand.slogan ??
+              "مشخصات ثبت‌شده هر مدل را بررسی و گزینه‌ها را بر اساس نیاز خود مقایسه کنید."}
+          </p>
+
+          {socialLinks.length > 0 ? (
+            <div className="mt-5 flex flex-wrap gap-2" aria-label="شبکه‌های اجتماعی">
+              {socialLinks.map((link) => {
+                const Icon = SOCIAL_ICONS[link.platform] ?? MessageCircle;
+                return (
+                  <a
+                    key={`${link.platform}-${link.url}`}
+                    href={link.url}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    aria-label={link.label}
+                    className="inline-flex size-11 items-center justify-center rounded-md border border-border-subtle text-text-secondary transition-colors hover:border-border-default hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+                  >
+                    <Icon className="size-5" aria-hidden="true" />
+                  </a>
+                );
+              })}
+            </div>
+          ) : null}
         </div>
 
-        {COLS.map((col) => (
-          <div key={col.title}>
-            <h4 className="text-[#F0EDE8] text-xs tracking-[0.3em] uppercase mb-4">{col.title}</h4>
-            <ul className="space-y-2.5">
-              {col.items.map((i) => (
-                <li key={i.to}>
-                  <Link to={i.to} className="text-[#8A8A8A] hover:text-[#C9A84C] text-sm transition-colors">
-                    {i.label}
-                  </Link>
-                </li>
-              ))}
+        {FOOTER_COLUMNS.map((column) => (
+          <div key={column.title}>
+            <h2 className="mb-4 text-xs font-semibold tracking-[0.2em] text-text-primary">
+              {column.title}
+            </h2>
+            <ul className="space-y-1">
+              {column.items.map((item) => {
+                if (item.to === "/wishlist" && !showWishlist) return null;
+                return (
+                  <li key={item.to}>
+                    <Link
+                      to={item.to}
+                      className="inline-flex min-h-11 items-center rounded-sm text-sm text-text-secondary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         ))}
       </div>
 
-      <div className="container mx-auto mt-10 pt-6 border-t border-[#1A1A1A] grid gap-4 md:grid-cols-3 items-center">
-        <div className="flex flex-col gap-1.5 text-xs text-[#8A8A8A]">
-          <span className="flex items-center gap-2"><Phone className="w-3.5 h-3.5 text-[#C9A84C]" /> ۰۲۱-۰۰۰۰۰۰۰۰</span>
-          <span className="flex items-center gap-2"><Mail className="w-3.5 h-3.5 text-[#C9A84C]" /> hello@kronos.shop</span>
-          <span className="flex items-center gap-2"><MapPin className="w-3.5 h-3.5 text-[#C9A84C]" /> تهران، خیابان ولیعصر</span>
-        </div>
-        <div className="flex items-center justify-center gap-3 text-[10px] text-[#4A4A4A]">
-          <span className="px-2 py-1 border border-[#1E1E1E]">VISA</span>
-          <span className="px-2 py-1 border border-[#1E1E1E]">شاپرک</span>
-          <span className="px-2 py-1 border border-[#1E1E1E]">زرین‌پال</span>
-        </div>
-        <span className="text-[#4A4A4A] text-[10px] tracking-[0.3em] uppercase md:text-left text-center">
-          © ۱۴۰۴ KRONOS · کلیه حقوق محفوظ است
+      <div className="container mx-auto mt-10 grid items-center gap-5 border-t border-border-subtle pt-6 md:grid-cols-3">
+        {phones.length > 0 || emails.length > 0 ? (
+          <div className="flex flex-col gap-2 text-sm text-text-secondary">
+            {phones.map((phone) => (
+              <a
+                key={phone.id}
+                href={`tel:${phone.e164}`}
+                className="inline-flex min-h-11 items-center gap-2 rounded-sm hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+              >
+                <Phone className="size-4" aria-hidden="true" />
+                {phone.displayValue ?? phone.e164}
+              </a>
+            ))}
+            {emails.map((email) => (
+              <a
+                key={email.id}
+                href={`mailto:${email.address}`}
+                className="inline-flex min-h-11 items-center gap-2 rounded-sm hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+              >
+                <Mail className="size-4" aria-hidden="true" />
+                {email.address}
+              </a>
+            ))}
+          </div>
+        ) : (
+          <div aria-hidden="true" />
+        )}
+
+        {paymentMethods.length > 0 ? (
+          <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-text-muted">
+            {paymentMethods.map((method) => (
+              <span
+                key={method.providerId}
+                className="rounded-sm border border-border-subtle px-3 py-2"
+              >
+                {method.displayName}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <div aria-hidden="true" />
+        )}
+
+        <span className="text-center text-xs text-text-muted md:text-left">
+          © {currentYear} {brandName}
         </span>
       </div>
     </footer>

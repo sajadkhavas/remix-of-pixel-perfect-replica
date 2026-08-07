@@ -50,15 +50,15 @@
 
 | Registry                  | Exact tracked debt |
 | ------------------------- | -----------------: |
-| Lint warnings             | 8                  |
-| Forbidden production copy | 31                 |
-| Link integrity            | 3                  |
-| Asset violations          | 83                 |
-| Route smoke               | 10                 |
-| Accessibility             | 803                |
-| Reduced motion            | 59                 |
-| Keyboard                  | 1                  |
-| **Total**                 | **998**            |
+| Lint warnings             |                  8 |
+| Forbidden production copy |                 31 |
+| Link integrity            |                  3 |
+| Asset violations          |                 83 |
+| Route smoke               |                 10 |
+| Accessibility             |                803 |
+| Reduced motion            |                 59 |
+| Keyboard                  |                  1 |
+| **Total**                 |            **998** |
 
 Gate 2 accepts the shared development foundation. It does not approve a production release. Critical accessibility, keyboard, temporary-asset, unsupported-copy, placeholder-link, motion and performance work remains assigned to the owning feature phases.
 
