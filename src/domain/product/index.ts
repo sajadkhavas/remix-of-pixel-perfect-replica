@@ -206,9 +206,24 @@ export function isValidPricing(pricing: ProductPricing): boolean {
   return pricing.effectivePrice.amountMinor === pricing.listPrice.amountMinor;
 }
 
+export function isInventoryStateConsistent(inventory: ProductInventory): boolean {
+  return inventory.tracking === "not-tracked"
+    ? inventory.status === "not-tracked"
+    : inventory.status !== "not-tracked";
+}
+
 export function isPurchasableVariant(variant: ProductVariant): boolean {
+  const { inventory } = variant;
+  if (!isInventoryStateConsistent(inventory)) return false;
+
   const stockAllowsPurchase =
-    variant.inventory.tracking === "not-tracked" || variant.inventory.status !== "out-of-stock";
+    inventory.status === "not-tracked" ||
+    inventory.status === "in-stock" ||
+    inventory.status === "low-stock" ||
+    inventory.status === "preorder" ||
+    ((inventory.status === "backorder" || inventory.status === "out-of-stock") &&
+      inventory.backorderable);
+
   return variant.status === "active" && isValidPricing(variant.pricing) && stockAllowsPurchase;
 }
 

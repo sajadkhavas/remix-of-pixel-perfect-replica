@@ -181,6 +181,14 @@ const optionalString = (value: unknown): value is string | undefined =>
 const safeNonNegativeInteger = (value: unknown): value is number =>
   Number.isSafeInteger(value) && Number(value) >= 0;
 
+const ISO_DATE_TIME_PATTERN =
+  /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?(?:Z|[+-]\d{2}:\d{2})$/;
+
+const isoDateTimeValue = (value: unknown): value is ISODateTime =>
+  typeof value === "string" &&
+  ISO_DATE_TIME_PATTERN.test(value) &&
+  Number.isFinite(Date.parse(value));
+
 const validMoney = (value: unknown): value is Money =>
   record(value) &&
   safeNonNegativeInteger(value.amountMinor) &&
@@ -213,8 +221,8 @@ function validCartItem(value: unknown, cartCurrency: string): value is CartItem 
     validProductSnapshot(value.productSnapshot) &&
     value.productSnapshot.productId === value.productId &&
     value.productSnapshot.variantId === value.variantId &&
-    stringValue(value.addedAt) &&
-    stringValue(value.updatedAt)
+    isoDateTimeValue(value.addedAt) &&
+    isoDateTimeValue(value.updatedAt)
   );
 }
 
@@ -227,7 +235,7 @@ function validWishlistItem(value: unknown): value is WishlistItem {
     record(value) &&
     stringValue(value.productId) &&
     (value.preferredVariantId === undefined || stringValue(value.preferredVariantId)) &&
-    stringValue(value.addedAt)
+    isoDateTimeValue(value.addedAt)
   );
 }
 
@@ -236,7 +244,7 @@ function validCompareItem(value: unknown): value is CompareItem {
     record(value) &&
     stringValue(value.productId) &&
     (value.variantId === undefined || stringValue(value.variantId)) &&
-    stringValue(value.addedAt)
+    isoDateTimeValue(value.addedAt)
   );
 }
 
@@ -245,7 +253,7 @@ function validRecentlyViewedItem(value: unknown): value is RecentlyViewedItem {
     record(value) &&
     stringValue(value.productId) &&
     (value.variantId === undefined || stringValue(value.variantId)) &&
-    stringValue(value.viewedAt)
+    isoDateTimeValue(value.viewedAt)
   );
 }
 
@@ -289,7 +297,7 @@ function validShipping(value: unknown): value is ShippingSelection {
     stringValue(value.methodId) &&
     stringValue(value.labelSnapshot) &&
     validMoney(value.priceSnapshot) &&
-    stringValue(value.selectedAt)
+    isoDateTimeValue(value.selectedAt)
   );
 }
 
@@ -301,7 +309,7 @@ function validCheckoutDraft(value: unknown): value is CheckoutDraft {
     (value.shipping === undefined || validShipping(value.shipping)) &&
     optionalString(value.customerNote) &&
     typeof value.acceptedPurchaseTerms === "boolean" &&
-    stringValue(value.updatedAt)
+    isoDateTimeValue(value.updatedAt)
   );
 }
 
@@ -324,7 +332,7 @@ function validPersistedEnvelope(value: unknown): value is PersistedCommerceEnvel
 
   const cart = state.cart;
   const cartCurrency = cart.currency;
-  if (!stringValue(cartCurrency) || !stringValue(cart.updatedAt)) return false;
+  if (!stringValue(cartCurrency) || !isoDateTimeValue(cart.updatedAt)) return false;
 
   const cartItems = cart.items;
   if (!validCartItems(cartItems, cartCurrency)) return false;
@@ -346,7 +354,7 @@ function validPersistedEnvelope(value: unknown): value is PersistedCommerceEnvel
     return false;
   }
 
-  return stringValue(state.updatedAt);
+  return isoDateTimeValue(state.updatedAt);
 }
 
 export function parsePersistedCommerce(input: string): PersistedCommerceEnvelopeV1 | null {
@@ -368,7 +376,9 @@ export function migrateLegacyCommerce(
   legacyWishlist: unknown,
   now: ISODateTime,
 ): PersistedCommerceEnvelopeV1 | null {
-  if (!Array.isArray(legacyCart) || !Array.isArray(legacyWishlist)) return null;
+  if (!Array.isArray(legacyCart) || !Array.isArray(legacyWishlist) || !isoDateTimeValue(now)) {
+    return null;
+  }
 
   // Numeric legacy IDs cannot safely resolve variants. Keep no guessed cart lines;
   // later integration may reconcile wishlist entries with catalog data.
