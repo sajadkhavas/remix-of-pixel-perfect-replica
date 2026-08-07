@@ -41,7 +41,10 @@ export function MobileTabBar() {
       className="fixed inset-x-0 bottom-0 z-[var(--z-sticky)] border-t border-border-subtle bg-background-canvas/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-[var(--blur-overlay)] lg:hidden"
       dir="rtl"
     >
-      <ul className="grid" style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}>
+      <ul
+        className="grid"
+        style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}
+      >
         {tabs.map(({ to, label, Icon, count }) => (
           <li key={to}>
             <Link

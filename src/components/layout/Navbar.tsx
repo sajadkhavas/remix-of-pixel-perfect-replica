@@ -112,12 +112,7 @@ export function Navbar() {
 
             <Sheet>
               <SheetTrigger asChild>
-                <IconButton
-                  label="باز کردن منو"
-                  variant="ghost"
-                  size="icon"
-                  className="lg:hidden"
-                >
+                <IconButton label="باز کردن منو" variant="ghost" size="icon" className="lg:hidden">
                   <Menu aria-hidden="true" />
                 </IconButton>
               </SheetTrigger>

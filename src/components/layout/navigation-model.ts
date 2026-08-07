@@ -5,10 +5,7 @@ import type {
   SocialLink,
   ValidatedPublicStoreSettings,
 } from "@/domain/store-settings";
-import {
-  hasCurrentEvidence,
-  resolveClaimPresentation,
-} from "@/domain/store-settings";
+import { hasCurrentEvidence, resolveClaimPresentation } from "@/domain/store-settings";
 
 export const PRIMARY_NAV_ITEMS = [
   { label: "فروشگاه", to: "/shop" },
@@ -19,9 +16,7 @@ export const PRIMARY_NAV_ITEMS = [
   { label: "تماس", to: "/contact" },
 ] as const;
 
-export function getAnnouncementText(
-  settings: ValidatedPublicStoreSettings,
-): string | null {
+export function getAnnouncementText(settings: ValidatedPublicStoreSettings): string | null {
   const candidates = [
     settings.shipping.presentationClaim,
     settings.authenticity.presentationClaim,
@@ -45,18 +40,14 @@ export function shouldShowAccount(settings: ValidatedPublicStoreSettings): boole
   return settings.features.auth && settings.environment.capabilities.auth === "configured";
 }
 
-export function getConfirmedPhones(
-  settings: ValidatedPublicStoreSettings,
-): readonly PublicPhone[] {
+export function getConfirmedPhones(settings: ValidatedPublicStoreSettings): readonly PublicPhone[] {
   if (!settings.contentVisibility.contact) return [];
   return settings.contact.phones.filter(
     (phone) => phone.status === "confirmed" && hasCurrentEvidence(phone.evidence),
   );
 }
 
-export function getConfirmedEmails(
-  settings: ValidatedPublicStoreSettings,
-): readonly PublicEmail[] {
+export function getConfirmedEmails(settings: ValidatedPublicStoreSettings): readonly PublicEmail[] {
   if (!settings.contentVisibility.contact) return [];
   return settings.contact.emails.filter(
     (email) => email.status === "confirmed" && hasCurrentEvidence(email.evidence),

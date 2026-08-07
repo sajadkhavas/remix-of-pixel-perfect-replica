@@ -1,13 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import {
-  Instagram,
-  Linkedin,
-  Mail,
-  MessageCircle,
-  Phone,
-  Send,
-  Youtube,
-} from "lucide-react";
+import { Instagram, Linkedin, Mail, MessageCircle, Phone, Send, Youtube } from "lucide-react";
 import type { ComponentType } from "react";
 
 import type { SocialPlatform } from "@/domain/store-settings";
@@ -157,7 +149,10 @@ export function Footer() {
         {paymentMethods.length > 0 ? (
           <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-text-muted">
             {paymentMethods.map((method) => (
-              <span key={method.providerId} className="rounded-sm border border-border-subtle px-3 py-2">
+              <span
+                key={method.providerId}
+                className="rounded-sm border border-border-subtle px-3 py-2"
+              >
                 {method.displayName}
               </span>
             ))}
