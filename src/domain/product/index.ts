@@ -207,8 +207,15 @@ export function isValidPricing(pricing: ProductPricing): boolean {
 }
 
 export function isPurchasableVariant(variant: ProductVariant): boolean {
+  const { inventory } = variant;
   const stockAllowsPurchase =
-    variant.inventory.tracking === "not-tracked" || variant.inventory.status !== "out-of-stock";
+    inventory.tracking === "not-tracked" ||
+    inventory.status === "in-stock" ||
+    inventory.status === "low-stock" ||
+    inventory.status === "preorder" ||
+    ((inventory.status === "backorder" || inventory.status === "out-of-stock") &&
+      inventory.backorderable);
+
   return variant.status === "active" && isValidPricing(variant.pricing) && stockAllowsPurchase;
 }
 
