@@ -61,7 +61,9 @@ export function getConfirmedSocialLinks(settings: PublicStoreSettings): readonly
   );
 }
 
-export function getVisiblePaymentMethods(settings: PublicStoreSettings): readonly PublicPaymentMethod[] {
+export function getVisiblePaymentMethods(
+  settings: PublicStoreSettings,
+): readonly PublicPaymentMethod[] {
   if (!settings.features.paymentMethods || !settings.contentVisibility.paymentMethods) return [];
   return settings.payment.methods
     .filter((method) => method.enabled)
