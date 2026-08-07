@@ -37,20 +37,21 @@ export function productToCardViewModel(
     (asset) => asset.type === "image" && asset.id === product.media.primaryMediaId,
   );
 
-  const price = variant && pricingValid
-    ? {
-        current: formatMoney(variant.pricing.effectivePrice) ?? "",
-        previous: variant.pricing.salePrice
-          ? (formatMoney(variant.pricing.listPrice) ?? undefined)
-          : undefined,
-        discountPercent: variant.pricing.salePrice
-          ? discountPercent(
-              variant.pricing.listPrice.amountMinor,
-              variant.pricing.salePrice.amountMinor,
-            )
-          : undefined,
-      }
-    : undefined;
+  const price =
+    variant && pricingValid
+      ? {
+          current: formatMoney(variant.pricing.effectivePrice) ?? "",
+          previous: variant.pricing.salePrice
+            ? (formatMoney(variant.pricing.listPrice) ?? undefined)
+            : undefined,
+          discountPercent: variant.pricing.salePrice
+            ? discountPercent(
+                variant.pricing.listPrice.amountMinor,
+                variant.pricing.salePrice.amountMinor,
+              )
+            : undefined,
+        }
+      : undefined;
 
   const availability: ProductCardAvailabilityModel =
     variant && product.status === "active" && pricingValid
