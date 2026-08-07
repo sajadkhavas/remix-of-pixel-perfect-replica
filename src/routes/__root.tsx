@@ -13,10 +13,8 @@ import { useEffect, type ReactNode } from "react";
 import { Footer } from "@/components/layout/Footer";
 import { MobileTabBar } from "@/components/layout/MobileTabBar";
 import { Navbar } from "@/components/layout/Navbar";
-import {
-  PUBLIC_STORE_SETTINGS,
-  StoreSettingsProvider,
-} from "@/components/layout/store-settings-context";
+import { StoreSettingsProvider } from "@/components/layout/store-settings-context";
+import { PUBLIC_STORE_SETTINGS } from "@/components/layout/store-settings-runtime";
 import { SkipLink } from "@/components/system/accessibility";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
