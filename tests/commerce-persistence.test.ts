@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import {
   clampQuantity,
+  migrateLegacyCommerce,
   parsePersistedCommerce,
   type PersistedCommerceEnvelopeV1,
 } from "../src/domain/commerce";
@@ -174,6 +175,26 @@ describe("parsePersistedCommerce", () => {
 
     expect(parsePersistedCommerce(JSON.stringify(mismatched))).toBeNull();
   });
+
+  test("rejects non-ISO timestamps at persisted boundaries", () => {
+    const invalidCartTimestamp = createValidEnvelope() as unknown as {
+      state: { cart: { updatedAt: string } };
+    };
+    invalidCartTimestamp.state.cart.updatedAt = "yesterday";
+    expect(parsePersistedCommerce(JSON.stringify(invalidCartTimestamp))).toBeNull();
+
+    const invalidLineTimestamp = createValidEnvelope() as unknown as {
+      state: { cart: { items: Array<{ addedAt: string }> } };
+    };
+    invalidLineTimestamp.state.cart.items[0]!.addedAt = "2026-08-06";
+    expect(parsePersistedCommerce(JSON.stringify(invalidLineTimestamp))).toBeNull();
+
+    const invalidShippingTimestamp = createValidEnvelope() as unknown as {
+      state: { checkoutDraft: { shipping: { selectedAt: string } } };
+    };
+    invalidShippingTimestamp.state.checkoutDraft.shipping.selectedAt = "not-a-date";
+    expect(parsePersistedCommerce(JSON.stringify(invalidShippingTimestamp))).toBeNull();
+  });
 });
 
 describe("clampQuantity", () => {
@@ -185,5 +206,11 @@ describe("clampQuantity", () => {
   test("rejects invalid rules rather than dividing by zero", () => {
     expect(() => clampQuantity(2, { min: 1, increment: 0 })).toThrow(RangeError);
     expect(() => clampQuantity(2, { min: 0, increment: 1 })).toThrow(RangeError);
+  });
+});
+
+describe("migrateLegacyCommerce", () => {
+  test("rejects an invalid migration timestamp", () => {
+    expect(migrateLegacyCommerce([], [], "invalid-date")).toBeNull();
   });
 });
