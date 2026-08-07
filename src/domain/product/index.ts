@@ -206,23 +206,25 @@ export function isValidPricing(pricing: ProductPricing): boolean {
   return pricing.effectivePrice.amountMinor === pricing.listPrice.amountMinor;
 }
 
+export function isInventoryStateConsistent(inventory: ProductInventory): boolean {
+  return inventory.tracking === "not-tracked"
+    ? inventory.status === "not-tracked"
+    : inventory.status !== "not-tracked";
+}
+
 export function isPurchasableVariant(variant: ProductVariant): boolean {
   const { inventory } = variant;
-  const untrackedInventoryIsConsistent =
-    inventory.tracking === "not-tracked" && inventory.status === "not-tracked";
-  const trackedInventoryAllowsPurchase =
-    inventory.tracking === "tracked" &&
-    (inventory.status === "in-stock" ||
-      inventory.status === "low-stock" ||
-      inventory.status === "preorder" ||
-      ((inventory.status === "backorder" || inventory.status === "out-of-stock") &&
-        inventory.backorderable));
+  if (!isInventoryStateConsistent(inventory)) return false;
 
-  return (
-    variant.status === "active" &&
-    isValidPricing(variant.pricing) &&
-    (untrackedInventoryIsConsistent || trackedInventoryAllowsPurchase)
-  );
+  const stockAllowsPurchase =
+    inventory.status === "not-tracked" ||
+    inventory.status === "in-stock" ||
+    inventory.status === "low-stock" ||
+    inventory.status === "preorder" ||
+    ((inventory.status === "backorder" || inventory.status === "out-of-stock") &&
+      inventory.backorderable);
+
+  return variant.status === "active" && isValidPricing(variant.pricing) && stockAllowsPurchase;
 }
 
 export function getDefaultVariant(product: Product): ProductVariant | undefined {
