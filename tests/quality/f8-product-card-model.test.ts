@@ -1,8 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import {
-  legacyWatchToCardViewModel,
-} from "../../src/components/commerce/product-card-model";
+import { legacyWatchToCardViewModel } from "../../src/components/commerce/product-card-model";
 import { productToCardViewModel } from "../../src/components/commerce/product-card-product-adapter";
 import type { Product, ProductInventory } from "../../src/domain/product";
 import type { Money } from "../../src/domain/shared";
@@ -21,7 +19,11 @@ function createProduct(
     invalidPricing?: boolean;
   }> = {},
 ): Product {
-  const listPrice = { amountMinor: 10_000_000, currency: "IRR", fractionDigits: 0 } as const;
+  const listPrice = {
+    amountMinor: 10_000_000,
+    currency: "IRR",
+    fractionDigits: 0,
+  } as const;
   const effectivePrice = options.invalidPricing
     ? { amountMinor: 12_000_000, currency: "IRR", fractionDigits: 0 }
     : { amountMinor: 8_000_000, currency: "IRR", fractionDigits: 0 };
