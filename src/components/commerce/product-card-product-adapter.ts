@@ -32,13 +32,15 @@ export function productToCardViewModel(
   options: Readonly<{ includeRatings?: boolean }> = {},
 ): ProductCardViewModel {
   const variant = getDefaultVariant(product);
+  const variantBelongsToProduct = variant?.productId === product.identity.id;
+  const variantActive = variant?.status === "active";
   const pricingValid = variant ? isValidPricing(variant.pricing) : false;
   const primaryImage = product.media.assets.find(
     (asset) => asset.type === "image" && asset.id === product.media.primaryMediaId,
   );
 
   const price =
-    variant && pricingValid
+    variant && variantBelongsToProduct && pricingValid
       ? {
           current: formatMoney(variant.pricing.effectivePrice) ?? "",
           previous: variant.pricing.salePrice
@@ -54,7 +56,11 @@ export function productToCardViewModel(
       : undefined;
 
   const availability: ProductCardAvailabilityModel =
-    variant && product.status === "active" && pricingValid
+    variant &&
+    product.status === "active" &&
+    variantBelongsToProduct &&
+    variantActive &&
+    pricingValid
       ? {
           status: variant.inventory.status,
           label: availabilityLabel(variant.inventory),
