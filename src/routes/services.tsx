@@ -1,42 +1,86 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { PageHero } from "@/components/layout/PageHero";
-import { Shield, Wrench, Truck, Award, Clock, BadgeCheck } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
-const SERVICES = [
-  { Icon: Shield, name: "اصالت‌سنجی", desc: "بررسی تخصصی و گواهی اصالت برای هر ساعت", time: "همان روز" },
-  { Icon: Wrench, name: "سرویس و تعمیر", desc: "تعمیر ساعت‌های مکانیکال، کوارتز و هوشمند", time: "۱–۵ روز" },
-  { Icon: Truck, name: "ارسال امن", desc: "بسته‌بندی ضد ضربه با بیمه کامل و ردیابی", time: "۱–۳ روز" },
-  { Icon: Award, name: "گارانتی", desc: "گارانتی رسمی همراه با کارت اصلی برند", time: "۲ سال" },
-  { Icon: Clock, name: "تنظیم بند", desc: "تنظیم رایگان بند فلزی یا چرمی هنگام خرید", time: "۳۰ دقیقه" },
-  { Icon: BadgeCheck, name: "خرید قسطی", desc: "امکان خرید اقساطی برای ساعت‌های لوکس", time: "تا ۱۲ ماه" },
-];
+import {
+  ContentPage,
+  ContentSection,
+  UnconfiguredPolicyNotice,
+} from "@/components/content/PolicyPage";
+import { usePublicStoreSettings } from "@/components/layout/store-settings-context";
+import { buildTrustPageHead } from "@/content/trust/seo";
+import { resolveClaimPresentation } from "@/domain/store-settings";
 
 export const Route = createFileRoute("/services")({
-  head: () => ({
-    meta: [
-      { title: "خدمات — KRONOS" },
-      { name: "description", content: "خدمات تخصصی کرونوس: اصالت‌سنجی، تعمیر، گارانتی، ارسال امن." },
-    ],
-  }),
+  head: () =>
+    buildTrustPageHead({
+      pathname: "/services",
+      title: "خدمات کرونوس",
+      description: "خدمات و سیاست‌هایی که برای انتشار عمومی در کرونوس پیکربندی و تأیید شده‌اند.",
+    }),
   component: ServicesPage,
 });
 
 function ServicesPage() {
+  const settings = usePublicStoreSettings();
+  const services = [
+    {
+      id: "authenticity",
+      title: "اطلاعات اصالت",
+      to: "/authenticity" as const,
+      enabled: settings.authenticity.configured && settings.authenticity.enabled,
+      claim: resolveClaimPresentation(settings.authenticity.presentationClaim),
+    },
+    {
+      id: "warranty",
+      title: "گارانتی",
+      to: "/warranty" as const,
+      enabled: settings.warranty.configured && settings.warranty.enabled,
+      claim: resolveClaimPresentation(settings.warranty.presentationClaim),
+    },
+    {
+      id: "shipping",
+      title: "ارسال و مرجوعی",
+      to: "/shipping-returns" as const,
+      enabled:
+        (settings.shipping.configured && settings.shipping.enabled) ||
+        (settings.returns.configured && settings.returns.enabled),
+      claim: resolveClaimPresentation(
+        settings.shipping.presentationClaim ?? settings.returns.presentationClaim,
+      ),
+    },
+    {
+      id: "payments",
+      title: "روش‌های پرداخت",
+      to: "/payment-methods" as const,
+      enabled:
+        settings.features.paymentMethods &&
+        settings.payment.methods.some((method) => method.enabled),
+      claim: { kind: "hidden" as const },
+    },
+  ].filter((service) => service.enabled);
+
   return (
-    <>
-      <PageHero eyebrow="خدمات" title="فراتر از یک فروشگاه" sub="ما تجربه‌ای کامل از مشاوره تا سرویس و پشتیبانی ارائه می‌دهیم." />
-      <section className="py-12 px-5 sm:px-8" dir="rtl">
-        <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {SERVICES.map(({ Icon, name, desc, time }) => (
-            <div key={name} className="border border-[#1E1E1E] hover:border-[#C9A84C44] p-6 bg-[#0c0c0c] transition-colors">
-              <Icon className="w-8 h-8 text-[#C9A84C] mb-4" />
-              <h3 className="text-xl font-bold text-[#F0EDE8] mb-2">{name}</h3>
-              <p className="text-sm text-[#A8A8A8] leading-loose mb-4">{desc}</p>
-              <div className="text-xs text-[#C9A84C] tracking-wider border-t border-[#1A1A1A] pt-3">⏱ {time}</div>
-            </div>
+    <ContentPage
+      eyebrow="خدمات"
+      title="خدمات قابل انتشار"
+      intro="این صفحه فقط قابلیت‌ها و سیاست‌هایی را فهرست می‌کند که در تنظیمات عمومی فروشگاه فعال شده‌اند؛ زمان انجام، پوشش یا تعهد تأییدنشده اضافه نمی‌شود."
+    >
+      {services.length > 0 ? (
+        <div className="grid gap-4 sm:grid-cols-2">
+          {services.map((service) => (
+            <ContentSection key={service.id} title={service.title}>
+              {service.claim.kind !== "hidden" ? <p>{service.claim.text}</p> : null}
+              <Link
+                to={service.to}
+                className="inline-flex min-h-11 items-center rounded-md border border-border-default px-4 text-sm font-semibold text-text-primary hover:bg-background-elevated focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+              >
+                مشاهده جزئیات
+              </Link>
+            </ContentSection>
           ))}
         </div>
-      </section>
-    </>
+      ) : (
+        <UnconfiguredPolicyNotice label="خدمات عمومی فروشگاه" />
+      )}
+    </ContentPage>
   );
 }
