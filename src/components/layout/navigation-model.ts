@@ -69,5 +69,6 @@ export function getVisiblePaymentMethods(
   if (!settings.features.paymentMethods || !settings.contentVisibility.paymentMethods) return [];
   return settings.payment.methods
     .filter((method) => method.enabled)
-    .toSorted((a, b) => a.displayOrder - b.displayOrder);
+    .slice()
+    .sort((a: PublicPaymentMethod, b: PublicPaymentMethod) => a.displayOrder - b.displayOrder);
 }
