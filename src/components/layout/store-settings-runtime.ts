@@ -24,11 +24,16 @@ export function resolvePublicStoreSettings(
   const rawSettings = environment.VITE_PUBLIC_STORE_SETTINGS_JSON?.trim();
 
   if (rawSettings) {
-    return parsePublicStoreSettingsJson(rawSettings, normalizeEnvironmentName(environment.MODE))
-      .settings;
+    return parsePublicStoreSettingsJson(
+      rawSettings,
+      normalizeEnvironmentName(environment.MODE),
+    ).settings;
   }
 
-  return validatePublicStoreSettings(DEVELOPMENT_STORE_SETTINGS_FIXTURE, "development").settings;
+  return validatePublicStoreSettings(
+    DEVELOPMENT_STORE_SETTINGS_FIXTURE,
+    "development",
+  ).settings;
 }
 
 export const PUBLIC_STORE_SETTINGS = resolvePublicStoreSettings({
