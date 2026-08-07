@@ -1,84 +1,104 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { PageHero } from "@/components/layout/PageHero";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
-import { toast } from "sonner";
+import { Mail, Phone } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+
+import {
+  ContentPage,
+  ContentSection,
+  UnconfiguredPolicyNotice,
+} from "@/components/content/PolicyPage";
+import {
+  getConfirmedEmails,
+  getConfirmedPhones,
+  getConfirmedSocialLinks,
+} from "@/components/layout/navigation-model";
+import { usePublicStoreSettings } from "@/components/layout/store-settings-context";
+import { buildTrustPageHead } from "@/content/trust/seo";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "تماس با ما — KRONOS" },
-      { name: "description", content: "راه‌های ارتباطی و فرم تماس با کرونوس." },
-    ],
-  }),
+  head: () =>
+    buildTrustPageHead({
+      pathname: "/contact",
+      title: "تماس با کرونوس",
+      description: "راه‌های ارتباطی تأییدشده کرونوس و وضعیت دسترسی به پشتیبانی.",
+    }),
   component: ContactPage,
 });
 
 function ContactPage() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const settings = usePublicStoreSettings();
+  const phones = getConfirmedPhones(settings);
+  const emails = getConfirmedEmails(settings);
+  const socialLinks = getConfirmedSocialLinks(settings);
+  const hasChannels = phones.length + emails.length + socialLinks.length > 0;
+  const formAvailable =
+    settings.features.contactForm && settings.environment.capabilities.contactForm === "configured";
+
   return (
-    <>
-      <PageHero eyebrow="تماس" title="با ما در ارتباط باشید" sub="کارشناسان ما در ۷ روز هفته آماده پاسخگویی به سوالات شما هستند." />
-      <section className="py-12 px-5 sm:px-8" dir="rtl">
-        <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-4">
-            {[
-              { Icon: Phone, k: "تلفن", v: "۰۲۱-۰۰۰۰۰۰۰۰" },
-              { Icon: Mail, k: "ایمیل", v: "hello@kronos.shop" },
-              { Icon: MapPin, k: "آدرس", v: "تهران، خیابان ولیعصر، پلاک ۱۲۳" },
-            ].map(({ Icon, k, v }) => (
-              <div key={k} className="border border-[#1E1E1E] p-5 flex items-start gap-4 bg-[#0c0c0c]">
-                <div className="p-3 bg-[#C9A84C15] border border-[#C9A84C33]">
-                  <Icon className="w-5 h-5 text-[#C9A84C]" />
-                </div>
-                <div>
-                  <div className="text-xs text-[#8A8A8A] tracking-wider mb-1">{k}</div>
-                  <div className="text-[#F0EDE8]">{v}</div>
-                </div>
-              </div>
+    <ContentPage
+      eyebrow="تماس"
+      title="راه‌های ارتباطی"
+      intro="در این صفحه فقط کانال‌هایی نمایش داده می‌شوند که برای انتشار عمومی تأیید شده باشند."
+    >
+      {hasChannels ? (
+        <ContentSection title="کانال‌های تأییدشده">
+          <div className="grid gap-3 sm:grid-cols-2">
+            {phones.map((phone) => (
+              <a
+                key={phone.id}
+                href={`tel:${phone.e164}`}
+                className="flex min-h-11 items-center gap-3 rounded-md border border-border-subtle px-4 py-3 text-text-primary hover:border-border-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+              >
+                <Phone className="size-5 text-accent-primary" aria-hidden="true" />
+                {phone.displayValue ?? phone.e164}
+              </a>
+            ))}
+            {emails.map((email) => (
+              <a
+                key={email.id}
+                href={`mailto:${email.address}`}
+                className="flex min-h-11 items-center gap-3 rounded-md border border-border-subtle px-4 py-3 text-text-primary hover:border-border-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+              >
+                <Mail className="size-5 text-accent-primary" aria-hidden="true" />
+                {email.address}
+              </a>
+            ))}
+            {socialLinks.map((social) => (
+              <a
+                key={`${social.platform}-${social.url}`}
+                href={social.url}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="flex min-h-11 items-center rounded-md border border-border-subtle px-4 py-3 text-text-primary hover:border-border-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+              >
+                {social.label}
+              </a>
             ))}
           </div>
-
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (!form.name || !form.email || !form.message) return toast.error("همه فیلدها را پر کنید");
-              toast.success("پیام شما ارسال شد ✓");
-              setForm({ name: "", email: "", message: "" });
-            }}
-            className="border border-[#1E1E1E] p-6 bg-[#0c0c0c] space-y-4"
+        </ContentSection>
+      ) : (
+        <UnconfiguredPolicyNotice label="اطلاعات تماس عمومی">
+          <Link
+            to="/faq"
+            className="inline-flex min-h-11 items-center rounded-md border border-border-default px-4 text-sm font-semibold text-text-primary hover:bg-background-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
           >
-            <Field label="نام شما" value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
-            <Field label="ایمیل" type="email" value={form.email} onChange={(v) => setForm({ ...form, email: v })} />
-            <div>
-              <label className="text-xs text-[#8A8A8A] tracking-wider mb-1.5 block">پیام</label>
-              <textarea
-                value={form.message}
-                onChange={(e) => setForm({ ...form, message: e.target.value })}
-                rows={5}
-                className="w-full bg-[#080808] border border-[#1E1E1E] focus:border-[#C9A84C55] outline-none px-3 py-2.5 text-sm text-[#F0EDE8]"
-              />
-            </div>
-            <button type="submit" className="w-full py-3 bg-[#C9A84C] text-[#080808] font-bold text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-2 hover:bg-[#E8C96C] transition-colors">
-              <Send className="w-4 h-4" /> ارسال پیام
-            </button>
-          </form>
-        </div>
-      </section>
-    </>
-  );
-}
+            مشاهده پرسش‌های متداول
+          </Link>
+        </UnconfiguredPolicyNotice>
+      )}
 
-function Field({ label, value, onChange, type = "text" }: { label: string; value: string; onChange: (v: string) => void; type?: string }) {
-  return (
-    <div>
-      <label className="text-xs text-[#8A8A8A] tracking-wider mb-1.5 block">{label}</label>
-      <input
-        type={type}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-[#080808] border border-[#1E1E1E] focus:border-[#C9A84C55] outline-none px-3 py-2.5 text-sm text-[#F0EDE8]"
-      />
-    </div>
+      <ContentSection title="فرم تماس">
+        {formAvailable ? (
+          <p>
+            قابلیت فرم تماس برای این محیط فعال شده است، اما ارسال باید به اتصال واقعی سرویس پشتیبانی
+            وابسته باشد. هیچ پیام موفقیت بدون ثبت واقعی درخواست نمایش داده نمی‌شود.
+          </p>
+        ) : (
+          <p>
+            فرم تماس عمومی در حال حاضر فعال نیست. این صفحه عمداً فرم نمایشی یا پیام موفقیت ساختگی
+            ارائه نمی‌کند.
+          </p>
+        )}
+      </ContentSection>
+    </ContentPage>
   );
 }
