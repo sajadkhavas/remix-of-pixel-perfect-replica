@@ -1,6 +1,6 @@
 import type { Money } from "@/domain/shared";
-import type { Product, ProductVariant } from "@/domain/product";
-import { getDefaultVariant } from "@/domain/product";
+import type { Product, ProductInventory } from "@/domain/product";
+import { getDefaultVariant, isPurchasableVariant, isValidPricing } from "@/domain/product";
 
 import {
   discountPercent,
@@ -10,16 +10,15 @@ import {
 
 export type MoneyFormatter = (money: Money) => string | null;
 
-function availabilityLabel(status: ProductVariant["inventory"]["status"]): string {
-  switch (status) {
+function availabilityLabel(inventory: ProductInventory): string {
+  switch (inventory.status) {
     case "out-of-stock":
-      return "ناموجود";
+    case "backorder":
+      return inventory.backorderable ? "قابل سفارش" : "ناموجود";
     case "low-stock":
       return "موجودی محدود";
     case "preorder":
       return "پیش‌خرید";
-    case "backorder":
-      return "قابل سفارش";
     case "in-stock":
     case "not-tracked":
       return "موجود";
@@ -33,11 +32,12 @@ export function productToCardViewModel(
   options: Readonly<{ includeRatings?: boolean }> = {},
 ): ProductCardViewModel {
   const variant = getDefaultVariant(product);
+  const pricingValid = variant ? isValidPricing(variant.pricing) : false;
   const primaryImage = product.media.assets.find(
     (asset) => asset.type === "image" && asset.id === product.media.primaryMediaId,
   );
 
-  const price = variant
+  const price = variant && pricingValid
     ? {
         current: formatMoney(variant.pricing.effectivePrice) ?? "",
         previous: variant.pricing.salePrice
@@ -52,15 +52,14 @@ export function productToCardViewModel(
       }
     : undefined;
 
-  const availability: ProductCardAvailabilityModel = variant
-    ? {
-        status: variant.inventory.status,
-        label: availabilityLabel(variant.inventory.status),
-        purchasable:
-          variant.status === "active" &&
-          (variant.inventory.status !== "out-of-stock" || variant.inventory.backorderable),
-      }
-    : { status: "unknown", label: "وضعیت نامشخص", purchasable: false };
+  const availability: ProductCardAvailabilityModel =
+    variant && product.status === "active" && pricingValid
+      ? {
+          status: variant.inventory.status,
+          label: availabilityLabel(variant.inventory),
+          purchasable: isPurchasableVariant(variant),
+        }
+      : { status: "unknown", label: "ناموجود", purchasable: false };
 
   return {
     id: product.identity.id,
