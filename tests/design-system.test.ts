@@ -1,10 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import {
-  cssVariableForToken,
-  designTokenGroups,
-  semanticColorTokens,
-} from "../src/lib/ui/tokens";
+import { cssVariableForToken, designTokenGroups, semanticColorTokens } from "../src/lib/ui/tokens";
 import {
   isolateBidi,
   isBidiIsolated,
