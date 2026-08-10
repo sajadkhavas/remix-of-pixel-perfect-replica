@@ -10,11 +10,16 @@
 - Gate 3 original integrated code baseline: `350acdb3af171561d16241a0aafb420b29204034`
 - Gate 3 hardened code baseline: `7c19320b9c7fdc6189362ce2e051c34a64e7ac9c`
 - Gate 3 hardening review record: `93c186d5172ca6e89609d1e6bb75b7130b70b082`
+- Pre-wave final closure branch baseline: `b303c0b9f81cea8ab21c70f38597d77e9e7748b7`
+- Pre-wave final closure branch SHA: `e3bbe73e47749d6985fef89fb4d721d64583761c`
+- Pre-wave final closure integration: PR #25 / merge `af3bb06f33061fa531143d53a105560627650a8a`
+- Pre-wave Gate 3 review record: `973ce7031fff00a45ff3bb804dbadd0e75a3e105`
 - Registry owner: Supervisor chat / final integration owner
 - Governing reviews:
   - `docs/front-overhaul/GATE_1_REVIEW.md`
   - `docs/front-overhaul/GATE_2_REVIEW.md`
   - `docs/front-overhaul/GATE_3_REVIEW.md`
+  - `docs/front-overhaul/PRE_WAVE_FINAL_CLOSURE.md`
 
 ## Phase Status
 
@@ -24,13 +29,13 @@
 | F1 — Brand, Content and Keyword Architecture | `phase/f1-brand-content-seo-map` | Original main baseline | `b8c3920c8fdddaa3b1d3fa33214e27626c35d3c7` | `APPROVED_WITH_RECONCILIATION` | Content audit, brand system, page copy, intent/keyword maps, 20 briefs | PR #12; `/shop` supersedes `/watches` planning references |
 | F2 — Information Architecture and Data Contracts | `phase/f2-ia-taxonomy-contracts` + supervisor hardening | Original main baseline | `0c7d711b1550c4613977f10095b7b6303d821ac3` + `7ffa86422332a2882e5617622dfcdfb895029ded` | `APPROVED_AFTER_SUPERVISOR_HARDENING` | Domain/search/commerce contracts, ADRs, strict persistence tests; ISO timestamp boundary validation; inventory tracking/status consistency | PR #13; integration hardening; PR #24 / merge `7c19320b9c7fdc6189362ce2e051c34a64e7ac9c` |
 | F3A — Visual Direction and Asset Strategy | `phase/f3a-visual-direction-assets` | Original main baseline | `247021a753efbfe0bda92438782f466dc7c2269c` | `APPROVED` | Visual audit, art direction, responsive/motion rules, page briefs, asset manifest | PR #14 |
-| F3B — Production Design System | `phase/f3b-design-system` | Gate 1 branch baseline | `a7d5ac3f9f6a6ae97bc5f37388fe68e514107714` | `APPROVED_AFTER_INTEGRATION_VERIFICATION` | Semantic tokens, shared primitives, RTL/reduced-motion foundations, six design-system tests | PR #15 / merge `aa6522e47b0c67d11eb6b746de276bd936ed8831`; formatting and warning locations reconciled |
+| F3B — Production Design System | `phase/f3b-design-system` + pre-wave closure | Gate 1 branch baseline | `a7d5ac3f9f6a6ae97bc5f37388fe68e514107714` + `e3bbe73e47749d6985fef89fb4d721d64583761c` | `APPROVED_AFTER_INTEGRATION_VERIFICATION_AND_DEBT_CLOSURE` | Semantic tokens, shared primitives, RTL/reduced-motion foundations, design-system tests; six Fast Refresh warnings closed by narrow named-export architecture exception | PR #15 / merge `aa6522e47b0c67d11eb6b746de276bd936ed8831`; PR #25 / merge `af3bb06f33061fa531143d53a105560627650a8a` |
 | F12 — Store Configuration and Integration Contract | `phase/f12-store-config` | Gate 1 branch baseline | `6d18f9c18a738345be61e687c3a5690a26332c00` | `APPROVED_AFTER_INTEGRATION_VERIFICATION` | Strict public settings schemas, trust/secret boundaries, repositories, sixteen contract tests | PR #16 / merge `bef820d48c13ef0fe219716db6b33e0cfb3af601` |
 | F13A — Technical SEO Infrastructure | `phase/f13a-seo-infrastructure` | Gate 1 branch baseline | `8ed51895d7a765e156bd0a3420d56c2384dada40` | `APPROVED` | URL/canonical policy, metadata, indexability, secure JSON-LD, sitemap/robots, twenty-six tests | PR #17 / merge `a73a089a58b86aa5a93c2b49f5f4984a4824fc95` |
-| F14A — Quality, Accessibility and Performance Harness | `phase/f14a-quality-harness` | Gate 1 branch baseline | `b1ecc60333f61ad32f9f5f782188e74fedf94c8a` | `APPROVED_AFTER_SUPERVISOR_RECONCILIATION` | Playwright/Axe, exact debt registries, scanners, budgets, nineteen unit/quality tests, browser matrix | PR #18 / merge `dbb4ba79ac3a2c9214361f1d4656da53640e153b`; combined scripts and CI upgraded |
-| F4 — Global Shell and Navigation | `phase/f4-global-shell-navigation` | Gate 2 accepted baseline | `57b2ebd70a6c21816219cd69ed1e2c0095e0289f` | `APPROVED_AFTER_SUPERVISOR_RECONSTRUCTION` | Format/lint/type/unit/contract/scanner/build evidence; fail-closed F12 settings, reduced-motion shell, keyboard-usable mobile dialog | PR #19 / merge `93732aafe8e71772eaf29f61ea6e64d9fde2ff43` |
-| F8 — Shared Commerce Components | `phase/f8-shared-commerce-components` + `phase/gate3-hardening` | Gate 2 accepted baseline; cleanly rebased after F4 | `553306f8dfccddcb596e51dedf8c77f84558cd59` + `7ffa86422332a2882e5617622dfcdfb895029ded` | `APPROVED_AFTER_SUPERVISOR_HARDENING` | Original format/lint/type/unit/contract/scanner/build/performance evidence; normalized Product adapter now consumes F2 pricing/inventory/variant rules; added regression coverage | PR #20 / merge `62202ee71cdaabcd8e695b16e30523d95093fa3c`; PR #24 / merge `7c19320b9c7fdc6189362ce2e051c34a64e7ac9c` |
-| F11 — Content, Trust and Legal | `phase/f11-content-trust-legal` | Integrated F4 baseline | `07f95647bae4df43dc62938ff83df41acf117717` | `APPROVED_AFTER_SUPERVISOR_COMPLETION` | Successful route-generation/build workflow; evidence-aware/noindex trust/legal pages; no fake contact success | PR #21 / merge `350acdb3af171561d16241a0aafb420b29204034` |
+| F14A — Quality, Accessibility and Performance Harness | `phase/f14a-quality-harness` + pre-wave closure | Gate 1 branch baseline | `b1ecc60333f61ad32f9f5f782188e74fedf94c8a` + `e3bbe73e47749d6985fef89fb4d721d64583761c` | `APPROVED_AFTER_SUPERVISOR_RECONCILIATION_AND_OWNER_MAP_CLOSURE` | Playwright/Axe, exact debt registries, scanners, budgets, unit/browser matrix; accepted phase-owner map corrected and regression-tested | PR #18 / merge `dbb4ba79ac3a2c9214361f1d4656da53640e153b`; PR #25 / merge `af3bb06f33061fa531143d53a105560627650a8a` |
+| F4 — Global Shell and Navigation | `phase/f4-global-shell-navigation` | Gate 2 accepted baseline | `57b2ebd70a6c21816219cd69ed1e2c0095e0289f` | `APPROVED_AFTER_SUPERVISOR_RECONSTRUCTION` | Format/lint/type/unit/contract/scanner/build evidence; fail-closed F12 settings, reduced-motion shell, native-dialog mobile menu; obsolete keyboard debt closed in pre-wave reconciliation | PR #19 / merge `93732aafe8e71772eaf29f61ea6e64d9fde2ff43`; debt reconciliation PR #25 |
+| F8 — Shared Commerce Components | `phase/f8-shared-commerce-components` + `phase/gate3-hardening` | Gate 2 accepted baseline; cleanly rebased after F4 | `553306f8dfccddcb596e51dedf8c77f84558cd59` + `7ffa86422332a2882e5617622dfcdfb895029ded` | `APPROVED_AFTER_SUPERVISOR_HARDENING` | Original format/lint/type/unit/contract/scanner/build/performance evidence; normalized Product adapter consumes F2 pricing/inventory/variant rules; regression coverage; stale error-page/link debt removed from registry | PR #20 / merge `62202ee71cdaabcd8e695b16e30523d95093fa3c`; PR #24 / merge `7c19320b9c7fdc6189362ce2e051c34a64e7ac9c`; debt reconciliation PR #25 |
+| F11 — Content, Trust and Legal | `phase/f11-content-trust-legal` | Integrated F4 baseline | `07f95647bae4df43dc62938ff83df41acf117717` | `APPROVED_AFTER_SUPERVISOR_COMPLETION` | Successful route-generation/build workflow; evidence-aware/noindex trust/legal pages; no fake contact success; stale Contact placeholder debt removed from registry | PR #21 / merge `350acdb3af171561d16241a0aafb420b29204034`; debt reconciliation PR #25 |
 
 ## Gate Decisions
 
@@ -54,6 +59,9 @@
 | Ratings/reviews | Hidden unless explicitly enabled by backed data/evidence |
 | Legal content | No invented contractual language; unapproved content remains neutral and noindex |
 | Contact form success | Forbidden without an actually configured backend acceptance path |
+| Quality owner assignment | Must follow accepted phase map; unknown future files are `UNASSIGNED`, never silently assigned to F8 |
+| Resolved quality debt | Remove exact stale entries when resolution is directly verified; historical counts remain only as historical snapshots |
+| Browser debt without executable CI | Retained conservatively until rerun, except deterministic native-semantics fixes explicitly reviewed by Supervisor |
 | Quality baselines | Exact temporary debt controls, not production-release waivers |
 | Gate 2 CSS measurement | 119,738 bytes |
 | Gate 2 CSS hard limit | 122,500 bytes |
@@ -63,7 +71,7 @@
 | Direct work on `main` | Prohibited |
 | Manual editing of `src/routeTree.gen.ts` | Prohibited; generator only |
 
-## Gate 2 Quality Snapshot
+## Historical Gate 2 Quality Snapshot
 
 | Registry | Exact tracked debt |
 | --- | ---: |
@@ -77,17 +85,35 @@
 | Keyboard | 1 |
 | **Total** | **998** |
 
-Gate 2 accepted the shared development foundation. Gate 3 removes known fake shell payment/trust surfaces and prototype content behavior, but the exact F14A debt registries remain release blockers until a later full quality snapshot refreshes them. The Gate 2 count is retained as historical measured debt and is not claimed to be the exact post-F4/F8/F11 count while Actions execution is externally blocked.
+Gate 2 accepted the shared development foundation. These figures remain the historical Gate 2 snapshot and are no longer treated as the exact current static debt after Gate 3/pre-wave reconciliation.
 
-## Gate 3 CI Infrastructure Record
+## Pre-Wave Reconciled Quality Snapshot
+
+| Registry | Tracked debt | Status |
+| --- | ---: | --- |
+| Lint warnings | 2 | Current static registry: F5 editorial + F9 StoreContext |
+| Forbidden production copy | 20 | Current static registry: F5=5, F6/F7=12, F10=3 |
+| Link integrity | 1 | Current static registry: F9 cart CTA |
+| Asset violations | 83 | Retained; production asset approval still blocked |
+| Route smoke | 10 | Last executable browser baseline; rerun required |
+| Accessibility | 803 | Last executable browser baseline; rerun required |
+| Reduced motion | 59 | Last executable browser baseline; rerun required |
+| Keyboard | 0 | Obsolete F4 critical entry closed by reviewed native semantics |
+| **Total tracked debt** | **978** | Conservative until browser/asset rerun |
+
+The reduction from 998 to 978 reflects only directly verified static/keyboard resolutions. Browser and asset debt is not silently deleted while GitHub Actions is unable to execute.
+
+## Gate 3 / Pre-Wave CI Record
 
 Original integrated code SHA `350acdb3af171561d16241a0aafb420b29204034` triggered Frontend Quality run `31185981046`. Two attempts produced `runner_id: 0`, an empty `runner_name`, and no executable steps; browser jobs were skipped.
 
 During supervisor hardening, PR #24 run `31189461929` reproduced the same zero-step failure. A diagnostic runner-label experiment used `ubuntu-22.04`; run `31189623381` failed identically before any executable step. The GitHub check annotation then identified the exact cause: the job was not started because recent account payments had failed or the account spending limit needed to be increased.
 
+On 2026-08-10, pre-wave final closure PR #25 triggered Frontend Quality run `31362947753`. Static/release jobs again had no executable steps and the browser job was skipped. GitHub's check annotation repeated the same account Billing/Spending message.
+
 The diagnostic workflow change was reverted and the repository remains pinned to the original `ubuntu-24.04` runner configuration. No quality gate was disabled, weakened or marked successful. The earlier generic runner/service classification is superseded by the exact account Billing/Spending diagnosis.
 
-Gate 3 is a hardened next-wave development baseline, not a production-release approval. The full shared quality gate must execute and pass after the account Billing/Spending blocker is resolved.
+Gate 3 and the pre-wave closure are development baselines, not production-release approvals. The full shared quality gate must execute and pass after the account Billing/Spending blocker is resolved.
 
 ## Shared File Ownership
 
@@ -106,7 +132,7 @@ Gate 3 is a hardened next-wave development baseline, not a production-release ap
 | `src/data/contracts/*` | F2 / F12 | Avoid backend-specific URLs and duplicate interfaces |
 | `src/config/*`, `src/domain/store-settings/*`, `src/lib/store-settings/*` | F12 | Validated public configuration; no frontend secrets |
 | `src/seo/*` | F13A | Metadata, canonical, robots, sitemap and structured-data builders |
-| `tests/*`, `playwright.config.ts`, `quality/*`, `scripts/quality/*` | F14A | Exact debt governance and no-regression gates |
+| `tests/*`, `playwright.config.ts`, `quality/*`, `scripts/quality/*` | F14A | Exact debt governance, phase ownership and no-regression gates |
 | `src/routes/__root.tsx`, `src/components/layout/*` | F4 | Global shell, responsive navigation and public-settings presentation |
 | `src/routes/about.tsx`, `contact.tsx`, `faq.tsx`, `services.tsx`, trust/legal routes, `src/components/content/*` | F11 | Truth-safe content/trust/legal presentation |
 | `src/components/sections/HeroSection.tsx` | F5 later | F3B supplies tokens/primitives, not the final Hero experience |
@@ -140,6 +166,9 @@ Gate 3 is a hardened next-wave development baseline, not a production-release ap
 | 2026-08-07 | Gate 3 supervisor hardening | PR #24 / merge `7c19320b9c7fdc6189362ce2e051c34a64e7ac9c` | Closed F2 timestamp/inventory and F8 normalized ProductCard edge cases | Supervisor |
 | 2026-08-07 | Gate 3 hardening CI | Runs `31189461929`, `31189623381` | Exact external blocker identified: GitHub account Billing/Spending prevented job start | Supervisor |
 | 2026-08-07 | Gate 3 hardening review | `93c186d5172ca6e89609d1e6bb75b7130b70b082` | Accepted for next-wave development after hardening; production release still blocked on full green CI | Supervisor |
+| 2026-08-10 | Pre-wave final closure | PR #25 / merge `af3bb06f33061fa531143d53a105560627650a8a` | Closed F3B static warning debt, reconciled stale F4/F8/F11 registries and corrected F14A ownership | Supervisor |
+| 2026-08-10 | Pre-wave closure CI | Run `31362947753` | External GitHub Billing/Spending blocker; zero executable steps, browser skipped | Supervisor |
+| 2026-08-10 | Pre-wave Gate 3 review | `973ce7031fff00a45ff3bb804dbadd0e75a3e105` | `PRE_WAVE_CODE_CLOSURE_COMPLETE_WITH_EXTERNAL_CI_BILLING_BLOCKER` | Supervisor |
 
 ## Registry Rules
 
@@ -151,5 +180,8 @@ Gate 3 is a hardened next-wave development baseline, not a production-release ap
 - Quality checks rerun after shared-file reconciliation; when GitHub account Billing/Spending prevents job execution, the incident is recorded and the full gate remains mandatory after the account blocker is resolved.
 - Feature phases may remove exact baseline debt but may not add new unregistered debt.
 - A baseline entry requires an exact location, owner, reason, removal condition and expiry where applicable.
+- Quality scanners must use the accepted phase-owner map. Unmatched paths remain `UNASSIGNED` until the supervisor assigns an owner.
+- Static baseline entries verified as resolved are removed rather than carried as stale debt.
+- Browser/field-performance baselines are not refreshed without executable evidence; direct deterministic fixes may close an exact defect only with explicit supervisor review.
 - Planning documents cannot silently override accepted route, domain, configuration, SEO or quality contracts.
 - Unsupported claims and unverified assets remain blocked even when prototype code still renders them.
