@@ -3,54 +3,46 @@
   "baselineSha": "f8e48e839a7ac43a5b7088254dde4441c4232c35",
   "registries": {
     "lintWarnings": {
-      "count": 8,
+      "count": 2,
       "byOwner": {
-        "F3B": 6,
-        "F6": 1,
-        "F8": 1
+        "F5": 1,
+        "F9": 1
       },
       "byRule": {
-        "react-refresh/only-export-components": 7,
+        "react-refresh/only-export-components": 1,
         "unassigned": 1
       },
       "byImpact": {
-        "unassigned": 8
+        "unassigned": 2
       }
     },
     "forbiddenCopy": {
-      "count": 31,
+      "count": 20,
       "byOwner": {
-        "F4": 6,
-        "F7": 3,
-        "F8": 22
+        "F10": 3,
+        "F5": 5,
+        "F6/F7": 12
       },
       "byRule": {
         "demo-copy": 3,
         "hardcoded-review-count": 12,
         "hardcoded-satisfaction-stat": 3,
-        "placeholder-address": 2,
-        "placeholder-email": 2,
-        "placeholder-phone": 2,
-        "unsupported-authenticity-claim": 6,
-        "unsupported-free-shipping": 1
+        "unsupported-authenticity-claim": 2
       },
       "byImpact": {
-        "unassigned": 31
+        "unassigned": 20
       }
     },
     "linkIntegrity": {
-      "count": 3,
+      "count": 1,
       "byOwner": {
-        "F4": 1,
-        "F6": 1,
-        "F8": 1
+        "F9": 1
       },
       "byRule": {
-        "button-without-static-action": 2,
-        "placeholder-hash-link": 1
+        "button-without-static-action": 1
       },
       "byImpact": {
-        "unassigned": 3
+        "unassigned": 1
       }
     },
     "assetViolations": {
@@ -127,19 +119,13 @@
       }
     },
     "keyboard": {
-      "count": 1,
-      "byOwner": {
-        "F4": 1
-      },
-      "byRule": {
-        "keyboard:mobile-menu-enter-does-not-open": 1
-      },
-      "byImpact": {
-        "critical": 1
-      }
+      "count": 0,
+      "byOwner": {},
+      "byRule": {},
+      "byImpact": {}
     }
   },
-  "totalTrackedDebt": 998,
+  "totalTrackedDebt": 978,
   "performance": {
     "schemaVersion": 1,
     "measuredAt": "2026-08-06T15:41:59.149Z",
