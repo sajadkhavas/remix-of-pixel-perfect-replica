@@ -1,32 +1,7 @@
 {
   "schemaVersion": 1,
-  "baselineSha": "b0d8e9ba1d0156d18ccb68258a9a650490931d89",
+  "baselineSha": "b303c0b9f81cea8ab21c70f38597d77e9e7748b7",
   "findings": [
-    {
-      "file": "src/components/layout/Footer.tsx",
-      "line": 74,
-      "column": 26,
-      "rule": "placeholder-hash-link",
-      "value": "#",
-      "excerptHash": "e13353bc4d60a0d4",
-      "excerpt": "<a key={i} href=\"#\" className=\"w-9 h-9 borde",
-      "owner": "F4",
-      "reason": "The target is empty, placeholder, invalid, unknown, or planned but not implemented.",
-      "removalCondition": "Owning phase supplies a valid implemented destination or removes the false affordance.",
-      "expiry": "2026-10-01"
-    },
-    {
-      "file": "src/lib/error-page.ts",
-      "line": 24,
-      "column": 9,
-      "rule": "button-without-static-action",
-      "excerptHash": "74ff957ceb1f9090",
-      "excerpt": "<button class=\"primary\" onclick=\"location.reload()\">",
-      "owner": "F8",
-      "reason": "Static inspection found a button without an action, submit type, or form association.",
-      "removalCondition": "Add the real action/submit contract or use non-interactive markup.",
-      "expiry": "2026-10-01"
-    },
     {
       "file": "src/routes/cart.tsx",
       "line": 132,
@@ -34,11 +9,11 @@
       "rule": "button-without-static-action",
       "excerptHash": "67811a0af01b68c3",
       "excerpt": "<button className=\"w-full py-3 bg-[#C9A84C] text-[#080808] font-bold text-xs tracking-[0.2em] uppercase hover:bg-[#E8C96C] transition-colors\">",
-      "owner": "F6",
-      "reason": "Static inspection found a button without an action, submit type, or form association.",
-      "removalCondition": "Add the real action/submit contract or use non-interactive markup.",
+      "owner": "F9",
+      "reason": "Legacy cart checkout affordance has no real action/backend contract yet.",
+      "removalCondition": "F9/F10 replace the legacy cart CTA with a real truth-safe checkout transition or disabled state.",
       "expiry": "2026-10-01"
     }
   ],
-  "generatedAt": "2026-08-06T06:11:16.296Z"
+  "generatedAt": "2026-08-10T06:26:50.000Z"
 }
