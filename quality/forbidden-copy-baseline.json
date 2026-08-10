@@ -1,79 +1,7 @@
 {
   "schemaVersion": 1,
-  "baselineSha": "b0d8e9ba1d0156d18ccb68258a9a650490931d89",
+  "baselineSha": "b303c0b9f81cea8ab21c70f38597d77e9e7748b7",
   "findings": [
-    {
-      "file": "src/components/layout/Footer.tsx",
-      "line": 100,
-      "column": 101,
-      "rule": "placeholder-email",
-      "excerptHash": "fa9b21d6234d6416",
-      "excerpt": "-3.5 h-3.5 text-[#C9A84C]\" /> hello@kronos.shop</span> <span classN",
-      "owner": "F4",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
-      "expiry": "2026-10-01"
-    },
-    {
-      "file": "src/components/layout/Footer.tsx",
-      "line": 101,
-      "column": 103,
-      "rule": "placeholder-address",
-      "excerptHash": "cd3d2d81adf1fdc1",
-      "excerpt": "-3.5 h-3.5 text-[#C9A84C]\" /> تهران، خیابان ولیعصر</span> </div>",
-      "owner": "F4",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
-      "expiry": "2026-10-01"
-    },
-    {
-      "file": "src/components/layout/Footer.tsx",
-      "line": 50,
-      "column": 64,
-      "rule": "unsupported-authenticity-claim",
-      "excerptHash": "91c1fbfaf56fbc4a",
-      "excerpt": "وکس، اسپرت و هوشمند در ایران. ضمانت اصالت، ارسال امن و سرویس تخصصی.",
-      "owner": "F4",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
-      "expiry": "2026-10-01"
-    },
-    {
-      "file": "src/components/layout/Footer.tsx",
-      "line": 99,
-      "column": 102,
-      "rule": "placeholder-phone",
-      "excerptHash": "f7f7f776aca22d38",
-      "excerpt": "-3.5 h-3.5 text-[#C9A84C]\" /> ۰۲۱-۰۰۰۰۰۰۰۰</span> <span classN",
-      "owner": "F4",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
-      "expiry": "2026-10-01"
-    },
-    {
-      "file": "src/components/layout/Navbar.tsx",
-      "line": 37,
-      "column": 40,
-      "rule": "unsupported-authenticity-claim",
-      "excerptHash": "a22693099a8c45ee",
-      "excerpt": "رسال رایگان بالای ۵۰ میلیون · ضمانت اصالت </div> <motion.n",
-      "owner": "F4",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
-      "expiry": "2026-10-01"
-    },
-    {
-      "file": "src/components/layout/Navbar.tsx",
-      "line": 37,
-      "column": 9,
-      "rule": "unsupported-free-shipping",
-      "excerptHash": "bffb0421eee740e4",
-      "excerpt": "relative z-50 px-3\"> ارسال رایگان بالای ۵۰ میلیون · ضمانت اصالت",
-      "owner": "F4",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
-      "expiry": "2026-10-01"
-    },
     {
       "file": "src/components/sections/FeaturedProducts.tsx",
       "line": 56,
@@ -81,9 +9,9 @@
       "rule": "hardcoded-satisfaction-stat",
       "excerptHash": "42d2c369372ccc16",
       "excerpt": "\"> {[ { value: 1200, label: \"مدل ساعت\", suffix: \"",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F5",
+      "reason": "Unsupported homepage marketing statistics remain in the legacy homepage section.",
+      "removalCondition": "F5 removes the statistic or replaces it with evidence-backed configured content.",
       "expiry": "2026-10-01"
     },
     {
@@ -93,9 +21,9 @@
       "rule": "hardcoded-satisfaction-stat",
       "excerptHash": "b2b69c4ef75a0c8f",
       "excerpt": ", suffix: \"\" }, { value: 99, label: \"درصد رضایت\", suffi",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F5",
+      "reason": "Unsupported homepage marketing statistics remain in the legacy homepage section.",
+      "removalCondition": "F5 removes the statistic or replaces it with evidence-backed configured content.",
       "expiry": "2026-10-01"
     },
     {
@@ -105,9 +33,9 @@
       "rule": "hardcoded-satisfaction-stat",
       "excerptHash": "db1ebf769ab9f884",
       "excerpt": "{ value: 99, label: \"درصد رضایت\", suffix: \"٪\" }, ].",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F5",
+      "reason": "Unsupported homepage marketing statistics remain in the legacy homepage section.",
+      "removalCondition": "F5 removes the statistic or replaces it with evidence-backed configured content.",
       "expiry": "2026-10-01"
     },
     {
@@ -117,9 +45,9 @@
       "rule": "hardcoded-review-count",
       "excerptHash": "d35c91d5b5344375",
       "excerpt": "\"120m\", stock: 2, rating: 5, review_count: 84, isLimited: true }, { id: 2",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F6/F7",
+      "reason": "Legacy catalog fixtures contain unverified review data and are compatibility-only.",
+      "removalCondition": "F6/F7 migrate discovery and product routes to F2 repository data and remove unverified review fixtures.",
       "expiry": "2026-10-01"
     },
     {
@@ -129,9 +57,9 @@
       "rule": "hardcoded-review-count",
       "excerptHash": "a6a81cf9512ad7e8",
       "excerpt": "\"300m\", stock: 8, rating: 5, review_count: 142, isNew: true }, { id: 3, na",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F6/F7",
+      "reason": "Legacy catalog fixtures contain unverified review data and are compatibility-only.",
+      "removalCondition": "F6/F7 migrate discovery and product routes to F2 repository data and remove unverified review fixtures.",
       "expiry": "2026-10-01"
     },
     {
@@ -141,9 +69,9 @@
       "rule": "hardcoded-review-count",
       "excerptHash": "07c86a1d15d82622",
       "excerpt": ": \"50m\", stock: 1, rating: 5, review_count: 56, isLimited: true }, { id: 4",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F6/F7",
+      "reason": "Legacy catalog fixtures contain unverified review data and are compatibility-only.",
+      "removalCondition": "F6/F7 migrate discovery and product routes to F2 repository data and remove unverified review fixtures.",
       "expiry": "2026-10-01"
     },
     {
@@ -153,9 +81,9 @@
       "rule": "hardcoded-review-count",
       "excerptHash": "18ab37afc406f087",
       "excerpt": "\"200m\", stock: 12, rating: 4, review_count: 210 }, { id: 5, name: \"پرساژ کل",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F6/F7",
+      "reason": "Legacy catalog fixtures contain unverified review data and are compatibility-only.",
+      "removalCondition": "F6/F7 migrate discovery and product routes to F2 repository data and remove unverified review fixtures.",
       "expiry": "2026-10-01"
     },
     {
@@ -165,9 +93,9 @@
       "rule": "hardcoded-review-count",
       "excerptHash": "5764fce661182a17",
       "excerpt": "\"100m\", stock: 24, rating: 4, review_count: 318, isNew: true }, { id: 6, na",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F6/F7",
+      "reason": "Legacy catalog fixtures contain unverified review data and are compatibility-only.",
+      "removalCondition": "F6/F7 migrate discovery and product routes to F2 repository data and remove unverified review fixtures.",
       "expiry": "2026-10-01"
     },
     {
@@ -177,9 +105,9 @@
       "rule": "hardcoded-review-count",
       "excerptHash": "8549c083c7d79040",
       "excerpt": "\"100m\", stock: 6, rating: 5, review_count: 421 }, { id: 7, name: \"مستر کال",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F6/F7",
+      "reason": "Legacy catalog fixtures contain unverified review data and are compatibility-only.",
+      "removalCondition": "F6/F7 migrate discovery and product routes to F2 repository data and remove unverified review fixtures.",
       "expiry": "2026-10-01"
     },
     {
@@ -189,9 +117,9 @@
       "rule": "hardcoded-review-count",
       "excerptHash": "f6b321db1efb48e0",
       "excerpt": ": \"30m\", stock: 4, rating: 5, review_count: 92 }, { id: 8, name: \"تانک فرا",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F6/F7",
+      "reason": "Legacy catalog fixtures contain unverified review data and are compatibility-only.",
+      "removalCondition": "F6/F7 migrate discovery and product routes to F2 repository data and remove unverified review fixtures.",
       "expiry": "2026-10-01"
     },
     {
@@ -201,9 +129,9 @@
       "rule": "hardcoded-review-count",
       "excerptHash": "5cf31c54d205aa87",
       "excerpt": ": \"30m\", stock: 0, rating: 5, review_count: 38, isLimited: true }, { id: 9",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F6/F7",
+      "reason": "Legacy catalog fixtures contain unverified review data and are compatibility-only.",
+      "removalCondition": "F6/F7 migrate discovery and product routes to F2 repository data and remove unverified review fixtures.",
       "expiry": "2026-10-01"
     },
     {
@@ -213,9 +141,9 @@
       "rule": "hardcoded-review-count",
       "excerptHash": "b486f35a93778182",
       "excerpt": "\"300m\", stock: 3, rating: 5, review_count: 128, isLimited: true }, { id: 1",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F6/F7",
+      "reason": "Legacy catalog fixtures contain unverified review data and are compatibility-only.",
+      "removalCondition": "F6/F7 migrate discovery and product routes to F2 repository data and remove unverified review fixtures.",
       "expiry": "2026-10-01"
     },
     {
@@ -225,9 +153,9 @@
       "rule": "hardcoded-review-count",
       "excerptHash": "d75e3ae1b83b3c59",
       "excerpt": "\"50m\", stock: 30, rating: 5, review_count: 612, isNew: true }, { id: 11, n",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F6/F7",
+      "reason": "Legacy catalog fixtures contain unverified review data and are compatibility-only.",
+      "removalCondition": "F6/F7 migrate discovery and product routes to F2 repository data and remove unverified review fixtures.",
       "expiry": "2026-10-01"
     },
     {
@@ -237,9 +165,9 @@
       "rule": "hardcoded-review-count",
       "excerptHash": "b2c000e691ae4dfc",
       "excerpt": "\"200m\", stock: 50, rating: 4, review_count: 980 }, { id: 12, name: \"هرتیج ک",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F6/F7",
+      "reason": "Legacy catalog fixtures contain unverified review data and are compatibility-only.",
+      "removalCondition": "F6/F7 migrate discovery and product routes to F2 repository data and remove unverified review fixtures.",
       "expiry": "2026-10-01"
     },
     {
@@ -249,33 +177,9 @@
       "rule": "hardcoded-review-count",
       "excerptHash": "b7e3522ee6c51b8d",
       "excerpt": "\"50m\", stock: 14, rating: 4, review_count: 145 }, ]; export const CATEGORIE",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
-      "expiry": "2026-10-01"
-    },
-    {
-      "file": "src/routes/__root.tsx",
-      "line": 89,
-      "column": 84,
-      "rule": "unsupported-authenticity-claim",
-      "excerptHash": "67f77dac84c34818",
-      "excerpt": "ت‌های لوکس، اسپرت و هوشمند با ضمانت اصالت.\" }, { name: \"author\",",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
-      "expiry": "2026-10-01"
-    },
-    {
-      "file": "src/routes/__root.tsx",
-      "line": 92,
-      "column": 68,
-      "rule": "unsupported-authenticity-claim",
-      "excerptHash": "4407a49b38ba8e70",
-      "excerpt": "ontent: \"ساعت‌های اورجینال با ضمانت اصالت و ارسال امن.\" }, { prop",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F6/F7",
+      "reason": "Legacy catalog fixtures contain unverified review data and are compatibility-only.",
+      "removalCondition": "F6/F7 migrate discovery and product routes to F2 repository data and remove unverified review fixtures.",
       "expiry": "2026-10-01"
     },
     {
@@ -285,9 +189,9 @@
       "rule": "demo-copy",
       "excerptHash": "aa1a5ac8d7839c92",
       "excerpt": "de === \"login\" ? \"خوش آمدید ✓ (دمو)\" : \"حساب شما ساخته شد ✓ (دمو)",
-      "owner": "F7",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F10",
+      "reason": "Legacy account route still exposes demo-only success behavior.",
+      "removalCondition": "F10 replaces the demo route with truth-safe account/auth capability handling.",
       "expiry": "2026-10-01"
     },
     {
@@ -297,9 +201,9 @@
       "rule": "demo-copy",
       "excerptHash": "85d71b6502042f1f",
       "excerpt": "(دمو)\" : \"حساب شما ساخته شد ✓ (دمو)\"); }}",
-      "owner": "F7",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F10",
+      "reason": "Legacy account route still exposes demo-only success behavior.",
+      "removalCondition": "F10 replaces the demo route with truth-safe account/auth capability handling.",
       "expiry": "2026-10-01"
     },
     {
@@ -309,45 +213,9 @@
       "rule": "demo-copy",
       "excerptHash": "6e17f7eb5bd0ef77",
       "excerpt": "wider\"> این نسخه دمو است؛ ورود واقعی با فعال‌سازی L",
-      "owner": "F7",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
-      "expiry": "2026-10-01"
-    },
-    {
-      "file": "src/routes/contact.tsx",
-      "line": 26,
-      "column": 45,
-      "rule": "placeholder-phone",
-      "excerptHash": "2fe209a31940a657",
-      "excerpt": "{ Icon: Phone, k: \"تلفن\", v: \"۰۲۱-۰۰۰۰۰۰۰۰\" }, { Icon: Mai",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
-      "expiry": "2026-10-01"
-    },
-    {
-      "file": "src/routes/contact.tsx",
-      "line": 27,
-      "column": 45,
-      "rule": "placeholder-email",
-      "excerptHash": "390a4314d10b85b7",
-      "excerpt": "{ Icon: Mail, k: \"ایمیل\", v: \"hello@kronos.shop\" }, { Icon: Map",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
-      "expiry": "2026-10-01"
-    },
-    {
-      "file": "src/routes/contact.tsx",
-      "line": 28,
-      "column": 46,
-      "rule": "placeholder-address",
-      "excerptHash": "0e084b36eb2a2ebd",
-      "excerpt": "Icon: MapPin, k: \"آدرس\", v: \"تهران، خیابان ولیعصر، پلاک ۱۲۳\" }, ].m",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F10",
+      "reason": "Legacy account route still exposes demo-only success behavior.",
+      "removalCondition": "F10 replaces the demo route with truth-safe account/auth capability handling.",
       "expiry": "2026-10-01"
     },
     {
@@ -357,9 +225,9 @@
       "rule": "unsupported-authenticity-claim",
       "excerptHash": "12e579fceef73943",
       "excerpt": "ippe، G-Shock، Apple Watch با ضمانت اصالت.\", }, { property:",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F5",
+      "reason": "Homepage metadata contains an unsupported authenticity claim.",
+      "removalCondition": "F5 replaces homepage metadata with F1/F12 evidence-aware copy and F13A builders.",
       "expiry": "2026-10-01"
     },
     {
@@ -369,11 +237,11 @@
       "rule": "unsupported-authenticity-claim",
       "excerptHash": "06ab04bed057aea2",
       "excerpt": "ontent: \"ساعت‌های اورجینال با ضمانت اصالت و ارسال امن.\" }, ], }),",
-      "owner": "F8",
-      "reason": "Prototype/demo, placeholder, or unsupported production copy is present in rendered source.",
-      "removalCondition": "Owning phase replaces the copy with evidence-backed, configured production content.",
+      "owner": "F5",
+      "reason": "Homepage metadata contains unsupported authenticity/shipping language.",
+      "removalCondition": "F5 replaces homepage metadata with F1/F12 evidence-aware copy and F13A builders.",
       "expiry": "2026-10-01"
     }
   ],
-  "generatedAt": "2026-08-06T06:11:16.230Z"
+  "generatedAt": "2026-08-10T06:26:50.000Z"
 }
