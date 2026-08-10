@@ -1,17 +1,5 @@
 {
   "schemaVersion": 1,
-  "baselineSha": "b0d8e9ba1d0156d18ccb68258a9a650490931d89",
-  "defects": [
-    {
-      "route": "/",
-      "project": "keyboard-only:mobile-menu",
-      "rule": "keyboard:mobile-menu-enter-does-not-open",
-      "selector": "button[aria-label=\"منو\"]",
-      "impact": "critical",
-      "owner": "F4",
-      "reason": "Activating the mobile menu trigger with Enter does not expose the menu or its close control.",
-      "removalCondition": "Enter and Space must open the mobile navigation, move focus into it, and expose a named close control.",
-      "expiry": "2026-10-01"
-    }
-  ]
+  "baselineSha": "b303c0b9f81cea8ab21c70f38597d77e9e7748b7",
+  "defects": []
 }

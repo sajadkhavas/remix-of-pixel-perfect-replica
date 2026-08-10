@@ -13,7 +13,7 @@ const registries = [
   ["keyboard", "quality/keyboard-baseline.json", "defects"],
 ];
 
-const QUALITY_BASELINE_SHA = "f8e48e839a7ac43a5b7088254dde4441c4232c35";
+const QUALITY_BASELINE_SHA = "b303c0b9f81cea8ab21c70f38597d77e9e7748b7";
 
 function sortedCounts(entries, field) {
   const counts = new Map();
