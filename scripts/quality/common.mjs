@@ -68,17 +68,45 @@ export function shortHash(value) {
 }
 
 export function ownerForFile(file) {
-  if (file.includes("components/layout/")) return "F4";
-  if (file.includes("HeroSection")) return "F5";
-  if (file.includes("ProductCard") || file.includes("product.")) return "F5";
-  if (file.includes("shop") || file.includes("search")) return "F4";
-  if (file.includes("cart") || file.includes("wishlist") || file.includes("store-context"))
+  if (file === "src/routes/__root.tsx" || file.includes("components/layout/")) return "F4";
+  if (
+    file === "src/routes/index.tsx" ||
+    /components\/sections\/(HeroSection|BrandsMarquee|FeaturedProducts|EditorialSection|ServicesSection)/.test(
+      file,
+    )
+  ) {
+    return "F5";
+  }
+  if (file.includes("components/sections/CategoriesSection")) return "F5/F6";
+  if (file.includes("ProductCard") || file.includes("components/commerce/")) return "F8";
+  if (file.includes("src/lib/catalog") || file.includes("/shop") || file.includes("/search")) {
     return "F6";
-  if (file.includes("auth") || file.includes("account")) return "F7";
+  }
+  if (file.includes("routes/product") || file.includes("product/$")) return "F7";
+  if (
+    file.includes("routes/cart") ||
+    file.includes("routes/wishlist") ||
+    file.includes("routes/compare") ||
+    file.includes("recently") ||
+    file.includes("store-context")
+  ) {
+    return "F9";
+  }
+  if (file.includes("routes/auth") || file.includes("routes/account") || file.includes("checkout")) {
+    return "F10";
+  }
+  if (
+    file.includes("components/content/") ||
+    /routes\/(about|contact|faq|services|authenticity|warranty|shipping-returns|payment-methods|privacy|terms|purchase-terms)/.test(
+      file,
+    )
+  ) {
+    return "F11";
+  }
   if (file.includes("components/ui/")) return "F3B";
   if (file.includes("seo/")) return "F13A";
-  if (file.includes("config/")) return "F12";
-  return "F8";
+  if (file.includes("config/") || file.includes("store-settings")) return "F12";
+  return "UNASSIGNED";
 }
 
 export function findingKey(finding) {
