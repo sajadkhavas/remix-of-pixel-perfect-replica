@@ -105,33 +105,6 @@ const activeDiscount = (product: Product): number => {
 };
 const productBrand = (product: Product) =>
   FIXTURE_BRANDS.find((brand) => brand.id === product.brandId);
-const hasAny = (source: readonly string[], selected: readonly string[]) =>
-  selected.some((value) => source.includes(value));
-const specificationKeys = (product: Product, key: string): readonly string[] => {
-  const specification = product.specificationValues.find((item) => item.key === key);
-  if (!specification) return [];
-  if (specification.filterValueKeys?.length) return specification.filterValueKeys;
-  switch (specification.value.type) {
-    case "text":
-      return [specification.value.value];
-    case "number":
-      return [String(specification.value.value)];
-    case "list":
-      return specification.value.values;
-    case "boolean":
-      return [String(specification.value.value)];
-  }
-};
-const specificationNumbers = (product: Product, key: string): readonly number[] => {
-  const specification = product.specificationValues.find((item) => item.key === key);
-  return specification?.value.type === "number" ? [specification.value.value] : [];
-};
-const optionKeys = (product: Product, key: string): readonly string[] =>
-  product.variants.flatMap((variant) =>
-    variant.optionValues
-      .filter((option) => option.optionKey === key)
-      .map((option) => option.valueKey),
-  );
 
 export class FixtureSearchRepository implements SearchRepository {
   async search(state: DiscoverySearchState): Promise<SearchResult> {
@@ -160,35 +133,17 @@ export class FixtureSearchRepository implements SearchRepository {
       items = items.filter((product) => brandIds.includes(product.brandId));
     }
     if (state.audience.length)
-      items = items.filter((product) => hasAny(product.audienceKeys, state.audience));
+      items = items.filter((product) =>
+        state.audience.some((key) => product.audienceKeys.includes(key)),
+      );
     if (state.style.length)
-      items = items.filter((product) => hasAny(product.styleKeys, state.style));
+      items = items.filter((product) => state.style.some((key) => product.styleKeys.includes(key)));
     if (state.movement.length)
       items = items.filter((product) => state.movement.includes(product.movementKey));
     if (state.priceMin !== undefined)
       items = items.filter((product) => effectivePrice(product) >= state.priceMin!);
     if (state.priceMax !== undefined)
       items = items.filter((product) => effectivePrice(product) <= state.priceMax!);
-    if (state.caseSize.length)
-      items = items.filter((product) =>
-        state.caseSize.some((value) =>
-          specificationNumbers(product, "case-diameter").includes(value),
-        ),
-      );
-    if (state.caseMaterial.length)
-      items = items.filter((product) =>
-        hasAny(specificationKeys(product, "case-material"), state.caseMaterial),
-      );
-    if (state.strapMaterial.length)
-      items = items.filter((product) =>
-        hasAny(specificationKeys(product, "strap-material"), state.strapMaterial),
-      );
-    if (state.dialColor.length)
-      items = items.filter((product) => hasAny(optionKeys(product, "dial-color"), state.dialColor));
-    if (state.waterResistance.length)
-      items = items.filter((product) =>
-        hasAny(specificationKeys(product, "water-resistance"), state.waterResistance),
-      );
     if (state.discount) items = items.filter((product) => activeDiscount(product) > 0);
     if (state.availability.length) {
       items = items.filter((product) =>
