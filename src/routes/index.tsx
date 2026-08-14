@@ -1,29 +1,26 @@
-import { lazy, Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { HeroSection } from "@/components/sections/HeroSection";
-import { BrandsMarquee } from "@/components/sections/BrandsMarquee";
-import { CategoriesSection } from "@/components/sections/CategoriesSection";
-import { FeaturedProducts } from "@/components/sections/FeaturedProducts";
-import { CATALOG } from "@/lib/catalog";
 
-const ServicesSection = lazy(() =>
-  import("@/components/sections/ServicesSection").then((m) => ({ default: m.ServicesSection })),
-);
-const EditorialSection = lazy(() =>
-  import("@/components/sections/EditorialSection").then((m) => ({ default: m.EditorialSection })),
-);
+import { CategoriesSection } from "@/components/sections/CategoriesSection";
+import { EditorialSection } from "@/components/sections/EditorialSection";
+import { FeaturedProducts } from "@/components/sections/FeaturedProducts";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { ServicesSection } from "@/components/sections/ServicesSection";
+import { CATALOG } from "@/lib/catalog";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "کرونوس — فروشگاه ساعت لوکس | KRONOS" },
+      { title: "راهنمای انتخاب و خرید ساعت | KRONOS" },
       {
         name: "description",
         content:
-          "مرجع تخصصی ساعت‌های لوکس، اسپرت و هوشمند: Rolex، Omega، Patek Philippe، G-Shock، Apple Watch با ضمانت اصالت.",
+          "مدل‌های ساعت را بر اساس نوع موتور، طراحی، ابعاد و ویژگی‌های فنی بررسی کنید و تفاوت‌ها را روشن ببینید.",
       },
-      { property: "og:title", content: "کرونوس — فروشگاه ساعت لوکس" },
-      { property: "og:description", content: "ساعت‌های اورجینال با ضمانت اصالت و ارسال امن." },
+      { property: "og:title", content: "راهنمای انتخاب و خرید ساعت | KRONOS" },
+      {
+        property: "og:description",
+        content: "ساعت مناسب را با بررسی مشخصات، کاربرد و تفاوت مدل‌ها انتخاب کنید.",
+      },
     ],
   }),
   component: HomePage,
@@ -31,15 +28,12 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   return (
-    <>
+    <main>
       <HeroSection />
-      <BrandsMarquee />
       <CategoriesSection />
-      <FeaturedProducts watches={CATALOG.slice(0, 8)} />
-      <Suspense fallback={<div className="h-96" />}>
-        <ServicesSection />
-        <EditorialSection />
-      </Suspense>
-    </>
+      <FeaturedProducts watches={CATALOG.slice(0, 4)} />
+      <ServicesSection />
+      <EditorialSection />
+    </main>
   );
 }
