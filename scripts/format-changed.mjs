@@ -1,7 +1,24 @@
+import { readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 
 const SUPPORTED_FILE = /\.(?:[cm]?[jt]sx?|jsonc?|mdx?|ya?ml|css|scss|html)$/i;
 const EXCLUDED_FILES = new Set(["bun.lock", "src/routeTree.gen.ts"]);
+const REGISTRY_PATH = "docs/front-overhaul/PHASE_REGISTRY.md";
+
+if (process.env.GITHUB_REF_NAME === "phase/tooling-prettier-registry-probe") {
+  const result = spawnSync(
+    process.execPath,
+    ["node_modules/prettier/bin/prettier.cjs", "--write", REGISTRY_PATH],
+    { stdio: "inherit" },
+  );
+
+  if (result.status !== 0) process.exit(result.status ?? 1);
+
+  console.log("===== PRETTIER_REGISTRY_BEGIN =====");
+  console.log(readFileSync(REGISTRY_PATH, "utf8"));
+  console.log("===== PRETTIER_REGISTRY_END =====");
+  process.exit(1);
+}
 
 function runGit(args, { allowFailure = false } = {}) {
   const result = spawnSync("git", args, {
