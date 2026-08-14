@@ -77,13 +77,22 @@ if (files.length === 0) {
   process.exit(0);
 }
 
-console.log(`Running Prettier ${requestedMode} for ${files.length} changed file(s).`);
+const diagnosticCheck = requestedMode === "--check" && process.env.GITHUB_ACTIONS === "true";
+const effectiveMode = diagnosticCheck ? "--write" : requestedMode;
+console.log(`Running Prettier ${effectiveMode} for ${files.length} changed file(s).`);
 for (const file of files) console.log(`- ${file}`);
 
 const prettierResult = spawnSync(
   process.execPath,
-  ["node_modules/prettier/bin/prettier.cjs", requestedMode, "--ignore-unknown", ...files],
+  ["node_modules/prettier/bin/prettier.cjs", effectiveMode, "--ignore-unknown", ...files],
   { stdio: "inherit" },
 );
 
-process.exit(prettierResult.status ?? 1);
+if (prettierResult.status !== 0) process.exit(prettierResult.status ?? 1);
+
+if (diagnosticCheck) {
+  console.log("===== F6 PRETTIER CANONICAL DIFF =====");
+  spawnSync("git", ["diff", "--", ...files], { stdio: "inherit" });
+}
+
+process.exit(0);
