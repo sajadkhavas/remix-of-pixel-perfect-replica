@@ -34,7 +34,10 @@ export function HeroSection() {
             </Link>
           </div>
 
-          <ul className="mt-10 grid max-w-xl gap-3 text-sm text-text-muted sm:grid-cols-3" aria-label="روش بررسی محصولات">
+          <ul
+            className="mt-10 grid max-w-xl gap-3 text-sm text-text-muted sm:grid-cols-3"
+            aria-label="روش بررسی محصولات"
+          >
             <li className="border-s border-border-subtle ps-3">مشخصات روشن</li>
             <li className="border-s border-border-subtle ps-3">مقایسه کاربردی</li>
             <li className="border-s border-border-subtle ps-3">راهنماهای تخصصی</li>
