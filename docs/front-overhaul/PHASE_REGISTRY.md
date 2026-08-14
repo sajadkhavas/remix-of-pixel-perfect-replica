@@ -25,84 +25,84 @@
 
 ## Phase Status
 
-| Phase | Branch | Baseline | Final phase SHA | Review | Evidence / tests | Integration |
-| --- | --- | --- | --- | --- | --- | --- |
-| F0 — Production Foundation | `phase/f0-production-foundation` | `0ddb98cfd640a59ea2cc7687ee35478f9cf4f09c` | `3d910a5501abd77470403bd667b947a709229102` | `APPROVED` | Frozen install, format, lint, typecheck, tests, dev smoke, client/SSR build | Initial integration base |
-| F1 — Brand, Content and Keyword Architecture | `phase/f1-brand-content-seo-map` | Original main baseline | `b8c3920c8fdddaa3b1d3fa33214e27626c35d3c7` | `APPROVED_WITH_RECONCILIATION` | Content audit, brand system, page copy, intent/keyword maps, 20 briefs | PR #12; `/shop` supersedes `/watches` planning references |
-| F2 — Information Architecture and Data Contracts | `phase/f2-ia-taxonomy-contracts` + supervisor hardening | Original main baseline | `0c7d711b1550c4613977f10095b7b6303d821ac3` + `7ffa86422332a2882e5617622dfcdfb895029ded` | `APPROVED_AFTER_SUPERVISOR_HARDENING` | Domain/search/commerce contracts, ADRs, strict persistence tests; ISO timestamp boundary validation; inventory tracking/status consistency | PR #13; integration hardening; PR #24 / merge `7c19320b9c7fdc6189362ce2e051c34a64e7ac9c` |
-| F3A — Visual Direction and Asset Strategy | `phase/f3a-visual-direction-assets` | Original main baseline | `247021a753efbfe0bda92438782f466dc7c2269c` | `APPROVED` | Visual audit, art direction, responsive/motion rules, page briefs, asset manifest | PR #14 |
-| F3B — Production Design System | `phase/f3b-design-system` + pre-wave closure + supervisor final acceptance | Gate 1 branch baseline | `8c006d5b7974c45236cd53e99c2a57903f57a523` + closure `e3bbe73e47749d6985fef89fb4d721d64583761c` | `APPROVED_AFTER_FINAL_EXECUTABLE_QUALITY_GATE_AND_SUPERVISOR_CORRECTIONS` | Semantic tokens, shared primitives, RTL/reduced-motion foundations and design-system tests; exact phase run `31810298089` attempt 2 passed install/format/lint/typecheck/14 tests/dev smoke/client+SSR build with no new warnings versus Gate 1; final LinkButton keyboard and logical safe-area corrections verified | PR #15 / merge `aa6522e47b0c67d11eb6b746de276bd936ed8831`; PR #25 / merge `af3bb06f33061fa531143d53a105560627650a8a`; final supervisor PR #27 / merge `958e3edb53d0bdff65035dfe7e10d4a21a153de0` |
-| F12 — Store Configuration and Integration Contract | `phase/f12-store-config` | Gate 1 branch baseline | `6d18f9c18a738345be61e687c3a5690a26332c00` | `APPROVED_AFTER_INTEGRATION_VERIFICATION` | Strict public settings schemas, trust/secret boundaries, repositories, sixteen contract tests | PR #16 / merge `bef820d48c13ef0fe219716db6b33e0cfb3af601` |
-| F13A — Technical SEO Infrastructure | `phase/f13a-seo-infrastructure` + supervisor compatibility hardening | Gate 1 branch baseline | `8ed51895d7a765e156bd0a3420d56c2384dada40` | `APPROVED_WITH_POST_INTEGRATION_TYPE_ALIGNMENT` | URL/canonical policy, metadata, indexability, secure JSON-LD, sitemap/robots, twenty-six original tests; current TanStack head contract type alignment verified by typecheck and 26 SEO tests during PR #27 | PR #17 / merge `a73a089a58b86aa5a93c2b49f5f4984a4824fc95`; narrow compatibility fix integrated in PR #27 / merge `958e3edb53d0bdff65035dfe7e10d4a21a153de0` |
-| F14A — Quality, Accessibility and Performance Harness | `phase/f14a-quality-harness` + pre-wave closure | Gate 1 branch baseline | `b1ecc60333f61ad32f9f5f782188e74fedf94c8a` + `e3bbe73e47749d6985fef89fb4d721d64583761c` | `APPROVED_AFTER_SUPERVISOR_RECONCILIATION_AND_OWNER_MAP_CLOSURE` | Playwright/Axe, exact debt registries, scanners, budgets, unit/browser matrix; accepted phase-owner map corrected and regression-tested | PR #18 / merge `dbb4ba79ac3a2c9214361f1d4656da53640e153b`; PR #25 / merge `af3bb06f33061fa531143d53a105560627650a8a`; exact F10 forbidden-copy positions reconciled without adding debt in PR #27 |
-| F4 — Global Shell and Navigation | `phase/f4-global-shell-navigation` | Gate 2 accepted baseline | `57b2ebd70a6c21816219cd69ed1e2c0095e0289f` | `APPROVED_AFTER_SUPERVISOR_RECONSTRUCTION` | Format/lint/type/unit/contract/scanner/build evidence; fail-closed F12 settings, reduced-motion shell, native-dialog mobile menu; obsolete keyboard debt closed in pre-wave reconciliation | PR #19 / merge `93732aafe8e71772eaf29f61ea6e64d9fde2ff43`; debt reconciliation PR #25 |
-| F8 — Shared Commerce Components | `phase/f8-shared-commerce-components` + `phase/gate3-hardening` | Gate 2 accepted baseline; cleanly rebased after F4 | `553306f8dfccddcb596e51dedf8c77f84558cd59` + `7ffa86422332a2882e5617622dfcdfb895029ded` | `APPROVED_AFTER_SUPERVISOR_HARDENING` | Original format/lint/type/unit/contract/scanner/build/performance evidence; normalized Product adapter consumes F2 pricing/inventory/variant rules; regression coverage; stale error-page/link debt removed from registry | PR #20 / merge `62202ee71cdaabcd8e695b16e30523d95093fa3c`; PR #24 / merge `7c19320b9c7fdc6189362ce2e051c34a64e7ac9c`; debt reconciliation PR #25 |
-| F11 — Content, Trust and Legal | `phase/f11-content-trust-legal` | Integrated F4 baseline | `07f95647bae4df43dc62938ff83df41acf117717` | `APPROVED_AFTER_SUPERVISOR_COMPLETION` | Successful route-generation/build workflow; evidence-aware/noindex trust/legal pages; no fake contact success; stale Contact placeholder debt removed from registry | PR #21 / merge `350acdb3af171561d16241a0aafb420b29204034`; debt reconciliation PR #25 |
+| Phase                                                 | Branch                                                                     | Baseline                                           | Final phase SHA                                                                                 | Review                                                                    | Evidence / tests                                                                                                                                                                                                                                                                                                      | Integration                                                                                                                                                                                       |
+| ----------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| F0 — Production Foundation                            | `phase/f0-production-foundation`                                           | `0ddb98cfd640a59ea2cc7687ee35478f9cf4f09c`         | `3d910a5501abd77470403bd667b947a709229102`                                                      | `APPROVED`                                                                | Frozen install, format, lint, typecheck, tests, dev smoke, client/SSR build                                                                                                                                                                                                                                           | Initial integration base                                                                                                                                                                          |
+| F1 — Brand, Content and Keyword Architecture          | `phase/f1-brand-content-seo-map`                                           | Original main baseline                             | `b8c3920c8fdddaa3b1d3fa33214e27626c35d3c7`                                                      | `APPROVED_WITH_RECONCILIATION`                                            | Content audit, brand system, page copy, intent/keyword maps, 20 briefs                                                                                                                                                                                                                                                | PR #12; `/shop` supersedes `/watches` planning references                                                                                                                                         |
+| F2 — Information Architecture and Data Contracts      | `phase/f2-ia-taxonomy-contracts` + supervisor hardening                    | Original main baseline                             | `0c7d711b1550c4613977f10095b7b6303d821ac3` + `7ffa86422332a2882e5617622dfcdfb895029ded`         | `APPROVED_AFTER_SUPERVISOR_HARDENING`                                     | Domain/search/commerce contracts, ADRs, strict persistence tests; ISO timestamp boundary validation; inventory tracking/status consistency                                                                                                                                                                            | PR #13; integration hardening; PR #24 / merge `7c19320b9c7fdc6189362ce2e051c34a64e7ac9c`                                                                                                          |
+| F3A — Visual Direction and Asset Strategy             | `phase/f3a-visual-direction-assets`                                        | Original main baseline                             | `247021a753efbfe0bda92438782f466dc7c2269c`                                                      | `APPROVED`                                                                | Visual audit, art direction, responsive/motion rules, page briefs, asset manifest                                                                                                                                                                                                                                     | PR #14                                                                                                                                                                                            |
+| F3B — Production Design System                        | `phase/f3b-design-system` + pre-wave closure + supervisor final acceptance | Gate 1 branch baseline                             | `8c006d5b7974c45236cd53e99c2a57903f57a523` + closure `e3bbe73e47749d6985fef89fb4d721d64583761c` | `APPROVED_AFTER_FINAL_EXECUTABLE_QUALITY_GATE_AND_SUPERVISOR_CORRECTIONS` | Semantic tokens, shared primitives, RTL/reduced-motion foundations and design-system tests; exact phase run `31810298089` attempt 2 passed install/format/lint/typecheck/14 tests/dev smoke/client+SSR build with no new warnings versus Gate 1; final LinkButton keyboard and logical safe-area corrections verified | PR #15 / merge `aa6522e47b0c67d11eb6b746de276bd936ed8831`; PR #25 / merge `af3bb06f33061fa531143d53a105560627650a8a`; final supervisor PR #27 / merge `958e3edb53d0bdff65035dfe7e10d4a21a153de0`  |
+| F12 — Store Configuration and Integration Contract    | `phase/f12-store-config`                                                   | Gate 1 branch baseline                             | `6d18f9c18a738345be61e687c3a5690a26332c00`                                                      | `APPROVED_AFTER_INTEGRATION_VERIFICATION`                                 | Strict public settings schemas, trust/secret boundaries, repositories, sixteen contract tests                                                                                                                                                                                                                         | PR #16 / merge `bef820d48c13ef0fe219716db6b33e0cfb3af601`                                                                                                                                         |
+| F13A — Technical SEO Infrastructure                   | `phase/f13a-seo-infrastructure` + supervisor compatibility hardening       | Gate 1 branch baseline                             | `8ed51895d7a765e156bd0a3420d56c2384dada40`                                                      | `APPROVED_WITH_POST_INTEGRATION_TYPE_ALIGNMENT`                           | URL/canonical policy, metadata, indexability, secure JSON-LD, sitemap/robots, twenty-six original tests; current TanStack head contract type alignment verified by typecheck and 26 SEO tests during PR #27                                                                                                           | PR #17 / merge `a73a089a58b86aa5a93c2b49f5f4984a4824fc95`; narrow compatibility fix integrated in PR #27 / merge `958e3edb53d0bdff65035dfe7e10d4a21a153de0`                                       |
+| F14A — Quality, Accessibility and Performance Harness | `phase/f14a-quality-harness` + pre-wave closure                            | Gate 1 branch baseline                             | `b1ecc60333f61ad32f9f5f782188e74fedf94c8a` + `e3bbe73e47749d6985fef89fb4d721d64583761c`         | `APPROVED_AFTER_SUPERVISOR_RECONCILIATION_AND_OWNER_MAP_CLOSURE`          | Playwright/Axe, exact debt registries, scanners, budgets, unit/browser matrix; accepted phase-owner map corrected and regression-tested                                                                                                                                                                               | PR #18 / merge `dbb4ba79ac3a2c9214361f1d4656da53640e153b`; PR #25 / merge `af3bb06f33061fa531143d53a105560627650a8a`; exact F10 forbidden-copy positions reconciled without adding debt in PR #27 |
+| F4 — Global Shell and Navigation                      | `phase/f4-global-shell-navigation`                                         | Gate 2 accepted baseline                           | `57b2ebd70a6c21816219cd69ed1e2c0095e0289f`                                                      | `APPROVED_AFTER_SUPERVISOR_RECONSTRUCTION`                                | Format/lint/type/unit/contract/scanner/build evidence; fail-closed F12 settings, reduced-motion shell, native-dialog mobile menu; obsolete keyboard debt closed in pre-wave reconciliation                                                                                                                            | PR #19 / merge `93732aafe8e71772eaf29f61ea6e64d9fde2ff43`; debt reconciliation PR #25                                                                                                             |
+| F8 — Shared Commerce Components                       | `phase/f8-shared-commerce-components` + `phase/gate3-hardening`            | Gate 2 accepted baseline; cleanly rebased after F4 | `553306f8dfccddcb596e51dedf8c77f84558cd59` + `7ffa86422332a2882e5617622dfcdfb895029ded`         | `APPROVED_AFTER_SUPERVISOR_HARDENING`                                     | Original format/lint/type/unit/contract/scanner/build/performance evidence; normalized Product adapter consumes F2 pricing/inventory/variant rules; regression coverage; stale error-page/link debt removed from registry                                                                                             | PR #20 / merge `62202ee71cdaabcd8e695b16e30523d95093fa3c`; PR #24 / merge `7c19320b9c7fdc6189362ce2e051c34a64e7ac9c`; debt reconciliation PR #25                                                  |
+| F11 — Content, Trust and Legal                        | `phase/f11-content-trust-legal`                                            | Integrated F4 baseline                             | `07f95647bae4df43dc62938ff83df41acf117717`                                                      | `APPROVED_AFTER_SUPERVISOR_COMPLETION`                                    | Successful route-generation/build workflow; evidence-aware/noindex trust/legal pages; no fake contact success; stale Contact placeholder debt removed from registry                                                                                                                                                   | PR #21 / merge `350acdb3af171561d16241a0aafb420b29204034`; debt reconciliation PR #25                                                                                                             |
 
 ## Gate Decisions
 
-| Decision | Result |
-| --- | --- |
-| Canonical catalog route family | `/shop` only |
-| `/watches` | Forbidden as a second active route family |
-| Approved visual direction | Editorial Precision with Cinematic Chapters |
-| Shared UI source of truth | F3B semantic tokens and shared primitives |
-| Frontend domain source of truth | F2 contracts and repository boundaries |
-| Store identity, contact, trust and policy source | F12 validated public settings |
-| Technical SEO source of truth | F13A builders, normalization and indexability policies |
-| Missing store configuration | Hidden or neutral; no invented fallback claim, contact detail, policy or payment method |
-| Existing asset production status | Blocked until source, identity, license and responsive derivatives are verified |
-| Commercial claims | Hidden unless F12 evidence/configuration permits them |
-| Global shell commercial data | Must come from public settings; hardcoded trust/contact/payment claims are forbidden |
-| Shared ProductCard domain direction | View-model/F2 Product adapter; legacy `Watch` is compatibility-only |
-| ProductCard purchase truth | F2 Product status, Variant identity/status, valid pricing, inventory consistency and purchasability |
-| Inventory state consistency | `not-tracked` tracking pairs only with `not-tracked` status; contradictory states fail closed |
-| Persisted commerce dates | Storage boundaries require valid ISO date-time values; non-empty arbitrary strings are rejected |
-| Ratings/reviews | Hidden unless explicitly enabled by backed data/evidence |
-| Legal content | No invented contractual language; unapproved content remains neutral and noindex |
-| Contact form success | Forbidden without an actually configured backend acceptance path |
-| Quality owner assignment | Must follow accepted phase map; unknown future files are `UNASSIGNED`, never silently assigned to F8 |
-| Resolved quality debt | Remove exact stale entries when resolution is directly verified; historical counts remain only as historical snapshots |
-| Browser debt | Retained conservatively until the dedicated browser/asset reconciliation reruns; deterministic native-semantics fixes may close exact defects only with supervisor review |
-| Quality baselines | Exact temporary debt controls, not production-release waivers |
-| Gate 2 CSS measurement | 119,738 bytes |
-| Gate 2 CSS hard limit | 122,500 bytes |
-| CSS future target | 100,000 bytes |
-| GitHub Actions hosted runner availability | `RESTORED` after the repository became public on 2026-08-14; exact F3B final phase run `31810298089` attempt 2 executed successfully |
-| F3B final acceptance | `APPROVED`; exact phase SHA `8c006d5b7974c45236cd53e99c2a57903f57a523` passed its mandatory executable gate and final delta is integrated via PR #27 |
-| Production release status | `BLOCKED_BY_F14B_PERFORMANCE`; current shared gate exceeds client JS total, server JS total and JS chunk-count hard limits; browser release gate has not completed |
-| Direct work on `main` | Prohibited |
-| Manual editing of `src/routeTree.gen.ts` | Prohibited; generator only |
+| Decision                                         | Result                                                                                                                                                                    |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Canonical catalog route family                   | `/shop` only                                                                                                                                                              |
+| `/watches`                                       | Forbidden as a second active route family                                                                                                                                 |
+| Approved visual direction                        | Editorial Precision with Cinematic Chapters                                                                                                                               |
+| Shared UI source of truth                        | F3B semantic tokens and shared primitives                                                                                                                                 |
+| Frontend domain source of truth                  | F2 contracts and repository boundaries                                                                                                                                    |
+| Store identity, contact, trust and policy source | F12 validated public settings                                                                                                                                             |
+| Technical SEO source of truth                    | F13A builders, normalization and indexability policies                                                                                                                    |
+| Missing store configuration                      | Hidden or neutral; no invented fallback claim, contact detail, policy or payment method                                                                                   |
+| Existing asset production status                 | Blocked until source, identity, license and responsive derivatives are verified                                                                                           |
+| Commercial claims                                | Hidden unless F12 evidence/configuration permits them                                                                                                                     |
+| Global shell commercial data                     | Must come from public settings; hardcoded trust/contact/payment claims are forbidden                                                                                      |
+| Shared ProductCard domain direction              | View-model/F2 Product adapter; legacy `Watch` is compatibility-only                                                                                                       |
+| ProductCard purchase truth                       | F2 Product status, Variant identity/status, valid pricing, inventory consistency and purchasability                                                                       |
+| Inventory state consistency                      | `not-tracked` tracking pairs only with `not-tracked` status; contradictory states fail closed                                                                             |
+| Persisted commerce dates                         | Storage boundaries require valid ISO date-time values; non-empty arbitrary strings are rejected                                                                           |
+| Ratings/reviews                                  | Hidden unless explicitly enabled by backed data/evidence                                                                                                                  |
+| Legal content                                    | No invented contractual language; unapproved content remains neutral and noindex                                                                                          |
+| Contact form success                             | Forbidden without an actually configured backend acceptance path                                                                                                          |
+| Quality owner assignment                         | Must follow accepted phase map; unknown future files are `UNASSIGNED`, never silently assigned to F8                                                                      |
+| Resolved quality debt                            | Remove exact stale entries when resolution is directly verified; historical counts remain only as historical snapshots                                                    |
+| Browser debt                                     | Retained conservatively until the dedicated browser/asset reconciliation reruns; deterministic native-semantics fixes may close exact defects only with supervisor review |
+| Quality baselines                                | Exact temporary debt controls, not production-release waivers                                                                                                             |
+| Gate 2 CSS measurement                           | 119,738 bytes                                                                                                                                                             |
+| Gate 2 CSS hard limit                            | 122,500 bytes                                                                                                                                                             |
+| CSS future target                                | 100,000 bytes                                                                                                                                                             |
+| GitHub Actions hosted runner availability        | `RESTORED` after the repository became public on 2026-08-14; exact F3B final phase run `31810298089` attempt 2 executed successfully                                      |
+| F3B final acceptance                             | `APPROVED`; exact phase SHA `8c006d5b7974c45236cd53e99c2a57903f57a523` passed its mandatory executable gate and final delta is integrated via PR #27                      |
+| Production release status                        | `BLOCKED_BY_F14B_PERFORMANCE`; current shared gate exceeds client JS total, server JS total and JS chunk-count hard limits; browser release gate has not completed        |
+| Direct work on `main`                            | Prohibited                                                                                                                                                                |
+| Manual editing of `src/routeTree.gen.ts`         | Prohibited; generator only                                                                                                                                                |
 
 ## Historical Gate 2 Quality Snapshot
 
-| Registry | Exact tracked debt |
-| --- | ---: |
-| Lint warnings | 8 |
-| Forbidden production copy | 31 |
-| Link integrity | 3 |
-| Asset violations | 83 |
-| Route smoke | 10 |
-| Accessibility | 803 |
-| Reduced motion | 59 |
-| Keyboard | 1 |
-| **Total** | **998** |
+| Registry                  | Exact tracked debt |
+| ------------------------- | -----------------: |
+| Lint warnings             |                  8 |
+| Forbidden production copy |                 31 |
+| Link integrity            |                  3 |
+| Asset violations          |                 83 |
+| Route smoke               |                 10 |
+| Accessibility             |                803 |
+| Reduced motion            |                 59 |
+| Keyboard                  |                  1 |
+| **Total**                 |            **998** |
 
 Gate 2 accepted the shared development foundation. These figures remain the historical Gate 2 snapshot and are no longer treated as the exact current static debt after Gate 3/pre-wave reconciliation.
 
 ## Pre-Wave Reconciled Quality Snapshot
 
-| Registry | Tracked debt | Status |
-| --- | ---: | --- |
-| Lint warnings | 2 | Current static registry: F5 editorial + F9 StoreContext |
-| Forbidden production copy | 20 | Current static registry: F5=5, F6/F7=12, F10=3 |
-| Link integrity | 1 | Current static registry: F9 cart CTA |
-| Asset violations | 83 | Retained; production asset approval still blocked |
-| Route smoke | 10 | Last executable browser baseline; dedicated browser reconciliation still required |
-| Accessibility | 803 | Last executable browser baseline; dedicated browser reconciliation still required |
-| Reduced motion | 59 | Last executable browser baseline; dedicated browser reconciliation still required |
-| Keyboard | 0 | Obsolete F4 critical entry closed by reviewed native semantics |
-| **Total tracked debt** | **978** | Conservative until browser/asset rerun |
+| Registry                  | Tracked debt | Status                                                                            |
+| ------------------------- | -----------: | --------------------------------------------------------------------------------- |
+| Lint warnings             |            2 | Current static registry: F5 editorial + F9 StoreContext                           |
+| Forbidden production copy |           20 | Current static registry: F5=5, F6/F7=12, F10=3                                    |
+| Link integrity            |            1 | Current static registry: F9 cart CTA                                              |
+| Asset violations          |           83 | Retained; production asset approval still blocked                                 |
+| Route smoke               |           10 | Last executable browser baseline; dedicated browser reconciliation still required |
+| Accessibility             |          803 | Last executable browser baseline; dedicated browser reconciliation still required |
+| Reduced motion            |           59 | Last executable browser baseline; dedicated browser reconciliation still required |
+| Keyboard                  |            0 | Obsolete F4 critical entry closed by reviewed native semantics                    |
+| **Total tracked debt**    |      **978** | Conservative until browser/asset rerun                                            |
 
 The reduction from 998 to 978 reflects only directly verified static/keyboard resolutions. Runner availability is now restored, but browser and asset debt is not silently deleted: PR #27's browser matrix was skipped after the shared release dependency failed at the app-wide F14B performance budget.
 
@@ -124,60 +124,60 @@ F3B phase acceptance and production-release acceptance are therefore explicitly 
 
 ## Shared File Ownership
 
-| Path | Owner phase | Notes |
-| --- | --- | --- |
-| `package.json` | F0 / F14A / integration owner | Dependency and quality-script changes require lockfile review and the full gate |
-| `bun.lock` | Integration owner | Update only with the declared Bun version and reviewed dependency intent |
-| `eslint.config.js` | F14A | Exceptions must remain narrow, exact and documented |
-| `tsconfig*.json` | F0 / integration owner | Repository-wide verification required |
-| `.github/workflows/*` | F14A / integration owner | Gates may be strengthened but never silently weakened |
-| `scripts/format-changed.mjs` | F0 | Shared changed-file formatting gate |
-| `src/styles.css` | F3B | Feature phases consume semantic tokens and do not invent global token systems |
-| `src/components/ui/ProductCard.tsx`, `src/components/commerce/*` | F8 | Shared commerce presentation; migrate legacy route data through adapters |
-| `src/components/ui/*` excluding commerce-specific components | F3B | Shared accessible primitives and variants |
-| `src/domain/*` | F2 / integration owner | Feature phases consume contracts and request reviewed changes |
-| `src/data/contracts/*` | F2 / F12 | Avoid backend-specific URLs and duplicate interfaces |
-| `src/config/*`, `src/domain/store-settings/*`, `src/lib/store-settings/*` | F12 | Validated public configuration; no frontend secrets |
-| `src/seo/*` | F13A | Metadata, canonical, robots, sitemap and structured-data builders |
-| `tests/*`, `playwright.config.ts`, `quality/*`, `scripts/quality/*` | F14A | Exact debt governance, phase ownership and no-regression gates |
-| `src/routes/__root.tsx`, `src/components/layout/*` | F4 | Global shell, responsive navigation and public-settings presentation |
-| `src/routes/about.tsx`, `contact.tsx`, `faq.tsx`, `services.tsx`, trust/legal routes, `src/components/content/*` | F11 | Truth-safe content/trust/legal presentation |
-| `src/components/sections/HeroSection.tsx` | F5 later | F3B supplies tokens/primitives, not the final Hero experience |
-| `src/components/sections/CategoriesSection.tsx` | F5/F6 later | Final data/content migration remains |
-| `src/routeTree.gen.ts` | Router generator | Never edit manually |
-| `docs/front-overhaul/*` | Supervisor | Final phase status and gate decisions are supervisor-controlled |
+| Path                                                                                                             | Owner phase                   | Notes                                                                           |
+| ---------------------------------------------------------------------------------------------------------------- | ----------------------------- | ------------------------------------------------------------------------------- |
+| `package.json`                                                                                                   | F0 / F14A / integration owner | Dependency and quality-script changes require lockfile review and the full gate |
+| `bun.lock`                                                                                                       | Integration owner             | Update only with the declared Bun version and reviewed dependency intent        |
+| `eslint.config.js`                                                                                               | F14A                          | Exceptions must remain narrow, exact and documented                             |
+| `tsconfig*.json`                                                                                                 | F0 / integration owner        | Repository-wide verification required                                           |
+| `.github/workflows/*`                                                                                            | F14A / integration owner      | Gates may be strengthened but never silently weakened                           |
+| `scripts/format-changed.mjs`                                                                                     | F0                            | Shared changed-file formatting gate                                             |
+| `src/styles.css`                                                                                                 | F3B                           | Feature phases consume semantic tokens and do not invent global token systems   |
+| `src/components/ui/ProductCard.tsx`, `src/components/commerce/*`                                                 | F8                            | Shared commerce presentation; migrate legacy route data through adapters        |
+| `src/components/ui/*` excluding commerce-specific components                                                     | F3B                           | Shared accessible primitives and variants                                       |
+| `src/domain/*`                                                                                                   | F2 / integration owner        | Feature phases consume contracts and request reviewed changes                   |
+| `src/data/contracts/*`                                                                                           | F2 / F12                      | Avoid backend-specific URLs and duplicate interfaces                            |
+| `src/config/*`, `src/domain/store-settings/*`, `src/lib/store-settings/*`                                        | F12                           | Validated public configuration; no frontend secrets                             |
+| `src/seo/*`                                                                                                      | F13A                          | Metadata, canonical, robots, sitemap and structured-data builders               |
+| `tests/*`, `playwright.config.ts`, `quality/*`, `scripts/quality/*`                                              | F14A                          | Exact debt governance, phase ownership and no-regression gates                  |
+| `src/routes/__root.tsx`, `src/components/layout/*`                                                               | F4                            | Global shell, responsive navigation and public-settings presentation            |
+| `src/routes/about.tsx`, `contact.tsx`, `faq.tsx`, `services.tsx`, trust/legal routes, `src/components/content/*` | F11                           | Truth-safe content/trust/legal presentation                                     |
+| `src/components/sections/HeroSection.tsx`                                                                        | F5 later                      | F3B supplies tokens/primitives, not the final Hero experience                   |
+| `src/components/sections/CategoriesSection.tsx`                                                                  | F5/F6 later                   | Final data/content migration remains                                            |
+| `src/routeTree.gen.ts`                                                                                           | Router generator              | Never edit manually                                                             |
+| `docs/front-overhaul/*`                                                                                          | Supervisor                    | Final phase status and gate decisions are supervisor-controlled                 |
 
 ## Integration History
 
-| Date | Phase / action | Commit or PR | Decision | Reviewer |
-| --- | --- | --- | --- | --- |
-| 2026-08-05 | F0 | `3d910a5501abd77470403bd667b947a709229102` | Approved; initial integration base | Supervisor |
-| 2026-08-06 | F1 | PR #12 / merge `87ff54b7f6bcad4ae2f83dedb77e6a0fbb7e060a` | Integrated with route reconciliation | Supervisor |
-| 2026-08-06 | F2 | PR #13 / merge `d6c509f1ca65d032155c4e49c58e1d7886f3e2bb` | Integrated and hardened | Supervisor |
-| 2026-08-06 | F3A | PR #14 / merge `148ebca6dc52e3beb71abd8096f7d125fbb6e1ab` | Integrated | Supervisor |
-| 2026-08-06 | Gate 1 final quality | `b0d8e9ba1d0156d18ccb68258a9a650490931d89` | Frozen Wave 2 baseline | Supervisor |
-| 2026-08-06 | F3B | PR #15 / merge `aa6522e47b0c67d11eb6b746de276bd936ed8831` | Integrated; combined verification required | Supervisor |
-| 2026-08-06 | F12 | PR #16 / merge `bef820d48c13ef0fe219716db6b33e0cfb3af601` | Integrated; combined verification required | Supervisor |
-| 2026-08-06 | F13A | PR #17 / merge `a73a089a58b86aa5a93c2b49f5f4984a4824fc95` | Integrated | Supervisor |
-| 2026-08-06 | F14A | PR #18 / merge `dbb4ba79ac3a2c9214361f1d4656da53640e153b` | Integrated; harness reconciliation required | Supervisor |
-| 2026-08-06 | Combined test coverage | `777582cceb50c56ae79dc46197d396990b3e378c` | Added F3B, F12 and F13A suites to the shared gate | Supervisor |
-| 2026-08-06 | Wave 2 formatting | `dc4bb9ecbe5deed590d251a33e460f893df6b221` | Normalized all integrated Wave 2 files | Supervisor |
-| 2026-08-06 | Exact lint reconciliation | `95c3171f2d9e4dbeae4eebd0ded1e124900add72` | Preserved eight exact warnings with new locations | Supervisor |
-| 2026-08-06 | CI runtime upgrade / measured code baseline | `f8e48e839a7ac43a5b7088254dde4441c4232c35` | Upgraded action runtimes; combined tests and build verified | Supervisor |
-| 2026-08-06 | Performance registration | `898873661abb3cda79b8563f1b65c741edf32422` through `fc9c52ac483ddf97b4882773bf3866b95eb5c5c0` | Registered measured CSS baseline and refreshed summaries | Supervisor |
-| 2026-08-06 | Gate 2 review | `739e9cccabf5b40368008d1eb125cdf3f34c0601` | Governing Wave 2 review recorded | Supervisor |
-| 2026-08-07 | F4 | PR #19 / merge `93732aafe8e71772eaf29f61ea6e64d9fde2ff43` | Reconstructed, hardened and integrated | Supervisor |
-| 2026-08-07 | F8 | PR #20 / merge `62202ee71cdaabcd8e695b16e30523d95093fa3c` | Clean rebased after F4 and integrated | Supervisor |
-| 2026-08-07 | F11 | PR #21 / merge `350acdb3af171561d16241a0aafb420b29204034` | Completed truth-safe trust/legal/content routes and integrated | Supervisor |
-| 2026-08-07 | Gate 3 original CI attempts | Run `31185981046`, attempts 1–2 | Zero-step failure; later diagnosis supersedes generic runner classification | Supervisor |
-| 2026-08-07 | Gate 3 supervisor hardening | PR #24 / merge `7c19320b9c7fdc6189362ce2e051c34a64e7ac9c` | Closed F2 timestamp/inventory and F8 normalized ProductCard edge cases | Supervisor |
-| 2026-08-07 | Gate 3 hardening CI | Runs `31189461929`, `31189623381` | Exact external blocker identified: GitHub account Billing/Spending prevented job start | Supervisor |
-| 2026-08-07 | Gate 3 hardening review | `93c186d5172ca6e89609d1e6bb75b7130b70b082` | Accepted for next-wave development after hardening; production release still blocked on full green CI | Supervisor |
-| 2026-08-10 | Pre-wave final closure | PR #25 / merge `af3bb06f33061fa531143d53a105560627650a8a` | Closed F3B static warning debt, reconciled stale F4/F8/F11 registries and corrected F14A ownership | Supervisor |
-| 2026-08-10 | Pre-wave closure CI | Run `31362947753` | External GitHub Billing/Spending blocker; zero executable steps, browser skipped | Supervisor |
-| 2026-08-10 | Pre-wave Gate 3 review | `973ce7031fff00a45ff3bb804dbadd0e75a3e105` | `PRE_WAVE_CODE_CLOSURE_COMPLETE_WITH_EXTERNAL_CI_BILLING_BLOCKER` | Supervisor |
-| 2026-08-14 | F3B final executable phase gate | Run `31810298089`, attempt 2 on `8c006d5b7974c45236cd53e99c2a57903f57a523` | Full F3B phase gate passed after public-repository runner availability was restored | Supervisor |
-| 2026-08-14 | F3B final supervisor integration | PR #27 / merge `958e3edb53d0bdff65035dfe7e10d4a21a153de0` | Final F3B accessibility/RTL corrections integrated; latent F13A head type aligned; exact F10 debt positions reconciled; F14B performance release blocker retained | Supervisor |
+| Date       | Phase / action                              | Commit or PR                                                                                  | Decision                                                                                                                                                          | Reviewer   |
+| ---------- | ------------------------------------------- | --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| 2026-08-05 | F0                                          | `3d910a5501abd77470403bd667b947a709229102`                                                    | Approved; initial integration base                                                                                                                                | Supervisor |
+| 2026-08-06 | F1                                          | PR #12 / merge `87ff54b7f6bcad4ae2f83dedb77e6a0fbb7e060a`                                     | Integrated with route reconciliation                                                                                                                              | Supervisor |
+| 2026-08-06 | F2                                          | PR #13 / merge `d6c509f1ca65d032155c4e49c58e1d7886f3e2bb`                                     | Integrated and hardened                                                                                                                                           | Supervisor |
+| 2026-08-06 | F3A                                         | PR #14 / merge `148ebca6dc52e3beb71abd8096f7d125fbb6e1ab`                                     | Integrated                                                                                                                                                        | Supervisor |
+| 2026-08-06 | Gate 1 final quality                        | `b0d8e9ba1d0156d18ccb68258a9a650490931d89`                                                    | Frozen Wave 2 baseline                                                                                                                                            | Supervisor |
+| 2026-08-06 | F3B                                         | PR #15 / merge `aa6522e47b0c67d11eb6b746de276bd936ed8831`                                     | Integrated; combined verification required                                                                                                                        | Supervisor |
+| 2026-08-06 | F12                                         | PR #16 / merge `bef820d48c13ef0fe219716db6b33e0cfb3af601`                                     | Integrated; combined verification required                                                                                                                        | Supervisor |
+| 2026-08-06 | F13A                                        | PR #17 / merge `a73a089a58b86aa5a93c2b49f5f4984a4824fc95`                                     | Integrated                                                                                                                                                        | Supervisor |
+| 2026-08-06 | F14A                                        | PR #18 / merge `dbb4ba79ac3a2c9214361f1d4656da53640e153b`                                     | Integrated; harness reconciliation required                                                                                                                       | Supervisor |
+| 2026-08-06 | Combined test coverage                      | `777582cceb50c56ae79dc46197d396990b3e378c`                                                    | Added F3B, F12 and F13A suites to the shared gate                                                                                                                 | Supervisor |
+| 2026-08-06 | Wave 2 formatting                           | `dc4bb9ecbe5deed590d251a33e460f893df6b221`                                                    | Normalized all integrated Wave 2 files                                                                                                                            | Supervisor |
+| 2026-08-06 | Exact lint reconciliation                   | `95c3171f2d9e4dbeae4eebd0ded1e124900add72`                                                    | Preserved eight exact warnings with new locations                                                                                                                 | Supervisor |
+| 2026-08-06 | CI runtime upgrade / measured code baseline | `f8e48e839a7ac43a5b7088254dde4441c4232c35`                                                    | Upgraded action runtimes; combined tests and build verified                                                                                                       | Supervisor |
+| 2026-08-06 | Performance registration                    | `898873661abb3cda79b8563f1b65c741edf32422` through `fc9c52ac483ddf97b4882773bf3866b95eb5c5c0` | Registered measured CSS baseline and refreshed summaries                                                                                                          | Supervisor |
+| 2026-08-06 | Gate 2 review                               | `739e9cccabf5b40368008d1eb125cdf3f34c0601`                                                    | Governing Wave 2 review recorded                                                                                                                                  | Supervisor |
+| 2026-08-07 | F4                                          | PR #19 / merge `93732aafe8e71772eaf29f61ea6e64d9fde2ff43`                                     | Reconstructed, hardened and integrated                                                                                                                            | Supervisor |
+| 2026-08-07 | F8                                          | PR #20 / merge `62202ee71cdaabcd8e695b16e30523d95093fa3c`                                     | Clean rebased after F4 and integrated                                                                                                                             | Supervisor |
+| 2026-08-07 | F11                                         | PR #21 / merge `350acdb3af171561d16241a0aafb420b29204034`                                     | Completed truth-safe trust/legal/content routes and integrated                                                                                                    | Supervisor |
+| 2026-08-07 | Gate 3 original CI attempts                 | Run `31185981046`, attempts 1–2                                                               | Zero-step failure; later diagnosis supersedes generic runner classification                                                                                       | Supervisor |
+| 2026-08-07 | Gate 3 supervisor hardening                 | PR #24 / merge `7c19320b9c7fdc6189362ce2e051c34a64e7ac9c`                                     | Closed F2 timestamp/inventory and F8 normalized ProductCard edge cases                                                                                            | Supervisor |
+| 2026-08-07 | Gate 3 hardening CI                         | Runs `31189461929`, `31189623381`                                                             | Exact external blocker identified: GitHub account Billing/Spending prevented job start                                                                            | Supervisor |
+| 2026-08-07 | Gate 3 hardening review                     | `93c186d5172ca6e89609d1e6bb75b7130b70b082`                                                    | Accepted for next-wave development after hardening; production release still blocked on full green CI                                                             | Supervisor |
+| 2026-08-10 | Pre-wave final closure                      | PR #25 / merge `af3bb06f33061fa531143d53a105560627650a8a`                                     | Closed F3B static warning debt, reconciled stale F4/F8/F11 registries and corrected F14A ownership                                                                | Supervisor |
+| 2026-08-10 | Pre-wave closure CI                         | Run `31362947753`                                                                             | External GitHub Billing/Spending blocker; zero executable steps, browser skipped                                                                                  | Supervisor |
+| 2026-08-10 | Pre-wave Gate 3 review                      | `973ce7031fff00a45ff3bb804dbadd0e75a3e105`                                                    | `PRE_WAVE_CODE_CLOSURE_COMPLETE_WITH_EXTERNAL_CI_BILLING_BLOCKER`                                                                                                 | Supervisor |
+| 2026-08-14 | F3B final executable phase gate             | Run `31810298089`, attempt 2 on `8c006d5b7974c45236cd53e99c2a57903f57a523`                    | Full F3B phase gate passed after public-repository runner availability was restored                                                                               | Supervisor |
+| 2026-08-14 | F3B final supervisor integration            | PR #27 / merge `958e3edb53d0bdff65035dfe7e10d4a21a153de0`                                     | Final F3B accessibility/RTL corrections integrated; latent F13A head type aligned; exact F10 debt positions reconciled; F14B performance release blocker retained | Supervisor |
 
 ## Registry Rules
 
