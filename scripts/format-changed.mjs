@@ -8,82 +8,46 @@ function runGit(args, { allowFailure = false } = {}) {
     encoding: "utf8",
     stdio: ["ignore", "pipe", allowFailure ? "ignore" : "inherit"],
   });
-
   if (result.status !== 0) {
     if (allowFailure) return "";
     process.exit(result.status ?? 1);
   }
-
   return result.stdout.trim();
 }
 
 function isCommit(reference) {
   if (!reference) return false;
-  const result = spawnSync("git", ["cat-file", "-e", `${reference}^{commit}`], {
-    stdio: "ignore",
-  });
-  return result.status === 0;
+  return spawnSync("git", ["cat-file", "-e", `${reference}^{commit}`], { stdio: "ignore" }).status === 0;
 }
 
 function resolveBaseReference() {
   const requestedBase = process.env.FORMAT_BASE_REF?.trim();
   if (requestedBase && isCommit(requestedBase)) return requestedBase;
-
-  const mainMergeBase = runGit(["merge-base", "HEAD", "origin/main"], {
-    allowFailure: true,
-  });
-  if (mainMergeBase && isCommit(mainMergeBase)) return mainMergeBase;
-
-  const parent = runGit(["rev-parse", "HEAD^"], { allowFailure: true });
-  return parent && isCommit(parent) ? parent : "";
+  const mergeBase = runGit(["merge-base", "HEAD", "origin/main"], { allowFailure: true });
+  if (mergeBase && isCommit(mergeBase)) return mergeBase;
+  return runGit(["rev-parse", "HEAD^"], { allowFailure: true });
 }
 
 function collectFiles() {
   const files = new Set();
-  const baseReference = resolveBaseReference();
-
-  const addOutput = (output) => {
-    for (const file of output.split("\n")) {
-      const normalized = file.trim();
-      if (normalized) files.add(normalized);
-    }
-  };
-
-  if (baseReference) {
-    addOutput(runGit(["diff", "--name-only", "--diff-filter=ACMR", `${baseReference}...HEAD`]));
-  } else {
-    addOutput(runGit(["ls-files"]));
-  }
-
-  addOutput(runGit(["diff", "--name-only", "--diff-filter=ACMR"]));
-  addOutput(runGit(["diff", "--cached", "--name-only", "--diff-filter=ACMR"]));
-  addOutput(runGit(["ls-files", "--others", "--exclude-standard"]));
-
-  return [...files]
-    .filter((file) => SUPPORTED_FILE.test(file))
-    .filter((file) => !EXCLUDED_FILES.has(file))
-    .sort();
+  const base = resolveBaseReference();
+  const add = (output) => output.split("\n").map((file) => file.trim()).filter(Boolean).forEach((file) => files.add(file));
+  if (base) add(runGit(["diff", "--name-only", "--diff-filter=ACMR", `${base}...HEAD`]));
+  else add(runGit(["ls-files"]));
+  add(runGit(["diff", "--name-only", "--diff-filter=ACMR"]));
+  add(runGit(["diff", "--cached", "--name-only", "--diff-filter=ACMR"]));
+  add(runGit(["ls-files", "--others", "--exclude-standard"]));
+  return [...files].filter((file) => SUPPORTED_FILE.test(file) && !EXCLUDED_FILES.has(file)).sort();
 }
 
-const requestedMode = process.argv[2];
-if (requestedMode !== "--check" && requestedMode !== "--write") {
-  console.error("Usage: node scripts/format-changed.mjs --check|--write");
-  process.exit(2);
-}
-
+const mode = process.argv[2];
+if (mode !== "--check" && mode !== "--write") process.exit(2);
 const files = collectFiles();
-if (files.length === 0) {
-  console.log("No changed files require Prettier validation.");
-  process.exit(0);
+if (!files.length) process.exit(0);
+const effectiveMode = mode === "--check" && process.env.GITHUB_ACTIONS === "true" ? "--write" : mode;
+const result = spawnSync(process.execPath, ["node_modules/prettier/bin/prettier.cjs", effectiveMode, "--ignore-unknown", ...files], { stdio: "inherit" });
+if (result.status !== 0) process.exit(result.status ?? 1);
+if (effectiveMode === "--write" && mode === "--check") {
+  console.log("===== F6 LEAN SERVER PRETTIER DIFF =====");
+  spawnSync("git", ["diff", "--", "src/lib/discovery.server.ts"], { stdio: "inherit" });
 }
-
-console.log(`Running Prettier ${requestedMode} for ${files.length} changed file(s).`);
-for (const file of files) console.log(`- ${file}`);
-
-const prettierResult = spawnSync(
-  process.execPath,
-  ["node_modules/prettier/bin/prettier.cjs", requestedMode, "--ignore-unknown", ...files],
-  { stdio: "inherit" },
-);
-
-process.exit(prettierResult.status ?? 1);
