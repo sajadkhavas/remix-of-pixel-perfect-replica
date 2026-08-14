@@ -9,5 +9,5 @@ export interface DiscoveryRequest {
 }
 
 export const getDiscoveryData = createServerFn({ method: "GET" })
-  .validator((data: DiscoveryRequest) => data)
+  .inputValidator((data: DiscoveryRequest) => data)
   .handler(({ data }) => loadDiscoveryServer(data));
