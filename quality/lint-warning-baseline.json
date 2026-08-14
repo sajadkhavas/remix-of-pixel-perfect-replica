@@ -5,17 +5,6 @@
   "expiresOn": "2026-10-01",
   "warnings": [
     {
-      "file": "src/components/sections/EditorialSection.tsx",
-      "line": 1,
-      "column": 1,
-      "rule": null,
-      "messageIncludes": "Unused eslint-disable directive",
-      "owner": "F5",
-      "reason": "Obsolete feature-file directive remains in the legacy homepage editorial section.",
-      "removalCondition": "Remove the directive during F5 homepage/editorial implementation.",
-      "expiry": "2026-10-01"
-    },
-    {
       "file": "src/lib/store-context.tsx",
       "line": 63,
       "column": 17,
