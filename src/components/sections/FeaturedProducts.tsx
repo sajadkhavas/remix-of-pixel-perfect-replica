@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
-import { ProductCard } from "@/components/ui/ProductCard";
-import type { Watch } from "@/lib/catalog";
+import { ProductCard, type Watch } from "@/components/ui/ProductCard";
 
 export function FeaturedProducts({ watches }: { watches: readonly Watch[] }) {
   if (watches.length === 0) return null;
