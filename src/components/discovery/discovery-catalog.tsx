@@ -3,14 +3,6 @@ import type { ReactNode } from "react";
 
 import { DiscoveryProductCard } from "@/components/discovery/discovery-product-card";
 import { EmptyState } from "@/components/system/feedback";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import type { DiscoverySearchState } from "@/domain/search";
 import {
   activeDiscoveryFilterCount,
@@ -135,12 +127,7 @@ function DiscoveryFilters({ pathname, state, data, lockedCategorySlug }: Discove
     ["نوع موتور", data.options.movement, state.movement, "movement"],
     ["جنس قاب", data.options.caseMaterial, state.caseMaterial, "caseMaterial"],
     ["رنگ صفحه", data.options.dialColor, state.dialColor, "dialColor"],
-    [
-      "مقاومت در برابر آب",
-      data.options.waterResistance,
-      state.waterResistance,
-      "waterResistance",
-    ],
+    ["مقاومت در برابر آب", data.options.waterResistance, state.waterResistance, "waterResistance"],
   ] as const;
 
   return (
@@ -358,88 +345,82 @@ export function DiscoveryCatalog(props: DiscoveryCatalogProps) {
           </form>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 border-y border-border-subtle py-4">
-          <div className="flex items-center gap-2">
-            <Sheet>
-              <SheetTrigger className="inline-flex min-h-11 items-center gap-2 rounded-md border border-border-default bg-background-surface px-3 text-sm font-semibold text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring lg:hidden">
-                <SlidersHorizontal className="size-4" aria-hidden="true" />
-                فیلترها
-                {activeCount > 0 ? (
-                  <span className="rounded-full bg-accent-muted px-2 py-0.5 text-xs text-accent-primary">
-                    {activeCount.toLocaleString("fa-IR")}
-                  </span>
-                ) : null}
-              </SheetTrigger>
-              <SheetContent side="end" className="overflow-y-auto" dir="rtl">
-                <SheetHeader>
-                  <SheetTitle>فیلتر کاتالوگ</SheetTitle>
-                  <SheetDescription>نتیجه فیلترها در آدرس صفحه ذخیره می‌شود.</SheetDescription>
-                </SheetHeader>
-                <div className="mt-6 pb-8">
+        <div className="grid gap-3 border-y border-border-subtle py-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <details className="lg:hidden">
+                <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-md border border-border-default bg-background-surface px-3 text-sm font-semibold text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring">
+                  <SlidersHorizontal className="size-4" aria-hidden="true" />
+                  فیلترها
+                  {activeCount > 0 ? (
+                    <span className="rounded-full bg-accent-muted px-2 py-0.5 text-xs text-accent-primary">
+                      {activeCount.toLocaleString("fa-IR")}
+                    </span>
+                  ) : null}
+                </summary>
+                <div className="mt-3 max-h-[70vh] overflow-y-auto rounded-lg border border-border-subtle bg-background-surface p-4 shadow-elevated">
                   <DiscoveryFilters {...props} />
                 </div>
-              </SheetContent>
-            </Sheet>
+              </details>
 
-            <p className="text-sm text-text-secondary" aria-live="polite">
-              {data.totalItems.toLocaleString("fa-IR")} نتیجه
-            </p>
-          </div>
+              <p className="text-sm text-text-secondary" aria-live="polite">
+                {data.totalItems.toLocaleString("fa-IR")} نتیجه
+              </p>
+            </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            <form action={pathname} method="get" className="flex items-center gap-2">
-              <HiddenDiscoveryFields
-                state={state}
-                omitted={["sort", "page"]}
-                stripCategory={stripCategory}
-              />
-              <label className="sr-only" htmlFor="catalog-sort">
-                مرتب‌سازی
-              </label>
-              <select
-                id="catalog-sort"
-                name="sort"
-                defaultValue={state.sort}
-                className="min-h-11 rounded-md border border-border-default bg-background-surface px-3 text-sm text-text-primary outline-none focus:border-accent-primary focus:ring-2 focus:ring-focus-ring"
+            <div className="flex flex-wrap items-center gap-2">
+              <form action={pathname} method="get" className="flex items-center gap-2">
+                <HiddenDiscoveryFields
+                  state={state}
+                  omitted={["sort", "page"]}
+                  stripCategory={stripCategory}
+                />
+                <label className="sr-only" htmlFor="catalog-sort">
+                  مرتب‌سازی
+                </label>
+                <select
+                  id="catalog-sort"
+                  name="sort"
+                  defaultValue={state.sort}
+                  className="min-h-11 rounded-md border border-border-default bg-background-surface px-3 text-sm text-text-primary outline-none focus:border-accent-primary focus:ring-2 focus:ring-focus-ring"
+                >
+                  {DISCOVERY_SORT_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  type="submit"
+                  className="min-h-11 rounded-md border border-border-default px-3 text-xs font-semibold text-text-primary hover:border-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+                >
+                  اعمال
+                </button>
+              </form>
+
+              <div
+                className="flex rounded-md border border-border-default bg-background-surface p-1"
+                aria-label="نوع نمایش"
               >
-                {DISCOVERY_SORT_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              <button
-                type="submit"
-                className="min-h-11 rounded-md border border-border-default px-3 text-xs font-semibold text-text-primary hover:border-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
-              >
-                اعمال
-              </button>
-            </form>
-
-            <div
-              className="flex rounded-md border border-border-default bg-background-surface p-1"
-              aria-label="نوع نمایش"
-            >
-              {(["grid", "list"] as const).map((view) => {
-                const Icon = view === "grid" ? Grid2X2 : List;
-                const selected = state.view === view;
-                return (
-                  <a
-                    key={view}
-                    href={viewHref(view)}
-                    aria-label={view === "grid" ? "نمایش شبکه‌ای" : "نمایش فهرستی"}
-                    aria-current={selected ? "true" : undefined}
-                    className={cn(
-                      "inline-flex size-11 items-center justify-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring",
-                      selected
-                        ? "bg-background-elevated text-accent-primary"
-                        : "text-text-muted",
-                    )}
-                  >
-                    <Icon className="size-4" aria-hidden="true" />
-                  </a>
-                );
-              })}
+                {(["grid", "list"] as const).map((view) => {
+                  const Icon = view === "grid" ? Grid2X2 : List;
+                  const selected = state.view === view;
+                  return (
+                    <a
+                      key={view}
+                      href={viewHref(view)}
+                      aria-label={view === "grid" ? "نمایش شبکه‌ای" : "نمایش فهرستی"}
+                      aria-current={selected ? "true" : undefined}
+                      className={cn(
+                        "inline-flex size-11 items-center justify-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring",
+                        selected ? "bg-background-elevated text-accent-primary" : "text-text-muted",
+                      )}
+                    >
+                      <Icon className="size-4" aria-hidden="true" />
+                    </a>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
