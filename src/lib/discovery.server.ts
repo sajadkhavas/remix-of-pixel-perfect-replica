@@ -67,9 +67,7 @@ export async function loadDiscoveryServer(input: {
     }),
   ]);
   const category = input.categorySlug
-    ? (categories.find(
-        (item) => item.depth === 1 && item.slug === input.categorySlug,
-      ) ?? null)
+    ? (categories.find((item) => item.depth === 1 && item.slug === input.categorySlug) ?? null)
     : null;
   const effectiveState = category ? { ...input.state, category: category.slug } : input.state;
   const searchResult = await searchRepository.search(effectiveState);
