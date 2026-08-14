@@ -1,9 +1,6 @@
 import { createIsomorphicFn } from "@tanstack/react-start";
 
-import {
-  serializeDiscoverySearch,
-  type DiscoverySearchState,
-} from "@/domain/search";
+import { serializeDiscoverySearch, type DiscoverySearchState } from "@/domain/search";
 import {
   completeDiscoveryState,
   DEFAULT_DISCOVERY_SORT,
@@ -28,6 +25,17 @@ export function encodeDiscoveryRequest(input: DiscoveryRequest): DiscoveryWireRe
   };
 }
 
+function parseWireSearch(search: string): Record<string, string | string[]> {
+  const raw: Record<string, string | string[]> = {};
+  for (const [key, value] of new URLSearchParams(search)) {
+    const current = raw[key];
+    if (current === undefined) raw[key] = value;
+    else if (Array.isArray(current)) current.push(value);
+    else raw[key] = [current, value];
+  }
+  return raw;
+}
+
 export function decodeDiscoveryRequest(input: unknown): DiscoveryRequest | null {
   if (!input || typeof input !== "object") return null;
   const record = input as Record<string, unknown>;
@@ -39,7 +47,7 @@ export function decodeDiscoveryRequest(input: unknown): DiscoveryRequest | null 
     return null;
   }
 
-  const search = validatePublicDiscoverySearch(new URLSearchParams(record.search));
+  const search = validatePublicDiscoverySearch(parseWireSearch(record.search));
   return {
     state: completeDiscoveryState(search),
     categorySlug: typeof record.categorySlug === "string" ? record.categorySlug : undefined,
