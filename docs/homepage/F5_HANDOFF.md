@@ -51,16 +51,14 @@ Run `31816379779` on the verified implementation passed all F5/static gates befo
 
 The final F5 measurement from run `31816379779` is:
 
-| Metric | Pre-F5 integration | F5 | Delta | Hard limit | F5 result |
-| --- | ---: | ---: | ---: | ---: | --- |
-| Client JS total | 898,198 B | 611,075 B | -287,123 B | 850,000 B | PASS |
-| Largest client chunk | within limit | 498,970 B | improved/within limit | 590,000 B | PASS |
-| CSS total | within limit | 105,178 B | within limit | 122,500 B | PASS |
-| Server JS total | 226,595 B | 209,669 B | -16,926 B | 190,000 B | inherited release blocker |
-| Image bytes | higher pre-F5 baseline | 380,259 B | materially reduced | 1,720,000 B | PASS |
-| JS chunk count | 35 | 31 | -4 | 31 | PASS |
-| Image count | — | 8 | — | 11 | PASS |
-| Largest image | — | 57,928 B | — | 690,000 B | PASS |
+- Client JS total: pre-F5 `898198 B`; F5 `611075 B`; delta `-287123 B`; hard limit `850000 B`; PASS.
+- Largest client chunk: F5 `498970 B`; hard limit `590000 B`; PASS.
+- CSS total: F5 `105178 B`; hard limit `122500 B`; PASS.
+- Server JS total: pre-F5 `226595 B`; F5 `209669 B`; delta `-16926 B`; hard limit `190000 B`; inherited release blocker.
+- Image bytes: F5 `380259 B`; hard limit `1720000 B`; PASS.
+- JS chunk count: pre-F5 `35`; F5 `31`; delta `-4`; hard limit `31`; PASS.
+- Image count: F5 `8`; hard limit `11`; PASS.
+- Largest image: F5 `57928 B`; hard limit `690000 B`; PASS.
 
 F5 therefore removes the previous client-JS and chunk-count budget failures and materially reduces server JS. The sole remaining executable performance failure is `serverJsTotal=209669 > 190000`, an application-wide F14B release concern. No performance budget, scanner, workflow or threshold was weakened or raised for F5.
 
