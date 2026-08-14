@@ -1,49 +1,54 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-import * as ReactParallax from "react-parallax";
-import { motion } from "framer-motion";
-import editorialImg from "@/assets/watch-7.jpg";
+import { Link } from "@tanstack/react-router";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Parallax: any = (ReactParallax as any).Parallax ?? (ReactParallax as any).default ?? ReactParallax;
+import editorialImage from "@/assets/watch-7.jpg";
 
 export function EditorialSection() {
   return (
-    <Parallax bgImage={editorialImg} strength={400} bgImageStyle={{ opacity: 0.35 }}>
-      <section className="relative min-h-[600px] flex items-center" dir="rtl">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/80 via-[#080808]/60 to-[#080808]/95" />
-        <div className="container mx-auto px-8 relative z-10 py-32">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            viewport={{ once: true }}
-            className="max-w-2xl"
+    <section
+      className="bg-background-canvas py-16 sm:py-24"
+      dir="rtl"
+      aria-labelledby="home-editorial-title"
+    >
+      <div className="container-editorial grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+        <div className="order-2 lg:order-1">
+          <p className="text-xs font-semibold tracking-[0.22em] text-accent-primary">
+            از اینجا شروع کنید
+          </p>
+          <h2
+            id="home-editorial-title"
+            className="mt-4 text-3xl font-semibold leading-tight text-text-primary sm:text-4xl lg:text-5xl"
           >
-            <span className="text-[10px] tracking-[0.4em] uppercase text-[#C9A84C] block mb-6">
-              مجله کرونوس
-            </span>
-            <h2
-              className="text-4xl lg:text-6xl font-black text-[#F0EDE8] leading-tight mb-6"
-              style={{ fontFamily: "Playfair Display, Vazirmatn Variable, serif" }}
-            >
-              هنر ساعت‌سازی،
-              <br />
-              میراث قرون
-            </h2>
-            <p className="text-[#D4C9B0] text-lg leading-loose mb-8">
-              از کارگاه‌های ژنو تا مچ شما — داستان هر ساعت، روایت دقتی است که
-              نسل‌ها برای رسیدن به آن تلاش کرده‌اند.
-            </p>
-            <motion.a
-              href="#magazine"
-              whileHover={{ x: -6 }}
-              className="inline-flex items-center gap-3 text-[#C9A84C] text-sm tracking-[0.2em] uppercase border-b border-[#C9A84C44] pb-1"
-            >
-              خواندن مقاله ←
-            </motion.a>
-          </motion.div>
+            راهنمای خرید ساعت مچی
+          </h2>
+          <p className="mt-5 max-w-2xl text-sm leading-7 text-text-secondary sm:text-base">
+            کاربرد، موتور، اندازه، شیشه، مقاومت آب و شرایط فروش را مرحله‌به‌مرحله بررسی کنید. راهنما
+            کمک می‌کند سؤال درست را پیدا کنید؛ مشخصات نهایی هر مدل همچنان در صفحه همان محصول است.
+          </p>
+          <Link
+            to="/blog"
+            className="mt-8 inline-flex min-h-11 items-center text-sm font-semibold text-accent-primary underline decoration-border-strong underline-offset-8 transition-colors hover:text-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+          >
+            مشاهده راهنماها ←
+          </Link>
         </div>
-      </section>
-    </Parallax>
+
+        <figure className="order-1 lg:order-2">
+          <div className="aspect-[4/3] overflow-hidden rounded-lg border border-border-subtle bg-background-surface">
+            <img
+              src={editorialImage}
+              alt="نمای ساعت برای مطالعه جزئیات و معیارهای انتخاب"
+              width={768}
+              height={768}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <figcaption className="mt-3 text-xs leading-6 text-text-muted">
+            تصویر نمونه توسعه؛ معیار انتخاب باید از مشخصات و منبع هر محصول خوانده شود.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
   );
 }
