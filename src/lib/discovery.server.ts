@@ -104,8 +104,7 @@ function filterProducts(state: DiscoverySearchState): readonly Product[] {
   }
   if (state.audience.length)
     items = items.filter((product) => hasAny(product.audienceKeys, state.audience));
-  if (state.style.length)
-    items = items.filter((product) => hasAny(product.styleKeys, state.style));
+  if (state.style.length) items = items.filter((product) => hasAny(product.styleKeys, state.style));
   if (state.movement.length)
     items = items.filter((product) => state.movement.includes(product.movementKey));
   if (state.priceMin !== undefined)
@@ -125,9 +124,7 @@ function filterProducts(state: DiscoverySearchState): readonly Product[] {
       hasAny(specKeys(product, "strap-material"), state.strapMaterial),
     );
   if (state.dialColor.length)
-    items = items.filter((product) =>
-      hasAny(optionKeys(product, "dial-color"), state.dialColor),
-    );
+    items = items.filter((product) => hasAny(optionKeys(product, "dial-color"), state.dialColor));
   if (state.waterResistance.length)
     items = items.filter((product) =>
       hasAny(specKeys(product, "water-resistance"), state.waterResistance),
@@ -205,9 +202,7 @@ export async function loadDiscoveryServer(input: {
       audience: unique(activeProducts.flatMap((product) => product.audienceKeys)),
       style: unique(activeProducts.flatMap((product) => product.styleKeys)),
       movement: unique(activeProducts.map((product) => product.movementKey)),
-      caseMaterial: unique(
-        activeProducts.flatMap((product) => specKeys(product, "case-material")),
-      ),
+      caseMaterial: unique(activeProducts.flatMap((product) => specKeys(product, "case-material"))),
       dialColor: unique(activeProducts.flatMap((product) => optionKeys(product, "dial-color"))),
       waterResistance: unique(
         activeProducts.flatMap((product) => specKeys(product, "water-resistance")),
