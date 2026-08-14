@@ -3,42 +3,6 @@
   "baselineSha": "b303c0b9f81cea8ab21c70f38597d77e9e7748b7",
   "findings": [
     {
-      "file": "src/components/sections/FeaturedProducts.tsx",
-      "line": 56,
-      "column": 15,
-      "rule": "hardcoded-satisfaction-stat",
-      "excerptHash": "42d2c369372ccc16",
-      "excerpt": "\"> {[ { value: 1200, label: \"مدل ساعت\", suffix: \"",
-      "owner": "F5",
-      "reason": "Unsupported homepage marketing statistics remain in the legacy homepage section.",
-      "removalCondition": "F5 removes the statistic or replaces it with evidence-backed configured content.",
-      "expiry": "2026-10-01"
-    },
-    {
-      "file": "src/components/sections/FeaturedProducts.tsx",
-      "line": 59,
-      "column": 15,
-      "rule": "hardcoded-satisfaction-stat",
-      "excerptHash": "b2b69c4ef75a0c8f",
-      "excerpt": ", suffix: \"\" }, { value: 99, label: \"درصد رضایت\", suffi",
-      "owner": "F5",
-      "reason": "Unsupported homepage marketing statistics remain in the legacy homepage section.",
-      "removalCondition": "F5 removes the statistic or replaces it with evidence-backed configured content.",
-      "expiry": "2026-10-01"
-    },
-    {
-      "file": "src/components/sections/FeaturedProducts.tsx",
-      "line": 59,
-      "column": 36,
-      "rule": "hardcoded-satisfaction-stat",
-      "excerptHash": "db1ebf769ab9f884",
-      "excerpt": "{ value: 99, label: \"درصد رضایت\", suffix: \"٪\" }, ].",
-      "owner": "F5",
-      "reason": "Unsupported homepage marketing statistics remain in the legacy homepage section.",
-      "removalCondition": "F5 removes the statistic or replaces it with evidence-backed configured content.",
-      "expiry": "2026-10-01"
-    },
-    {
       "file": "src/lib/catalog.ts",
       "line": 12,
       "column": 187,
@@ -216,30 +180,6 @@
       "owner": "F10",
       "reason": "Legacy account route still exposes demo-only success behavior.",
       "removalCondition": "F10 replaces the demo route with truth-safe account/auth capability handling.",
-      "expiry": "2026-10-01"
-    },
-    {
-      "file": "src/routes/index.tsx",
-      "line": 23,
-      "column": 108,
-      "rule": "unsupported-authenticity-claim",
-      "excerptHash": "12e579fceef73943",
-      "excerpt": "ippe، G-Shock، Apple Watch با ضمانت اصالت.\", }, { property:",
-      "owner": "F5",
-      "reason": "Homepage metadata contains an unsupported authenticity claim.",
-      "removalCondition": "F5 replaces homepage metadata with F1/F12 evidence-aware copy and F13A builders.",
-      "expiry": "2026-10-01"
-    },
-    {
-      "file": "src/routes/index.tsx",
-      "line": 26,
-      "column": 68,
-      "rule": "unsupported-authenticity-claim",
-      "excerptHash": "06ab04bed057aea2",
-      "excerpt": "ontent: \"ساعت‌های اورجینال با ضمانت اصالت و ارسال امن.\" }, ], }),",
-      "owner": "F5",
-      "reason": "Homepage metadata contains unsupported authenticity/shipping language.",
-      "removalCondition": "F5 replaces homepage metadata with F1/F12 evidence-aware copy and F13A builders.",
       "expiry": "2026-10-01"
     }
   ],
