@@ -63,8 +63,8 @@ export interface HeadLinkDescriptor {
 
 export interface TanStackHeadDescriptor {
   readonly title: string;
-  readonly meta: readonly HeadMetaDescriptor[];
-  readonly links: readonly HeadLinkDescriptor[];
+  readonly meta: HeadMetaDescriptor[];
+  readonly links: HeadLinkDescriptor[];
 }
 
 export type SeoIssueSeverity = "error" | "warning" | "info";

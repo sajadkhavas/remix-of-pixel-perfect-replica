@@ -184,7 +184,7 @@
     },
     {
       "file": "src/routes/auth.tsx",
-      "line": 35,
+      "line": 40,
       "column": 63,
       "rule": "demo-copy",
       "excerptHash": "aa1a5ac8d7839c92",
@@ -196,7 +196,7 @@
     },
     {
       "file": "src/routes/auth.tsx",
-      "line": 35,
+      "line": 40,
       "column": 93,
       "rule": "demo-copy",
       "excerptHash": "85d71b6502042f1f",
@@ -208,7 +208,7 @@
     },
     {
       "file": "src/routes/auth.tsx",
-      "line": 47,
+      "line": 55,
       "column": 23,
       "rule": "demo-copy",
       "excerptHash": "6e17f7eb5bd0ef77",
@@ -243,5 +243,5 @@
       "expiry": "2026-10-01"
     }
   ],
-  "generatedAt": "2026-08-10T06:26:50.000Z"
+  "generatedAt": "2026-08-14T14:51:00.000Z"
 }
