@@ -1,4 +1,5 @@
 import { Grid2X2, List, Search, SlidersHorizontal } from "lucide-react";
+import type { ReactNode } from "react";
 
 import { DiscoveryProductCard } from "@/components/discovery/discovery-product-card";
 import { EmptyState } from "@/components/system/feedback";
@@ -54,7 +55,7 @@ function FilterLink({
 }: {
   readonly href: string;
   readonly selected: boolean;
-  readonly children: React.ReactNode;
+  readonly children: ReactNode;
   readonly count?: number;
 }) {
   return (
@@ -90,6 +91,7 @@ function FilterGroup({
   readonly hrefFor: (value: string) => string;
 }) {
   if (values.length === 0) return null;
+
   return (
     <fieldset className="grid gap-2 border-t border-border-subtle pt-5">
       <legend className="mb-2 text-sm font-semibold text-text-primary">{title}</legend>
@@ -106,9 +108,8 @@ function FilterGroup({
 
 function DiscoveryFilters({ pathname, state, data, lockedCategorySlug }: DiscoveryCatalogProps) {
   const stripCategory = Boolean(lockedCategorySlug);
-  const brandFacet = data.facets.find((facet) => facet.filterKey === "brand");
   const href = (next: DiscoverySearchState, targetPathname = pathname) =>
-    discoveryHref(targetPathname, next, { stripCategory: Boolean(lockedCategorySlug) });
+    discoveryHref(targetPathname, next, { stripCategory });
   const resetState = patchDiscoveryState(state, {
     q: undefined,
     brand: [],
@@ -127,6 +128,20 @@ function DiscoveryFilters({ pathname, state, data, lockedCategorySlug }: Discove
     sort: DEFAULT_DISCOVERY_SORT,
     view: state.view,
   });
+  const brandFacet = data.facets.find((facet) => facet.filterKey === "brand");
+  const groups = [
+    ["کاربری", data.options.audience, state.audience, "audience"],
+    ["استایل", data.options.style, state.style, "style"],
+    ["نوع موتور", data.options.movement, state.movement, "movement"],
+    ["جنس قاب", data.options.caseMaterial, state.caseMaterial, "caseMaterial"],
+    ["رنگ صفحه", data.options.dialColor, state.dialColor, "dialColor"],
+    [
+      "مقاومت در برابر آب",
+      data.options.waterResistance,
+      state.waterResistance,
+      "waterResistance",
+    ],
+  ] as const;
 
   return (
     <div className="grid gap-5" dir="rtl">
@@ -152,115 +167,58 @@ function DiscoveryFilters({ pathname, state, data, lockedCategorySlug }: Discove
         >
           همه دسته‌ها
         </FilterLink>
-        {data.categories.map((category) => {
-          const categoryState = patchDiscoveryState(state, { category: undefined });
-          return (
-            <FilterLink
-              key={category.id}
-              href={discoveryHref(`/shop/${category.slug}`, categoryState, { stripCategory: true })}
-              selected={lockedCategorySlug === category.slug || state.category === category.slug}
-            >
-              {category.title.default}
-            </FilterLink>
-          );
-        })}
+        {data.categories.map((category) => (
+          <FilterLink
+            key={category.id}
+            href={discoveryHref(
+              `/shop/${category.slug}`,
+              patchDiscoveryState(state, { category: undefined }),
+              { stripCategory: true },
+            )}
+            selected={lockedCategorySlug === category.slug || state.category === category.slug}
+          >
+            {category.title.default}
+          </FilterLink>
+        ))}
       </fieldset>
 
-      {brandFacet && brandFacet.buckets.length > 0 ? (
+      {brandFacet?.buckets.length ? (
         <fieldset className="grid gap-2 border-t border-border-subtle pt-5">
           <legend className="mb-2 text-sm font-semibold text-text-primary">برند</legend>
           <div className="grid grid-cols-2 gap-2 lg:grid-cols-1">
-            {brandFacet.buckets.map((bucket) => {
-              const next = patchDiscoveryState(state, {
-                brand: toggleDiscoveryValue(state.brand, bucket.valueKey),
-              });
-              return (
-                <FilterLink
-                  key={bucket.valueKey}
-                  href={href(next)}
-                  selected={state.brand.includes(bucket.valueKey)}
-                  count={bucket.count}
-                >
-                  {discoveryFilterLabel(bucket.valueKey)}
-                </FilterLink>
-              );
-            })}
+            {brandFacet.buckets.map((bucket) => (
+              <FilterLink
+                key={bucket.valueKey}
+                href={href(
+                  patchDiscoveryState(state, {
+                    brand: toggleDiscoveryValue(state.brand, bucket.valueKey),
+                  }),
+                )}
+                selected={state.brand.includes(bucket.valueKey)}
+                count={bucket.count}
+              >
+                {discoveryFilterLabel(bucket.valueKey)}
+              </FilterLink>
+            ))}
           </div>
         </fieldset>
       ) : null}
 
-      <FilterGroup
-        title="کاربری"
-        values={data.options.audience}
-        selected={state.audience}
-        hrefFor={(value) =>
-          href(
-            patchDiscoveryState(state, {
-              audience: toggleDiscoveryValue(state.audience, value),
-            }),
-          )
-        }
-      />
-      <FilterGroup
-        title="استایل"
-        values={data.options.style}
-        selected={state.style}
-        hrefFor={(value) =>
-          href(
-            patchDiscoveryState(state, {
-              style: toggleDiscoveryValue(state.style, value),
-            }),
-          )
-        }
-      />
-      <FilterGroup
-        title="نوع موتور"
-        values={data.options.movement}
-        selected={state.movement}
-        hrefFor={(value) =>
-          href(
-            patchDiscoveryState(state, {
-              movement: toggleDiscoveryValue(state.movement, value),
-            }),
-          )
-        }
-      />
-      <FilterGroup
-        title="جنس قاب"
-        values={data.options.caseMaterial}
-        selected={state.caseMaterial}
-        hrefFor={(value) =>
-          href(
-            patchDiscoveryState(state, {
-              caseMaterial: toggleDiscoveryValue(state.caseMaterial, value),
-            }),
-          )
-        }
-      />
-      <FilterGroup
-        title="رنگ صفحه"
-        values={data.options.dialColor}
-        selected={state.dialColor}
-        hrefFor={(value) =>
-          href(
-            patchDiscoveryState(state, {
-              dialColor: toggleDiscoveryValue(state.dialColor, value),
-            }),
-          )
-        }
-      />
-      <FilterGroup
-        title="مقاومت در برابر آب"
-        values={data.options.waterResistance}
-        selected={state.waterResistance}
-        hrefFor={(value) =>
-          href(
-            patchDiscoveryState(state, {
-              waterResistance: toggleDiscoveryValue(state.waterResistance, value),
-            }),
-          )
-        }
-      />
+      {groups.map(([title, values, selected, key]) => (
+        <FilterGroup
+          key={key}
+          title={title}
+          values={values}
+          selected={selected}
+          hrefFor={(value) =>
+            href(
+              patchDiscoveryState(state, {
+                [key]: toggleDiscoveryValue(selected, value),
+              }),
+            )
+          }
+        />
+      ))}
 
       <fieldset className="grid gap-2 border-t border-border-subtle pt-5">
         <legend className="mb-2 text-sm font-semibold text-text-primary">وضعیت موجودی</legend>
@@ -403,19 +361,14 @@ export function DiscoveryCatalog(props: DiscoveryCatalogProps) {
         <div className="flex flex-wrap items-center justify-between gap-3 border-y border-border-subtle py-4">
           <div className="flex items-center gap-2">
             <Sheet>
-              <SheetTrigger asChild>
-                <button
-                  type="button"
-                  className="inline-flex min-h-11 items-center gap-2 rounded-md border border-border-default bg-background-surface px-3 text-sm font-semibold text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring lg:hidden"
-                >
-                  <SlidersHorizontal className="size-4" aria-hidden="true" />
-                  فیلترها
-                  {activeCount > 0 ? (
-                    <span className="rounded-full bg-accent-muted px-2 py-0.5 text-xs text-accent-primary">
-                      {activeCount.toLocaleString("fa-IR")}
-                    </span>
-                  ) : null}
-                </button>
+              <SheetTrigger className="inline-flex min-h-11 items-center gap-2 rounded-md border border-border-default bg-background-surface px-3 text-sm font-semibold text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring lg:hidden">
+                <SlidersHorizontal className="size-4" aria-hidden="true" />
+                فیلترها
+                {activeCount > 0 ? (
+                  <span className="rounded-full bg-accent-muted px-2 py-0.5 text-xs text-accent-primary">
+                    {activeCount.toLocaleString("fa-IR")}
+                  </span>
+                ) : null}
               </SheetTrigger>
               <SheetContent side="end" className="overflow-y-auto" dir="rtl">
                 <SheetHeader>
@@ -467,32 +420,26 @@ export function DiscoveryCatalog(props: DiscoveryCatalogProps) {
               className="flex rounded-md border border-border-default bg-background-surface p-1"
               aria-label="نوع نمایش"
             >
-              <a
-                href={viewHref("grid")}
-                aria-label="نمایش شبکه‌ای"
-                aria-current={state.view === "grid" ? "true" : undefined}
-                className={cn(
-                  "inline-flex size-11 items-center justify-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring",
-                  state.view === "grid"
-                    ? "bg-background-elevated text-accent-primary"
-                    : "text-text-muted",
-                )}
-              >
-                <Grid2X2 className="size-4" aria-hidden="true" />
-              </a>
-              <a
-                href={viewHref("list")}
-                aria-label="نمایش فهرستی"
-                aria-current={state.view === "list" ? "true" : undefined}
-                className={cn(
-                  "inline-flex size-11 items-center justify-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring",
-                  state.view === "list"
-                    ? "bg-background-elevated text-accent-primary"
-                    : "text-text-muted",
-                )}
-              >
-                <List className="size-4" aria-hidden="true" />
-              </a>
+              {(["grid", "list"] as const).map((view) => {
+                const Icon = view === "grid" ? Grid2X2 : List;
+                const selected = state.view === view;
+                return (
+                  <a
+                    key={view}
+                    href={viewHref(view)}
+                    aria-label={view === "grid" ? "نمایش شبکه‌ای" : "نمایش فهرستی"}
+                    aria-current={selected ? "true" : undefined}
+                    className={cn(
+                      "inline-flex size-11 items-center justify-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring",
+                      selected
+                        ? "bg-background-elevated text-accent-primary"
+                        : "text-text-muted",
+                    )}
+                  >
+                    <Icon className="size-4" aria-hidden="true" />
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>
