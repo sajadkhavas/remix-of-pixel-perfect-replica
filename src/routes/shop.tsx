@@ -5,10 +5,7 @@ import {
   DiscoveryCatalogPending,
 } from "@/components/discovery/discovery-catalog";
 import { completeDiscoveryState, validatePublicDiscoverySearch } from "@/lib/discovery";
-import {
-  decodeDiscoveryRequest,
-  getDiscoveryData,
-} from "@/lib/discovery.functions";
+import { decodeDiscoveryRequest, getDiscoveryData } from "@/lib/discovery.functions";
 
 export const Route = createFileRoute("/shop")({
   validateSearch: validatePublicDiscoverySearch,
