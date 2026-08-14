@@ -68,9 +68,7 @@ export function validatePublicDiscoverySearch(rawSearch: RawSearch): ValidatedDi
   return { ...state, sort };
 }
 
-export function completeDiscoveryState(
-  search: ValidatedDiscoverySearch,
-): DiscoverySearchState {
+export function completeDiscoveryState(search: ValidatedDiscoverySearch): DiscoverySearchState {
   return {
     q: search.q,
     category: search.category,
