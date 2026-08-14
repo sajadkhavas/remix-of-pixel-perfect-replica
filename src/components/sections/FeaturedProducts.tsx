@@ -42,11 +42,6 @@ export function FeaturedProducts({ watches }: { watches: readonly Watch[] }) {
             <ProductCard key={watch.id} watch={watch} />
           ))}
         </div>
-
-        <p className="mt-6 text-xs leading-6 text-text-muted">
-          داده این کارت‌ها در وضعیت فعلی پروژه از لایه سازگاری کاتالوگ می‌آید و در فاز Product به
-          قرارداد normalized مهاجرت می‌کند.
-        </p>
       </div>
     </section>
   );
