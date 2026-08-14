@@ -11,6 +11,7 @@ const categorySource = source("src/components/sections/CategoriesSection.tsx");
 const featuredSource = source("src/components/sections/FeaturedProducts.tsx");
 const trustSource = source("src/components/sections/ServicesSection.tsx");
 const editorialSource = source("src/components/sections/EditorialSection.tsx");
+const handoffSource = source("docs/homepage/F5_HANDOFF.md");
 const homepageSource = [
   routeSource,
   heroSource,
@@ -54,6 +55,8 @@ describe("F5 homepage contract", () => {
       "1200+",
       "50+",
       "99%",
+      "لایه سازگاری کاتالوگ",
+      "normalized",
     ]) {
       expect(homepageSource).not.toContain(forbidden);
     }
@@ -71,9 +74,9 @@ describe("F5 homepage contract", () => {
     expect(trustSource).toContain('to: "/shipping-returns"');
   });
 
-  test("keeps legacy catalog compatibility explicit until F7 owns PDP migration", () => {
+  test("documents the legacy product-route compatibility boundary outside rendered copy", () => {
     expect(featuredSource).toContain("type Watch");
-    expect(featuredSource).toContain("لایه سازگاری کاتالوگ");
     expect(featuredSource).not.toContain("productToCardViewModel");
+    expect(handoffSource).toContain("F7 owns Product Experience");
   });
 });
