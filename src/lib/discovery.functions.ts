@@ -1,5 +1,3 @@
-import { createIsomorphicFn } from "@tanstack/react-start";
-
 import { serializeDiscoverySearch, type DiscoverySearchState } from "@/domain/search";
 import {
   completeDiscoveryState,
@@ -54,17 +52,17 @@ export function decodeDiscoveryRequest(input: unknown): DiscoveryRequest | null 
   };
 }
 
-export const getDiscoveryData = createIsomorphicFn()
-  .server(async (input: DiscoveryRequest): Promise<DiscoveryServerResult> => {
+export async function getDiscoveryData(input: DiscoveryRequest): Promise<DiscoveryServerResult> {
+  if (import.meta.env.SSR) {
     const { loadDiscoveryServer } = await import("@/lib/discovery.server");
     return loadDiscoveryServer(input);
-  })
-  .client(async (input: DiscoveryRequest): Promise<DiscoveryServerResult> => {
-    const response = await fetch("/shop", {
-      method: "POST",
-      headers: { "content-type": "application/json", accept: "application/json" },
-      body: JSON.stringify(encodeDiscoveryRequest(input)),
-    });
-    if (!response.ok) throw new Error(`Discovery request failed with ${response.status}`);
-    return (await response.json()) as DiscoveryServerResult;
+  }
+
+  const response = await fetch("/shop", {
+    method: "POST",
+    headers: { "content-type": "application/json", accept: "application/json" },
+    body: JSON.stringify(encodeDiscoveryRequest(input)),
   });
+  if (!response.ok) throw new Error(`Discovery request failed with ${response.status}`);
+  return (await response.json()) as DiscoveryServerResult;
+}
