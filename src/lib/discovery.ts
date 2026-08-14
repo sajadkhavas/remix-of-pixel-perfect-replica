@@ -10,22 +10,23 @@ import type { Category } from "@/domain/catalog";
 import type { Product } from "@/domain/product";
 import {
   getDiscoverySeoDecision,
+  parseDiscoverySearch,
   serializeDiscoverySearch,
   type DiscoverySearchState,
+  type RawSearch,
   type SortValue,
 } from "@/domain/search";
 import type { Money } from "@/domain/shared";
 
 export const DEFAULT_DISCOVERY_SORT: SortValue = "newest";
 
-export const DISCOVERY_SORT_OPTIONS: ReadonlyArray<
-  Readonly<{ value: SortValue; label: string }>
-> = [
-  { value: "newest", label: "جدیدترین" },
-  { value: "price-asc", label: "کمترین قیمت" },
-  { value: "price-desc", label: "بیشترین قیمت" },
-  { value: "discount", label: "بیشترین تخفیف" },
-];
+export const DISCOVERY_SORT_OPTIONS: ReadonlyArray<Readonly<{ value: SortValue; label: string }>> =
+  [
+    { value: "newest", label: "جدیدترین" },
+    { value: "price-asc", label: "کمترین قیمت" },
+    { value: "price-desc", label: "بیشترین قیمت" },
+    { value: "discount", label: "بیشترین تخفیف" },
+  ];
 
 export const AVAILABILITY_OPTIONS = [
   { value: "in-stock", label: "موجود" },
@@ -56,6 +57,41 @@ const FILTER_LABELS: Readonly<Record<string, string>> = {
   green: "سبز",
   silver: "نقره‌ای",
 };
+
+export type ValidatedDiscoverySearch = Partial<DiscoverySearchState>;
+
+export function validatePublicDiscoverySearch(rawSearch: RawSearch): ValidatedDiscoverySearch {
+  const state = parseDiscoverySearch(rawSearch, DEFAULT_DISCOVERY_SORT);
+  const sort = DISCOVERY_SORT_OPTIONS.some((option) => option.value === state.sort)
+    ? state.sort
+    : DEFAULT_DISCOVERY_SORT;
+  return { ...state, sort };
+}
+
+export function completeDiscoveryState(
+  search: ValidatedDiscoverySearch,
+): DiscoverySearchState {
+  return {
+    q: search.q,
+    category: search.category,
+    brand: search.brand ?? [],
+    audience: search.audience ?? [],
+    style: search.style ?? [],
+    movement: search.movement ?? [],
+    priceMin: search.priceMin,
+    priceMax: search.priceMax,
+    caseSize: search.caseSize ?? [],
+    caseMaterial: search.caseMaterial ?? [],
+    strapMaterial: search.strapMaterial ?? [],
+    dialColor: search.dialColor ?? [],
+    waterResistance: search.waterResistance ?? [],
+    availability: search.availability ?? [],
+    discount: search.discount ?? false,
+    sort: search.sort ?? DEFAULT_DISCOVERY_SORT,
+    page: search.page ?? 1,
+    view: search.view ?? "grid",
+  };
+}
 
 export function discoveryFilterLabel(value: string): string {
   return FILTER_LABELS[value] ?? value;
@@ -93,7 +129,9 @@ function specKeys(product: Product, key: string): readonly string[] {
 
 function optionKeys(product: Product, key: string): readonly string[] {
   return product.variants.flatMap((variant) =>
-    variant.optionValues.filter((option) => option.optionKey === key).map((option) => option.valueKey),
+    variant.optionValues
+      .filter((option) => option.optionKey === key)
+      .map((option) => option.valueKey),
   );
 }
 

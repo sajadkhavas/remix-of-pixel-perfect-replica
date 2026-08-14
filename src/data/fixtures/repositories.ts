@@ -92,8 +92,8 @@ export class FixtureBrandRepository implements BrandRepository {
 }
 
 const effectivePrice = (product: Product): number =>
-  product.variants.find((variant) => variant.id === product.defaultVariantId)?.pricing.effectivePrice
-    .amountMinor ?? Number.MAX_SAFE_INTEGER;
+  product.variants.find((variant) => variant.id === product.defaultVariantId)?.pricing
+    .effectivePrice.amountMinor ?? Number.MAX_SAFE_INTEGER;
 const activeDiscount = (product: Product): number => {
   const pricing = product.variants.find(
     (variant) => variant.id === product.defaultVariantId,
@@ -128,7 +128,9 @@ const specificationNumbers = (product: Product, key: string): readonly number[] 
 };
 const optionKeys = (product: Product, key: string): readonly string[] =>
   product.variants.flatMap((variant) =>
-    variant.optionValues.filter((option) => option.optionKey === key).map((option) => option.valueKey),
+    variant.optionValues
+      .filter((option) => option.optionKey === key)
+      .map((option) => option.valueKey),
   );
 
 export class FixtureSearchRepository implements SearchRepository {
@@ -169,7 +171,9 @@ export class FixtureSearchRepository implements SearchRepository {
       items = items.filter((product) => effectivePrice(product) <= state.priceMax!);
     if (state.caseSize.length)
       items = items.filter((product) =>
-        state.caseSize.some((value) => specificationNumbers(product, "case-diameter").includes(value)),
+        state.caseSize.some((value) =>
+          specificationNumbers(product, "case-diameter").includes(value),
+        ),
       );
     if (state.caseMaterial.length)
       items = items.filter((product) =>

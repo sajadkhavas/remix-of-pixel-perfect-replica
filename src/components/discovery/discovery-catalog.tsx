@@ -70,7 +70,9 @@ function FilterLink({
     >
       <span>{children}</span>
       {count !== undefined ? (
-        <span className="tabular-nums text-xs text-text-muted">{count.toLocaleString("fa-IR")}</span>
+        <span className="tabular-nums text-xs text-text-muted">
+          {count.toLocaleString("fa-IR")}
+        </span>
       ) : null}
     </a>
   );
@@ -102,12 +104,7 @@ function FilterGroup({
   );
 }
 
-function DiscoveryFilters({
-  pathname,
-  state,
-  data,
-  lockedCategorySlug,
-}: DiscoveryCatalogProps) {
+function DiscoveryFilters({ pathname, state, data, lockedCategorySlug }: DiscoveryCatalogProps) {
   const stripCategory = Boolean(lockedCategorySlug);
   const brandFacet = data.facets.find((facet) => facet.filterKey === "brand");
   const href = (next: DiscoverySearchState, targetPathname = pathname) =>
@@ -346,15 +343,22 @@ export function DiscoveryCatalog(props: DiscoveryCatalogProps) {
     discoveryHref(pathname, patchDiscoveryState(state, { view }), { stripCategory });
 
   return (
-    <section className="section-commerce bg-background-canvas" dir="rtl" aria-labelledby="catalog-title">
+    <section
+      className="section-commerce bg-background-canvas"
+      dir="rtl"
+      aria-labelledby="catalog-title"
+    >
       <div className="container-commerce grid gap-8">
         <div className="grid gap-4">
           <div className="max-w-3xl">
             <p className="text-xs font-semibold tracking-[0.18em] text-accent-primary">CATALOG</p>
-            <h1 id="catalog-title" className="mt-3 text-3xl font-semibold text-text-primary sm:text-4xl">
+            <h1
+              id="catalog-title"
+              className="mt-3 text-3xl font-semibold text-text-primary sm:text-4xl"
+            >
               {lockedCategorySlug
-                ? data.categories.find((category) => category.slug === lockedCategorySlug)?.title.default ??
-                  "دسته‌بندی"
+                ? (data.categories.find((category) => category.slug === lockedCategorySlug)?.title
+                    .default ?? "دسته‌بندی")
                 : "فروشگاه ساعت"}
             </h1>
             <p className="mt-3 text-sm leading-7 text-text-secondary sm:text-base">
@@ -362,7 +366,12 @@ export function DiscoveryCatalog(props: DiscoveryCatalogProps) {
             </p>
           </div>
 
-          <form action={pathname} method="get" role="search" className="flex flex-col gap-2 sm:flex-row">
+          <form
+            action={pathname}
+            method="get"
+            role="search"
+            className="flex flex-col gap-2 sm:flex-row"
+          >
             <HiddenDiscoveryFields
               state={state}
               omitted={["q", "page"]}
@@ -454,14 +463,19 @@ export function DiscoveryCatalog(props: DiscoveryCatalogProps) {
               </button>
             </form>
 
-            <div className="flex rounded-md border border-border-default bg-background-surface p-1" aria-label="نوع نمایش">
+            <div
+              className="flex rounded-md border border-border-default bg-background-surface p-1"
+              aria-label="نوع نمایش"
+            >
               <a
                 href={viewHref("grid")}
                 aria-label="نمایش شبکه‌ای"
                 aria-current={state.view === "grid" ? "true" : undefined}
                 className={cn(
                   "inline-flex size-11 items-center justify-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring",
-                  state.view === "grid" ? "bg-background-elevated text-accent-primary" : "text-text-muted",
+                  state.view === "grid"
+                    ? "bg-background-elevated text-accent-primary"
+                    : "text-text-muted",
                 )}
               >
                 <Grid2X2 className="size-4" aria-hidden="true" />
@@ -472,7 +486,9 @@ export function DiscoveryCatalog(props: DiscoveryCatalogProps) {
                 aria-current={state.view === "list" ? "true" : undefined}
                 className={cn(
                   "inline-flex size-11 items-center justify-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring",
-                  state.view === "list" ? "bg-background-elevated text-accent-primary" : "text-text-muted",
+                  state.view === "list"
+                    ? "bg-background-elevated text-accent-primary"
+                    : "text-text-muted",
                 )}
               >
                 <List className="size-4" aria-hidden="true" />
@@ -534,7 +550,8 @@ export function DiscoveryCatalog(props: DiscoveryCatalogProps) {
                   <span />
                 )}
                 <span className="text-xs tabular-nums text-text-secondary">
-                  صفحه {data.page.toLocaleString("fa-IR")} از {data.totalPages.toLocaleString("fa-IR")}
+                  صفحه {data.page.toLocaleString("fa-IR")} از{" "}
+                  {data.totalPages.toLocaleString("fa-IR")}
                 </span>
                 {data.page < data.totalPages ? (
                   <a
@@ -561,7 +578,11 @@ export function DiscoveryCatalog(props: DiscoveryCatalogProps) {
 
 export function DiscoveryCatalogPending() {
   return (
-    <section className="section-commerce bg-background-canvas" dir="rtl" aria-label="در حال بارگذاری کاتالوگ">
+    <section
+      className="section-commerce bg-background-canvas"
+      dir="rtl"
+      aria-label="در حال بارگذاری کاتالوگ"
+    >
       <div className="container-commerce grid gap-6">
         <div className="h-10 w-52 animate-pulse rounded-md bg-skeleton-base motion-reduce:animate-none" />
         <div className="h-11 w-full animate-pulse rounded-md bg-skeleton-base motion-reduce:animate-none" />

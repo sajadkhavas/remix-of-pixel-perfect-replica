@@ -5,27 +5,17 @@ import {
   DiscoveryCatalogPending,
 } from "@/components/discovery/discovery-catalog";
 import { FIXTURE_CATEGORIES } from "@/data/fixtures/categories";
+import { getDiscoverySeoDecision } from "@/domain/search";
 import {
-  getDiscoverySeoDecision,
-  parseDiscoverySearch,
-  type RawSearch,
-} from "@/domain/search";
-import {
+  completeDiscoveryState,
   DEFAULT_DISCOVERY_SORT,
-  DISCOVERY_SORT_OPTIONS,
   loadDiscovery,
+  validatePublicDiscoverySearch,
 } from "@/lib/discovery";
 
-function validateDiscoverySearch(rawSearch: RawSearch) {
-  const state = parseDiscoverySearch(rawSearch, DEFAULT_DISCOVERY_SORT);
-  return DISCOVERY_SORT_OPTIONS.some((option) => option.value === state.sort)
-    ? state
-    : { ...state, sort: DEFAULT_DISCOVERY_SORT };
-}
-
 export const Route = createFileRoute("/shop/$category")({
-  validateSearch: validateDiscoverySearch,
-  loaderDeps: ({ search }) => search,
+  validateSearch: validatePublicDiscoverySearch,
+  loaderDeps: ({ search }) => completeDiscoveryState(search),
   loader: async ({ params, deps }) => {
     const category = FIXTURE_CATEGORIES.find(
       (item) => item.depth === 1 && item.slug === params.category,
@@ -49,10 +39,7 @@ export const Route = createFileRoute("/shop/$category")({
           },
           { name: "robots", content: loaderData.seo.robots },
         ]
-      : [
-          { title: "دسته‌بندی — KRONOS" },
-          { name: "robots", content: "noindex,follow" },
-        ],
+      : [{ title: "دسته‌بندی — KRONOS" }, { name: "robots", content: "noindex,follow" }],
   }),
   pendingComponent: DiscoveryCatalogPending,
   notFoundComponent: CategoryNotFound,
@@ -79,7 +66,7 @@ function CategoryNotFound() {
 }
 
 function CategoryPage() {
-  const search = Route.useSearch();
+  const search = completeDiscoveryState(Route.useSearch());
   const data = Route.useLoaderData();
   const state = { ...search, category: data.category.slug };
 

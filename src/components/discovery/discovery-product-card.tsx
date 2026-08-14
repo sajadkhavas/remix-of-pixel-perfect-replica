@@ -62,7 +62,9 @@ export function DiscoveryProductCard({
         ) : null}
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-subtle pt-3">
-          <span className="text-xs font-medium text-text-secondary">{model.availability.label}</span>
+          <span className="text-xs font-medium text-text-secondary">
+            {model.availability.label}
+          </span>
           {model.price ? <ProductPrice price={model.price} /> : null}
         </div>
       </div>

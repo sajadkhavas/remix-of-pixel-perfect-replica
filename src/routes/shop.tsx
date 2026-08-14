@@ -4,23 +4,15 @@ import {
   DiscoveryCatalog,
   DiscoveryCatalogPending,
 } from "@/components/discovery/discovery-catalog";
-import { parseDiscoverySearch, type RawSearch } from "@/domain/search";
 import {
-  DEFAULT_DISCOVERY_SORT,
-  DISCOVERY_SORT_OPTIONS,
+  completeDiscoveryState,
   loadDiscovery,
+  validatePublicDiscoverySearch,
 } from "@/lib/discovery";
 
-function validateDiscoverySearch(rawSearch: RawSearch) {
-  const state = parseDiscoverySearch(rawSearch, DEFAULT_DISCOVERY_SORT);
-  return DISCOVERY_SORT_OPTIONS.some((option) => option.value === state.sort)
-    ? state
-    : { ...state, sort: DEFAULT_DISCOVERY_SORT };
-}
-
 export const Route = createFileRoute("/shop")({
-  validateSearch: validateDiscoverySearch,
-  loaderDeps: ({ search }) => search,
+  validateSearch: validatePublicDiscoverySearch,
+  loaderDeps: ({ search }) => completeDiscoveryState(search),
   loader: ({ deps }) => loadDiscovery(deps),
   head: ({ loaderData }) => ({
     meta: [
@@ -38,7 +30,7 @@ export const Route = createFileRoute("/shop")({
 });
 
 function ShopPage() {
-  const state = Route.useSearch();
+  const state = completeDiscoveryState(Route.useSearch());
   const data = Route.useLoaderData();
 
   return <DiscoveryCatalog pathname="/shop" state={state} data={data} />;
