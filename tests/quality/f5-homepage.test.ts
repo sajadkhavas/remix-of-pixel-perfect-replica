@@ -23,7 +23,7 @@ const homepageSource = [
 describe("F5 homepage contract", () => {
   test("keeps one focused hero CTA and the approved H1", () => {
     expect(heroSource).toContain("ساعتی متناسب با سبک، کاربرد و بودجه شما");
-    expect(heroSource.match(/to=\"\/shop\"/g)?.length).toBe(1);
+    expect(heroSource.split('to="/shop"').length - 1).toBe(1);
     expect(heroSource).not.toContain("Swiper");
     expect(heroSource).not.toContain("Typewriter");
     expect(heroSource).not.toContain("Autoplay");
