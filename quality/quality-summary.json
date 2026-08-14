@@ -3,34 +3,29 @@
   "baselineSha": "b303c0b9f81cea8ab21c70f38597d77e9e7748b7",
   "registries": {
     "lintWarnings": {
-      "count": 2,
+      "count": 1,
       "byOwner": {
-        "F5": 1,
         "F9": 1
       },
       "byRule": {
-        "react-refresh/only-export-components": 1,
-        "unassigned": 1
+        "react-refresh/only-export-components": 1
       },
       "byImpact": {
-        "unassigned": 2
+        "unassigned": 1
       }
     },
     "forbiddenCopy": {
-      "count": 20,
+      "count": 15,
       "byOwner": {
         "F10": 3,
-        "F5": 5,
         "F6/F7": 12
       },
       "byRule": {
         "demo-copy": 3,
-        "hardcoded-review-count": 12,
-        "hardcoded-satisfaction-stat": 3,
-        "unsupported-authenticity-claim": 2
+        "hardcoded-review-count": 12
       },
       "byImpact": {
-        "unassigned": 20
+        "unassigned": 15
       }
     },
     "linkIntegrity": {
@@ -125,7 +120,7 @@
       "byImpact": {}
     }
   },
-  "totalTrackedDebt": 978,
+  "totalTrackedDebt": 972,
   "performance": {
     "schemaVersion": 1,
     "measuredAt": "2026-08-06T15:41:59.149Z",

@@ -1,168 +1,69 @@
-import { useEffect, useRef } from "react";
-import { motion, useMotionValue, useTransform } from "framer-motion";
-import VanillaTilt from "vanilla-tilt";
+import { Link } from "@tanstack/react-router";
 
-const SERVICES = [
+const TRUST_LINKS = [
   {
-    id: 1,
-    icon: "🔒",
-    name: "اصالت تضمینی",
-    desc: "تمام ساعت‌های ما دارای گواهی اصالت و سریال معتبر هستند.",
-    points: ["کارت گارانتی اصل", "جعبه اورجینال", "سریال قابل استعلام"],
-    color: "#C9A84C",
-    time: "همیشه",
+    to: "/authenticity" as const,
+    eyebrow: "اطلاعات محصول",
+    title: "اصالت و منبع اطلاعات",
+    description:
+      "پیش از تصمیم، ببینید چه نوع اطلاعاتی برای بررسی اصالت و مشخصات محصول قابل ارائه است.",
   },
   {
-    id: 2,
-    icon: "⚙️",
-    name: "سرویس و تعمیر",
-    desc: "تعمیر تخصصی ساعت‌های مکانیکال، کوارتز و هوشمند توسط متخصص.",
-    points: ["تعمیر ساعت مکانیکال", "تنظیم بند", "تعویض باتری"],
-    color: "#8A6A3C",
-    time: "۱–۵ روز",
+    to: "/warranty" as const,
+    eyebrow: "شرایط فروش",
+    title: "وضعیت گارانتی",
+    description:
+      "شرایط گارانتی فقط زمانی معتبر است که برای همان محصول و منبع فروش به‌صورت روشن ثبت شده باشد.",
   },
   {
-    id: 3,
-    icon: "🚚",
-    name: "ارسال امن",
-    desc: "بسته‌بندی ضد ضربه با بیمه کامل و ردیابی آنلاین سفارش.",
-    points: ["بسته‌بندی لوکس", "بیمه کامل محموله", "ردیابی آنلاین"],
-    color: "#3A7CA8",
-    time: "۱–۳ روز",
+    to: "/shipping-returns" as const,
+    eyebrow: "پیش از سفارش",
+    title: "ارسال و بازگشت",
+    description:
+      "شرایط ارسال و بازگشت را از صفحه سیاست مربوط بخوانید؛ این صفحه جای وعده زمان یا هزینه نیست.",
   },
-];
-
-function ServiceCard({
-  s,
-  i,
-  cardElementRef,
-}: {
-  s: (typeof SERVICES)[0];
-  i: number;
-  cardElementRef?: (el: HTMLDivElement | null) => void;
-}) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const rotX = useTransform(my, [-80, 80], [5, -5]);
-  const rotY = useTransform(mx, [-80, 80], [-5, 5]);
-
-  return (
-    <motion.div
-      ref={(el) => {
-        cardRef.current = el;
-        cardElementRef?.(el);
-      }}
-      style={{ rotateX: rotX, rotateY: rotY, transformStyle: "preserve-3d", perspective: 1000 }}
-      onMouseMove={(e) => {
-        const r = cardRef.current!.getBoundingClientRect();
-        mx.set(e.clientX - r.left - r.width / 2);
-        my.set(e.clientY - r.top - r.height / 2);
-      }}
-      onMouseLeave={() => {
-        mx.set(0);
-        my.set(0);
-      }}
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0, transition: { delay: i * 0.14, duration: 0.8 } }}
-      viewport={{ once: true }}
-      className="group relative p-8 border border-[#1E1E1E] hover:border-[#C9A84C33] bg-[#111111] cursor-default transition-colors duration-500"
-    >
-      <div
-        className="absolute top-0 right-0 h-[1px] w-0 group-hover:w-full transition-all duration-700"
-        style={{ background: `linear-gradient(90deg, ${s.color}, transparent)` }}
-      />
-
-      <div style={{ transform: "translateZ(20px)" }}>
-        <div className="text-5xl mb-6" style={{ filter: `drop-shadow(0 4px 12px ${s.color}55)` }}>
-          {s.icon}
-        </div>
-
-        <h3
-          className="text-2xl font-black text-[#F0EDE8] mb-3"
-          style={{ fontFamily: "Playfair Display, Vazirmatn Variable, serif" }}
-        >
-          {s.name}
-        </h3>
-
-        <p className="text-[#8A8A8A] mb-6 leading-relaxed text-sm">{s.desc}</p>
-
-        <ul className="space-y-2 mb-8">
-          {s.points.map((p, j) => (
-            <li key={j} className="flex items-center gap-2 text-sm text-[#D4C9B0]">
-              <span style={{ color: s.color, fontFamily: "DM Mono, monospace" }}>—</span> {p}
-            </li>
-          ))}
-        </ul>
-
-        <div className="flex items-center justify-between border-t border-[#1E1E1E] pt-5">
-          <span className="text-xs text-[#8A8A8A] tracking-wider">{s.time}</span>
-          <motion.a
-            href="#services"
-            whileHover={{ x: -4 }}
-            className="text-xs font-bold tracking-[0.15em] uppercase flex items-center gap-2 transition-colors"
-            style={{ color: s.color }}
-          >
-            بیشتر بدانید ←
-          </motion.a>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
+] as const;
 
 export function ServicesSection() {
-  const serviceCardRefs = useRef<Array<HTMLDivElement | null>>([]);
-
-  useEffect(() => {
-    const elements = serviceCardRefs.current.filter((el): el is HTMLDivElement => Boolean(el));
-
-    elements.forEach((el) => {
-      VanillaTilt.init(el, {
-        max: 6,
-        speed: 600,
-        glare: true,
-        "max-glare": 0.06,
-        perspective: 1200,
-      });
-    });
-
-    return () => {
-      elements.forEach((el) => {
-        const tiltedEl = el as HTMLDivElement & { vanillaTilt?: { destroy: () => void } };
-        tiltedEl.vanillaTilt?.destroy();
-      });
-    };
-  }, []);
-
   return (
-    <section className="py-28 bg-[#080808]" dir="rtl">
-      <div className="container mx-auto px-8">
-        <div className="text-center mb-20">
-          <motion.span
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="text-[10px] tracking-[0.4em] uppercase text-[#C9A84C] block mb-5"
-          >
-            چرا ما
-          </motion.span>
+    <section
+      className="border-b border-border-subtle bg-background-surface py-16 sm:py-24"
+      dir="rtl"
+      aria-labelledby="home-trust-title"
+    >
+      <div className="container-commerce">
+        <div className="mb-10 max-w-3xl sm:mb-14">
+          <p className="text-xs font-semibold tracking-[0.22em] text-accent-primary">
+            پیش از خرید بررسی کنید
+          </p>
           <h2
-            className="text-4xl lg:text-5xl font-black text-[#F0EDE8]"
-            style={{ fontFamily: "Playfair Display, Vazirmatn Variable, serif" }}
+            id="home-trust-title"
+            className="mt-4 text-3xl font-semibold leading-tight text-text-primary sm:text-4xl lg:text-5xl"
           >
-            تجربه‌ای فراتر از خرید
+            هر ادعا باید پشتوانه قابل‌بررسی داشته باشد
           </h2>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-text-secondary sm:text-base">
+            قیمت و موجودی از داده عملیاتی، مشخصات از منبع محصول و شرایط فروش از سیاست تأییدشده
+            می‌آید. نبود اطلاعات با یک وعده عمومی جایگزین نمی‌شود.
+          </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-          {SERVICES.map((s, i) => (
-            <ServiceCard
-              key={s.id}
-              s={s}
-              i={i}
-              cardElementRef={(el) => {
-                serviceCardRefs.current[i] = el;
-              }}
-            />
+
+        <div className="grid gap-3 lg:grid-cols-3">
+          {TRUST_LINKS.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              className="group rounded-lg border border-border-subtle bg-background-canvas p-6 transition-colors hover:border-border-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring sm:p-7"
+            >
+              <p className="text-xs font-semibold text-text-muted">{item.eyebrow}</p>
+              <h3 className="mt-4 text-xl font-semibold text-text-primary transition-colors group-hover:text-accent-primary">
+                {item.title}
+              </h3>
+              <p className="mt-3 text-sm leading-7 text-text-secondary">{item.description}</p>
+              <span className="mt-7 inline-flex min-h-11 items-center text-sm font-semibold text-accent-primary">
+                مشاهده جزئیات ←
+              </span>
+            </Link>
           ))}
         </div>
       </div>
