@@ -235,11 +235,15 @@
 
   --logical-translate-start: -100%;
   --logical-translate-end: 100%;
+  --safe-area-inline-start: env(safe-area-inset-left, 0px);
+  --safe-area-inline-end: env(safe-area-inset-right, 0px);
 }
 
 html[dir="rtl"] {
   --logical-translate-start: 100%;
   --logical-translate-end: -100%;
+  --safe-area-inline-start: env(safe-area-inset-right, 0px);
+  --safe-area-inline-end: env(safe-area-inset-left, 0px);
 }
 
 @layer base {
@@ -556,7 +560,7 @@ html[dir="rtl"] {
   }
 
   .safe-area-inline {
-    padding-inline: env(safe-area-inset-left, 0px) env(safe-area-inset-right, 0px);
+    padding-inline: var(--safe-area-inline-start) var(--safe-area-inline-end);
   }
 
   .bidi-isolate {
