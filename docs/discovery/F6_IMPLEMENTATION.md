@@ -33,7 +33,9 @@ The current discovery surface supports category, brand, audience, style, movemen
 
 ## Data boundary
 
-Route loaders call one TanStack Start server-function wrapper. Fixture product, brand and category data plus F6 filtering logic stay in `src/lib/discovery.server.ts`; route files do not import fixture product data directly.
+Discovery keeps fixture product, brand and category data plus filtering logic in `src/lib/discovery.server.ts`; route files never import fixture product data directly.
+
+`src/lib/discovery.functions.ts` uses a compile-time `import.meta.env.SSR` boundary. SSR loads the server discovery module directly, while browser navigation posts a validated serialized discovery request to the `/shop` route handler. The route handler rejects malformed JSON and malformed discovery requests before calling server discovery logic.
 
 The shared `src/data/fixtures/repositories.ts` file was restored to its accepted baseline content so F6 does not mutate the general F2 repository implementation to satisfy one route.
 
@@ -46,6 +48,10 @@ The current PDP still accepts numeric legacy IDs and is owned by F7. F6 therefor
 ## SEO behavior
 
 The clean catalog remains indexable. Search, filter and non-default sort variants use the accepted discovery SEO decision and are `noindex,follow`.
+
+## Quality contract
+
+`tests/quality/f6-discovery.test.ts` locks the public sort allowlist, optional URL-search defaults, deep-link serialization, accepted taxonomy, discovery SEO behavior, the legacy-catalog/PDP boundary and the compile-time server-data boundary.
 
 ## Performance policy
 
