@@ -16,9 +16,7 @@ export const Route = createFileRoute("/shop/$category")({
   validateSearch: validatePublicDiscoverySearch,
   loaderDeps: ({ search }) => completeDiscoveryState(search),
   loader: async ({ params, deps }) => {
-    const result = await getDiscoveryData({
-      data: { state: deps, categorySlug: params.category },
-    });
+    const result = await getDiscoveryData({ state: deps, categorySlug: params.category });
     if (!result.category) throw notFound();
 
     return {

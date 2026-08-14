@@ -84,11 +84,14 @@ describe("F6 discovery contract", () => {
     expect(discoveryCard).not.toContain("addToCart");
   });
 
-  test("keeps discovery data behind the installed TanStack Start server-function boundary", () => {
+  test("keeps server data out of the browser with an environment-specific route boundary", () => {
     expect(shopRoute).toContain("getDiscoveryData");
     expect(categoryRoute).toContain("getDiscoveryData");
-    expect(discoveryFunctions).toContain("createServerFn");
-    expect(discoveryFunctions).toContain("inputValidator");
+    expect(discoveryFunctions).toContain("createIsomorphicFn");
+    expect(discoveryFunctions).toContain(".server(");
+    expect(discoveryFunctions).toContain(".client(");
+    expect(shopRoute).toContain("POST:");
+    expect(shopRoute).toContain("decodeDiscoveryRequest");
     expect(shopRoute).not.toContain("FIXTURE_PRODUCTS");
     expect(categoryRoute).not.toContain("FIXTURE_CATEGORIES");
   });
