@@ -38,7 +38,7 @@ const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>((compone
       ref={ref}
       href={disabled ? undefined : href}
       aria-disabled={disabled || undefined}
-      tabIndex={disabled ? -1 : props.tabIndex}
+      tabIndex={disabled ? 0 : props.tabIndex}
       className={cn(buttonVariants({ variant, size, width, className }))}
       onClick={handleClick}
       {...props}
