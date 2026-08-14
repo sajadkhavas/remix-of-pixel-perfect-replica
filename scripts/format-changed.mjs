@@ -77,14 +77,13 @@ if (files.length === 0) {
   process.exit(0);
 }
 
-console.log(`Running diagnostic Prettier write for ${files.length} changed file(s).`);
+console.log(`Running Prettier ${requestedMode} for ${files.length} changed file(s).`);
+for (const file of files) console.log(`- ${file}`);
+
 const prettierResult = spawnSync(
   process.execPath,
-  ["node_modules/prettier/bin/prettier.cjs", "--write", "--ignore-unknown", ...files],
+  ["node_modules/prettier/bin/prettier.cjs", requestedMode, "--ignore-unknown", ...files],
   { stdio: "inherit" },
 );
 
-console.log("===== F5_HERO_CANONICAL_BEGIN =====");
-spawnSync("cat", ["src/components/sections/HeroSection.tsx"], { stdio: "inherit" });
-console.log("===== F5_HERO_CANONICAL_END =====");
 process.exit(prettierResult.status ?? 1);
