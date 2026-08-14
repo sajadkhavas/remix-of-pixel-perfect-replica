@@ -84,12 +84,13 @@ describe("F6 discovery contract", () => {
     expect(discoveryCard).not.toContain("addToCart");
   });
 
-  test("keeps server data out of the browser with an environment-specific route boundary", () => {
+  test("keeps server data out of the browser with a compile-time SSR boundary", () => {
     expect(shopRoute).toContain("getDiscoveryData");
     expect(categoryRoute).toContain("getDiscoveryData");
-    expect(discoveryFunctions).toContain("createIsomorphicFn");
-    expect(discoveryFunctions).toContain(".server(");
-    expect(discoveryFunctions).toContain(".client(");
+    expect(discoveryFunctions).toContain("import.meta.env.SSR");
+    expect(discoveryFunctions).toContain('fetch("/shop"');
+    expect(discoveryFunctions).not.toContain("createServerFn");
+    expect(discoveryFunctions).not.toContain("createIsomorphicFn");
     expect(shopRoute).toContain("POST:");
     expect(shopRoute).toContain("decodeDiscoveryRequest");
     expect(shopRoute).not.toContain("FIXTURE_PRODUCTS");
