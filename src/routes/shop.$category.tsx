@@ -4,28 +4,26 @@ import {
   DiscoveryCatalog,
   DiscoveryCatalogPending,
 } from "@/components/discovery/discovery-catalog";
-import { FIXTURE_CATEGORIES } from "@/data/fixtures/categories";
 import { getDiscoverySeoDecision } from "@/domain/search";
 import {
   completeDiscoveryState,
   DEFAULT_DISCOVERY_SORT,
-  loadDiscovery,
   validatePublicDiscoverySearch,
 } from "@/lib/discovery";
+import { getDiscoveryData } from "@/lib/discovery.functions";
 
 export const Route = createFileRoute("/shop/$category")({
   validateSearch: validatePublicDiscoverySearch,
   loaderDeps: ({ search }) => completeDiscoveryState(search),
   loader: async ({ params, deps }) => {
-    const category = FIXTURE_CATEGORIES.find(
-      (item) => item.depth === 1 && item.slug === params.category,
-    );
-    if (!category) throw notFound();
+    const result = await getDiscoveryData({
+      data: { state: deps, categorySlug: params.category },
+    });
+    if (!result.category) throw notFound();
 
-    const data = await loadDiscovery({ ...deps, category: category.slug });
     return {
-      ...data,
-      category,
+      ...result.data,
+      category: result.category,
       seo: getDiscoverySeoDecision(deps, DEFAULT_DISCOVERY_SORT),
     };
   },

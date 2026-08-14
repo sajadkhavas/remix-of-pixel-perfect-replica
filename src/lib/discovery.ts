@@ -1,22 +1,14 @@
 import type { ProductCardViewModel } from "@/components/commerce/product-card-model";
-import { productToCardViewModel } from "@/components/commerce/product-card-product-adapter";
 import type { SearchFacetResult } from "@/data/contracts";
-import {
-  FixtureBrandRepository,
-  FixtureCatalogRepository,
-  FixtureSearchRepository,
-} from "@/data/fixtures/repositories";
 import type { Category } from "@/domain/catalog";
-import type { Product } from "@/domain/product";
 import {
-  getDiscoverySeoDecision,
   parseDiscoverySearch,
   serializeDiscoverySearch,
   type DiscoverySearchState,
+  type DiscoverySeoDecision,
   type RawSearch,
   type SortValue,
 } from "@/domain/search";
-import type { Money } from "@/domain/shared";
 
 export const DEFAULT_DISCOVERY_SORT: SortValue = "newest";
 
@@ -60,6 +52,33 @@ const FILTER_LABELS: Readonly<Record<string, string>> = {
 
 export type ValidatedDiscoverySearch = Partial<DiscoverySearchState>;
 
+export interface DiscoveryFilterOptions {
+  readonly audience: readonly string[];
+  readonly style: readonly string[];
+  readonly movement: readonly string[];
+  readonly caseMaterial: readonly string[];
+  readonly dialColor: readonly string[];
+  readonly waterResistance: readonly string[];
+}
+
+export interface DiscoveryLoadResult {
+  readonly cards: readonly ProductCardViewModel[];
+  readonly facets: readonly SearchFacetResult[];
+  readonly categories: readonly Category[];
+  readonly options: DiscoveryFilterOptions;
+  readonly page: number;
+  readonly pageSize: number;
+  readonly totalItems: number;
+  readonly totalPages: number;
+  readonly seo: DiscoverySeoDecision;
+  readonly rankingSource: "fixture" | "text-score" | "search-service";
+}
+
+export interface DiscoveryServerResult {
+  readonly data: DiscoveryLoadResult;
+  readonly category: Category | null;
+}
+
 export function validatePublicDiscoverySearch(rawSearch: RawSearch): ValidatedDiscoverySearch {
   const state = parseDiscoverySearch(rawSearch, DEFAULT_DISCOVERY_SORT);
   const sort = DISCOVERY_SORT_OPTIONS.some((option) => option.value === state.sort)
@@ -93,112 +112,6 @@ export function completeDiscoveryState(search: ValidatedDiscoverySearch): Discov
 
 export function discoveryFilterLabel(value: string): string {
   return FILTER_LABELS[value] ?? value;
-}
-
-function formatMoney(money: Money): string | null {
-  if (!Number.isSafeInteger(money.amountMinor) || money.amountMinor < 0) return null;
-  const divisor = 10 ** money.fractionDigits;
-  const amount = money.amountMinor / divisor;
-  try {
-    return new Intl.NumberFormat("fa-IR", {
-      style: "currency",
-      currency: money.currency,
-      minimumFractionDigits: money.fractionDigits,
-      maximumFractionDigits: money.fractionDigits,
-    }).format(amount);
-  } catch {
-    return null;
-  }
-}
-
-function unique(values: readonly string[]): readonly string[] {
-  return [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b, "en"));
-}
-
-function specKeys(product: Product, key: string): readonly string[] {
-  const specification = product.specificationValues.find((item) => item.key === key);
-  if (!specification) return [];
-  if (specification.filterValueKeys?.length) return specification.filterValueKeys;
-  if (specification.value.type === "text") return [specification.value.value];
-  if (specification.value.type === "number") return [String(specification.value.value)];
-  if (specification.value.type === "list") return specification.value.values;
-  return [];
-}
-
-function optionKeys(product: Product, key: string): readonly string[] {
-  return product.variants.flatMap((variant) =>
-    variant.optionValues
-      .filter((option) => option.optionKey === key)
-      .map((option) => option.valueKey),
-  );
-}
-
-export interface DiscoveryFilterOptions {
-  readonly audience: readonly string[];
-  readonly style: readonly string[];
-  readonly movement: readonly string[];
-  readonly caseMaterial: readonly string[];
-  readonly dialColor: readonly string[];
-  readonly waterResistance: readonly string[];
-}
-
-export interface DiscoveryLoadResult {
-  readonly cards: readonly ProductCardViewModel[];
-  readonly facets: readonly SearchFacetResult[];
-  readonly categories: readonly Category[];
-  readonly options: DiscoveryFilterOptions;
-  readonly page: number;
-  readonly pageSize: number;
-  readonly totalItems: number;
-  readonly totalPages: number;
-  readonly seo: ReturnType<typeof getDiscoverySeoDecision>;
-  readonly rankingSource: "fixture" | "text-score" | "search-service";
-}
-
-export async function loadDiscovery(state: DiscoverySearchState): Promise<DiscoveryLoadResult> {
-  const searchRepository = new FixtureSearchRepository();
-  const catalogRepository = new FixtureCatalogRepository();
-  const brandRepository = new FixtureBrandRepository();
-
-  const [searchResult, categories, brands, allProducts] = await Promise.all([
-    searchRepository.search(state),
-    catalogRepository.listCategories(),
-    brandRepository.list(),
-    catalogRepository.listProducts({
-      includeUnavailable: false,
-      page: { page: 1, pageSize: 500 },
-    }),
-  ]);
-
-  const brandNames = new Map(
-    brands.map((brand) => [brand.id, brand.localizedName?.default ?? brand.name] as const),
-  );
-  const cards = searchResult.products.items.map((product) =>
-    productToCardViewModel(product, brandNames.get(product.brandId) ?? "—", formatMoney),
-  );
-  const activeProducts = allProducts.items;
-
-  return {
-    cards,
-    facets: searchResult.facets,
-    categories: categories.filter((category) => category.depth === 1),
-    options: {
-      audience: unique(activeProducts.flatMap((product) => product.audienceKeys)),
-      style: unique(activeProducts.flatMap((product) => product.styleKeys)),
-      movement: unique(activeProducts.map((product) => product.movementKey)),
-      caseMaterial: unique(activeProducts.flatMap((product) => specKeys(product, "case-material"))),
-      dialColor: unique(activeProducts.flatMap((product) => optionKeys(product, "dial-color"))),
-      waterResistance: unique(
-        activeProducts.flatMap((product) => specKeys(product, "water-resistance")),
-      ),
-    },
-    page: searchResult.products.page,
-    pageSize: searchResult.products.pageSize,
-    totalItems: searchResult.products.totalItems,
-    totalPages: searchResult.products.totalPages,
-    seo: getDiscoverySeoDecision(state, DEFAULT_DISCOVERY_SORT),
-    rankingSource: searchResult.rankingSource,
-  };
 }
 
 export function withoutDiscoveryCategory(state: DiscoverySearchState): DiscoverySearchState {

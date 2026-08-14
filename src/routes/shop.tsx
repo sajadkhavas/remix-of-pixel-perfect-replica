@@ -4,16 +4,13 @@ import {
   DiscoveryCatalog,
   DiscoveryCatalogPending,
 } from "@/components/discovery/discovery-catalog";
-import {
-  completeDiscoveryState,
-  loadDiscovery,
-  validatePublicDiscoverySearch,
-} from "@/lib/discovery";
+import { getDiscoveryData } from "@/lib/discovery.functions";
+import { completeDiscoveryState, validatePublicDiscoverySearch } from "@/lib/discovery";
 
 export const Route = createFileRoute("/shop")({
   validateSearch: validatePublicDiscoverySearch,
   loaderDeps: ({ search }) => completeDiscoveryState(search),
-  loader: ({ deps }) => loadDiscovery(deps),
+  loader: async ({ deps }) => (await getDiscoveryData({ data: { state: deps } })).data,
   head: ({ loaderData }) => ({
     meta: [
       { title: "فروشگاه ساعت — KRONOS" },
