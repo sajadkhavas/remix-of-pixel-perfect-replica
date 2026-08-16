@@ -64,20 +64,20 @@ The browser matrix did not run because the shared release dependency failed at t
 
 The declared integration baseline already fails the same F14B application-wide hard limits. Baseline run `31812949539` measured:
 
-| Metric | Baseline | Hard limit |
-| --- | ---: | ---: |
-| Client JS total | 898,198 B | 850,000 B |
-| Server JS total | 226,595 B | 190,000 B |
-| JS chunk count | 35 | 31 |
+| Metric          |  Baseline | Hard limit |
+| --------------- | --------: | ---------: |
+| Client JS total | 898,198 B |  850,000 B |
+| Server JS total | 226,595 B |  190,000 B |
+| JS chunk count  |        35 |         31 |
 
 The final F6 phase head measured:
 
-| Metric | F6 head | Delta vs baseline |
-| --- | ---: | ---: |
-| Client JS total | 921,052 B | +22,854 B |
-| Server JS total | 288,055 B | +61,460 B |
-| JS chunk count | 36 | +1 |
-| CSS total | 119,649 B | +967 B |
+| Metric          |   F6 head | Delta vs baseline |
+| --------------- | --------: | ----------------: |
+| Client JS total | 921,052 B |         +22,854 B |
+| Server JS total | 288,055 B |         +61,460 B |
+| JS chunk count  |        36 |                +1 |
+| CSS total       | 119,649 B |            +967 B |
 
 The accepted Gate 2 CSS hard limit remains 122,500 B, so F6 does not violate that CSS limit.
 
