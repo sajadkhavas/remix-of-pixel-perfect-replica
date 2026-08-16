@@ -1,68 +1,77 @@
-import { createFileRoute, notFound, Link } from "@tanstack/react-router";
-import { ProductCard } from "@/components/ui/ProductCard";
-import { CATEGORIES, getByCategory } from "@/lib/catalog";
-import { PageHero } from "@/components/layout/PageHero";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+
+import {
+  DiscoveryCatalog,
+  DiscoveryCatalogPending,
+} from "@/components/discovery/discovery-catalog";
+import { getDiscoverySeoDecision } from "@/domain/search";
+import {
+  completeDiscoveryState,
+  DEFAULT_DISCOVERY_SORT,
+  validatePublicDiscoverySearch,
+} from "@/lib/discovery";
+import { getDiscoveryData } from "@/lib/discovery.functions";
 
 export const Route = createFileRoute("/shop/$category")({
-  loader: ({ params }) => {
-    const cat = CATEGORIES.find((c) => c.slug === params.category);
-    if (!cat) throw notFound();
-    return { cat };
+  validateSearch: validatePublicDiscoverySearch,
+  loaderDeps: ({ search }) => completeDiscoveryState(search),
+  loader: async ({ params, deps }) => {
+    const result = await getDiscoveryData({ state: deps, categorySlug: params.category });
+    if (!result.category) throw notFound();
+
+    return {
+      ...result.data,
+      category: result.category,
+      seo: getDiscoverySeoDecision(deps, DEFAULT_DISCOVERY_SORT),
+    };
   },
   head: ({ loaderData }) => ({
     meta: loaderData
       ? [
-          { title: `${loaderData.cat.name} — KRONOS` },
-          { name: "description", content: loaderData.cat.desc },
+          { title: `${loaderData.category.title.default} — KRONOS` },
+          {
+            name: "description",
+            content: `مرور محصولات دسته ${loaderData.category.title.default} با فیلترهای کاتالوگ.`,
+          },
+          { name: "robots", content: loaderData.seo.robots },
         ]
-      : [{ title: "دسته — KRONOS" }],
+      : [{ title: "دسته‌بندی — KRONOS" }, { name: "robots", content: "noindex,follow" }],
   }),
-  notFoundComponent: () => (
-    <div className="container mx-auto py-32 text-center" dir="rtl">
-      <h2 className="text-2xl text-[#F0EDE8] mb-4">دسته‌بندی پیدا نشد</h2>
-      <Link to="/shop" className="text-[#C9A84C] border-b border-[#C9A84C44]">
-        بازگشت به فروشگاه
-      </Link>
-    </div>
-  ),
+  pendingComponent: DiscoveryCatalogPending,
+  notFoundComponent: CategoryNotFound,
   component: CategoryPage,
 });
 
-function CategoryPage() {
-  const { cat } = Route.useLoaderData();
-  const items = getByCategory(cat.slug);
+function CategoryNotFound() {
   return (
-    <>
-      <PageHero eyebrow="دسته‌بندی" title={cat.name} sub={cat.desc}>
-        <div className="flex gap-2 flex-wrap mt-4">
-          {cat.brands.map((b: string) => (
-            <span
-              key={b}
-              className="text-[10px] sm:text-xs px-3 py-1 border tracking-wider"
-              style={{
-                borderColor: `${cat.color}44`,
-                color: cat.color,
-                background: `${cat.color}10`,
-              }}
-            >
-              {b}
-            </span>
-          ))}
-        </div>
-      </PageHero>
-      <section className="py-10 px-5 sm:px-8" dir="rtl">
-        <div className="container mx-auto">
-          {items.length === 0 ? (
-            <p className="text-center text-[#8A8A8A] py-20">محصولی در این دسته نیست.</p>
-          ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-              {items.map((w) => (
-                <ProductCard key={w.id} watch={w} />
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-    </>
+    <section className="section-commerce bg-background-canvas" dir="rtl">
+      <div className="container-content text-center">
+        <h1 className="text-2xl font-semibold text-text-primary">دسته‌بندی پیدا نشد</h1>
+        <p className="mt-3 text-sm text-text-secondary">
+          این آدرس با taxonomy فعلی کاتالوگ مطابقت ندارد.
+        </p>
+        <Link
+          to="/shop"
+          className="mt-6 inline-flex min-h-11 items-center rounded-md bg-accent-primary px-5 text-sm font-semibold text-background-canvas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+        >
+          بازگشت به فروشگاه
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+function CategoryPage() {
+  const search = completeDiscoveryState(Route.useSearch());
+  const data = Route.useLoaderData();
+  const state = { ...search, category: data.category.slug };
+
+  return (
+    <DiscoveryCatalog
+      pathname={`/shop/${data.category.slug}`}
+      state={state}
+      data={data}
+      lockedCategorySlug={data.category.slug}
+    />
   );
 }
