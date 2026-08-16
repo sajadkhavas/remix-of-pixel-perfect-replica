@@ -88,3 +88,7 @@ No performance budget, scanner, workflow or threshold was weakened to accept F6.
 F6 phase acceptance is not production-release acceptance.
 
 F6 is closed and integrated, but production release remains `BLOCKED_BY_F14B_PERFORMANCE` until the shared performance hard limits are met and the dependent browser release gate executes successfully.
+
+## Closure record
+
+Supervisor registry status: `F6_CLOSED`.
