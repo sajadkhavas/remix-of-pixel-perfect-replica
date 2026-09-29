@@ -1,4 +1,4 @@
-# F0 Initial Production Foundation Audit
+﻿# F0 Initial Production Foundation Audit
 
 ## Audit scope
 
@@ -128,11 +128,11 @@ The `CategoriesSection.tsx` correction was the only edit outside the ordinary F0
 
 ## Vite, React, and TanStack compatibility observations
 
-- React 19.2, Vite 8, TanStack Start, TanStack Router, and the Lovable TanStack Vite wrapper complete both client and SSR builds after the source blockers are fixed.
+- React 19.2, Vite 8, TanStack Start, TanStack Router, and the previous-builder TanStack Vite wrapper complete both client and SSR builds after the source blockers are fixed.
 - TanStack package patch versions are not aligned: Router is on the 1.168 line while Start and the router plugin are on the 1.167 line. This is not currently a build blocker, but aligned upgrades should be evaluated together rather than independently.
-- Vite 8 reports that `vite-tsconfig-paths` can be replaced with native `resolve.tsconfigPaths`. This was not changed in F0 because the current wrapper configuration builds successfully and a migration should be verified against generated routing and Lovable configuration behavior.
+- Vite 8 reports that `vite-tsconfig-paths` can be replaced with native `resolve.tsconfigPaths`. This was not changed in F0 because the current wrapper configuration builds successfully and a migration should be verified against generated routing and previous-builder configuration behavior.
 - The build reports a client entry chunk above 500 kB after minification. This is a performance warning, not a build failure, and should be addressed by feature-level code splitting after page ownership stabilizes.
-- Outside Lovable's hosted context, its Nitro deploy plugin is intentionally skipped. The standard Vite client and SSR bundles still build successfully.
+- Outside previous-builder's hosted context, its Nitro deploy plugin is intentionally skipped. The standard Vite client and SSR bundles still build successfully.
 
 ## CI and diagnostics observations
 
@@ -152,3 +152,4 @@ The `CategoriesSection.tsx` correction was the only edit outside the ordinary F0
 ## Final foundation status
 
 The production foundation now has deterministic installation, meaningful linting, changed-file formatting enforcement, TypeScript validation, a real smoke test, production client/SSR builds, and a pull-request/push CI quality gate. Visual identity and commercial routes were not redesigned.
+

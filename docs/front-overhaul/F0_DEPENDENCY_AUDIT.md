@@ -1,4 +1,4 @@
-# F0 Dependency Audit
+﻿# F0 Dependency Audit
 
 ## Scope and method
 
@@ -72,7 +72,7 @@ These support the generated/shared UI layer. F0 does not remove individual primi
 - `@vitejs/plugin-react`
 - `vite`
 - `nitro`
-- `@lovable.dev/vite-tanstack-config`
+- `removed-builder-vite-config`
 
 ### Dev dependency no longer required by the active ESLint configuration
 
@@ -131,7 +131,7 @@ The frozen dependency graph resolves React and React DOM on the same 19.2 patch 
 
 Vite 8 emits a migration recommendation for `vite-tsconfig-paths`. A safe cleanup path is:
 
-1. Confirm the Lovable Vite wrapper forwards `resolve.tsconfigPaths` correctly.
+1. Confirm the previous-builder Vite wrapper forwards `resolve.tsconfigPaths` correctly.
 2. Enable the native option.
 3. Remove the plugin from runtime dependencies.
 4. Repeat route generation, TypeScript, client build, and SSR build.
@@ -176,3 +176,4 @@ The Smoke test uses Bun's built-in test runner, avoiding a new test framework de
 5. Confirm visible requirements for tsParticles and Recharts before production launch.
 6. Evaluate Vite native tsconfig path resolution and remove `vite-tsconfig-paths` only after wrapper compatibility is proven.
 7. Add bundle analysis and route-level code splitting in the performance phase instead of suppressing the 500 kB warning.
+
