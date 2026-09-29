@@ -1,4 +1,4 @@
-﻿import Lenis from "@studio-freight/lenis";
+import Lenis from "@studio-freight/lenis";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   HeadContent,
@@ -7,6 +7,7 @@ import {
   Scripts,
   createRootRouteWithContext,
   useRouter,
+  type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
@@ -55,7 +56,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
   const router = useRouter();
 
   useEffect(() => {
@@ -226,4 +227,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-

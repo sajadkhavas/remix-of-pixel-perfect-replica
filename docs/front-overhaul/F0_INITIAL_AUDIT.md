@@ -1,4 +1,4 @@
-﻿# F0 Initial Production Foundation Audit
+# F0 Initial Production Foundation Audit
 
 ## Audit scope
 
@@ -152,4 +152,3 @@ The `CategoriesSection.tsx` correction was the only edit outside the ordinary F0
 ## Final foundation status
 
 The production foundation now has deterministic installation, meaningful linting, changed-file formatting enforcement, TypeScript validation, a real smoke test, production client/SSR builds, and a pull-request/push CI quality gate. Visual identity and commercial routes were not redesigned.
-

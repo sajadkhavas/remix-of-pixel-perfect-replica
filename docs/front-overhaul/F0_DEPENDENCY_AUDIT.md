@@ -1,4 +1,4 @@
-﻿# F0 Dependency Audit
+# F0 Dependency Audit
 
 ## Scope and method
 
@@ -176,4 +176,3 @@ The Smoke test uses Bun's built-in test runner, avoiding a new test framework de
 5. Confirm visible requirements for tsParticles and Recharts before production launch.
 6. Evaluate Vite native tsconfig path resolution and remove `vite-tsconfig-paths` only after wrapper compatibility is proven.
 7. Add bundle analysis and route-level code splitting in the performance phase instead of suppressing the 500 kB warning.
-
