@@ -1,8 +1,11 @@
 import { describe, expect, test } from "bun:test";
 
-import { legacyWatchToCardViewModel } from "../../src/components/commerce/product-card-model";
 import { productToCardViewModel } from "../../src/components/commerce/product-card-product-adapter";
-import type { Product, ProductInventory, ProductVariant } from "../../src/domain/product";
+import type {
+  Product,
+  ProductInventory,
+  ProductVariant,
+} from "../../src/domain/product";
 import type { Money } from "../../src/domain/shared";
 
 const NOW = "2026-08-07T00:00:00.000Z";
@@ -27,9 +30,18 @@ function createProduct(
     currency: "IRR",
     fractionDigits: 0,
   } as const;
+
   const effectivePrice = options.invalidPricing
-    ? { amountMinor: 12_000_000, currency: "IRR", fractionDigits: 0 }
-    : { amountMinor: 8_000_000, currency: "IRR", fractionDigits: 0 };
+    ? {
+        amountMinor: 12_000_000,
+        currency: "IRR",
+        fractionDigits: 0,
+      }
+    : {
+        amountMinor: 8_000_000,
+        currency: "IRR",
+        fractionDigits: 0,
+      };
 
   return {
     schemaVersion: 1,
@@ -55,7 +67,10 @@ function createProduct(
           id: "media-42",
           url: "/watch.jpg",
           alt: "نمونه ساعت",
-          dimensions: { width: 800, height: 800 },
+          dimensions: {
+            width: 800,
+            height: 800,
+          },
           sortOrder: 0,
           role: "primary",
         },
@@ -72,7 +87,10 @@ function createProduct(
       {
         key: "case-material",
         label: { default: "جنس قاب" },
-        value: { type: "text", value: "استیل" },
+        value: {
+          type: "text",
+          value: "stainless-steel",
+        },
         group: "case",
         sortOrder: 1,
       },
@@ -80,20 +98,31 @@ function createProduct(
     variants: [
       {
         id: "variant-42",
-        productId: options.variantProductId ?? "product-42",
+        productId:
+          options.variantProductId ?? "product-42",
         sku: "SKU-42",
         optionValues: [],
         pricing: {
           listPrice,
-          salePrice: { amountMinor: 8_000_000, currency: "IRR", fractionDigits: 0 },
+          salePrice: {
+            amountMinor: 8_000_000,
+            currency: "IRR",
+            fractionDigits: 0,
+          },
           effectivePrice,
           taxIncluded: true,
         },
         inventory: {
-          tracking: options.inventoryTracking ?? "tracked",
-          status: options.inventoryStatus ?? "in-stock",
-          availableQuantity: options.inventoryStatus === "out-of-stock" ? 0 : 4,
-          backorderable: options.backorderable ?? false,
+          tracking:
+            options.inventoryTracking ?? "tracked",
+          status:
+            options.inventoryStatus ?? "in-stock",
+          availableQuantity:
+            options.inventoryStatus === "out-of-stock"
+              ? 0
+              : 4,
+          backorderable:
+            options.backorderable ?? false,
           minOrderQuantity: 1,
           maxOrderQuantity: 4,
           orderIncrement: 1,
@@ -113,9 +142,15 @@ function createProduct(
       worstRating: 1,
     },
     shipping: { shippable: true },
-    returns: { returnable: false, policyPagePath: "/shipping-returns" },
+    returns: {
+      returnable: false,
+      policyPagePath: "/shipping-returns",
+    },
     warranty: { type: "none" },
-    seo: { title: "نمونه ساعت", description: "شرح محصول" },
+    seo: {
+      title: "نمونه ساعت",
+      description: "شرح محصول",
+    },
     trustEvidenceRefs: [],
     createdAt: NOW,
     updatedAt: NOW,
@@ -123,52 +158,65 @@ function createProduct(
 }
 
 describe("F8 product card model", () => {
-  const watch = {
-    id: 42,
-    name: "نمونه ساعت",
-    brand: "KRONOS",
-    price: 10_000_000,
-    sale_price: 8_000_000,
-    image: "/watch.jpg",
-    category: "classic" as const,
-    caseMaterial: "استیل",
-    waterResistance: "50m",
-    stock: 1,
-    rating: 5,
-    review_count: 99,
-    isNew: true,
-  };
+  test("adapts normalized Product data and keeps ratings opt-in", () => {
+    const product = createProduct();
 
-  test("does not expose legacy ratings unless explicitly enabled", () => {
-    expect(legacyWatchToCardViewModel(watch).rating).toBeUndefined();
-    expect(legacyWatchToCardViewModel(watch, { includeRatings: true }).rating).toEqual({
+    const hiddenRating = productToCardViewModel(
+      product,
+      "KRONOS",
+      formatMoney,
+    );
+
+    const visibleRating = productToCardViewModel(
+      product,
+      "KRONOS",
+      formatMoney,
+      {
+        includeRatings: true,
+      },
+    );
+
+    expect(hiddenRating.id).toBe("product-42");
+    expect(hiddenRating.routeId).toBe("sample-watch");
+    expect(hiddenRating.name).toBe("نمونه ساعت");
+    expect(hiddenRating.brand).toBe("KRONOS");
+
+    expect(hiddenRating.image).toEqual({
+      src: "/watch.jpg",
+      alt: "نمونه ساعت",
+      width: 800,
+      height: 800,
+    });
+
+    expect(hiddenRating.availability).toEqual({
+      status: "in-stock",
+      label: "موجود",
+      purchasable: true,
+    });
+
+    expect(hiddenRating.price?.discountPercent).toBe(20);
+    expect(hiddenRating.badges).toContain("sale");
+    expect(hiddenRating.specs).toContain(
+      "استیل ضدزنگ",
+    );
+
+    expect(hiddenRating.rating).toBeUndefined();
+
+    expect(visibleRating.rating).toEqual({
       value: 5,
       count: 99,
     });
-  });
 
-  test("normalizes legacy stock and price without exposing exact low-stock counts", () => {
-    const model = legacyWatchToCardViewModel(watch);
-    expect(model.availability).toEqual({
-      status: "low-stock",
-      label: "موجودی محدود",
-      purchasable: true,
+    expect(hiddenRating.commerce).toMatchObject({
+      productId: "product-42",
+      variantId: "variant-42",
+      productSlug: "sample-watch",
+      sku: "SKU-42",
+      minQuantity: 1,
+      maxQuantity: 4,
+      increment: 1,
+      availableQuantity: 4,
     });
-    expect(model.price?.discountPercent).toBe(20);
-    expect(model.badges).toContain("sale");
-  });
-
-  test("adapts normalized Product data and keeps ratings opt-in", () => {
-    const product = createProduct();
-    const hiddenRating = productToCardViewModel(product, "KRONOS", formatMoney);
-    const visibleRating = productToCardViewModel(product, "KRONOS", formatMoney, {
-      includeRatings: true,
-    });
-
-    expect(hiddenRating.availability.purchasable).toBe(true);
-    expect(hiddenRating.price?.discountPercent).toBe(20);
-    expect(hiddenRating.rating).toBeUndefined();
-    expect(visibleRating.rating).toEqual({ value: 5, count: 99 });
   });
 
   test("fails closed for inactive products and invalid pricing", () => {
@@ -177,6 +225,7 @@ describe("F8 product card model", () => {
       "KRONOS",
       formatMoney,
     );
+
     expect(inactive.availability).toEqual({
       status: "unknown",
       label: "ناموجود",
@@ -188,16 +237,22 @@ describe("F8 product card model", () => {
       "KRONOS",
       formatMoney,
     );
+
     expect(invalidPricing.price).toBeUndefined();
-    expect(invalidPricing.availability.purchasable).toBe(false);
+    expect(
+      invalidPricing.availability.purchasable,
+    ).toBe(false);
   });
 
   test("fails closed for inactive or mismatched default variants", () => {
     const inactiveVariant = productToCardViewModel(
-      createProduct({ variantStatus: "unavailable" }),
+      createProduct({
+        variantStatus: "unavailable",
+      }),
       "KRONOS",
       formatMoney,
     );
+
     expect(inactiveVariant.availability).toEqual({
       status: "unknown",
       label: "ناموجود",
@@ -205,20 +260,30 @@ describe("F8 product card model", () => {
     });
 
     const mismatchedVariant = productToCardViewModel(
-      createProduct({ variantProductId: "another-product" }),
+      createProduct({
+        variantProductId: "another-product",
+      }),
       "KRONOS",
       formatMoney,
     );
+
     expect(mismatchedVariant.price).toBeUndefined();
-    expect(mismatchedVariant.availability.purchasable).toBe(false);
+    expect(
+      mismatchedVariant.availability.purchasable,
+    ).toBe(false);
+    expect(mismatchedVariant.commerce).toBeUndefined();
   });
 
   test("allows explicit backorders but rejects contradictory backorder state", () => {
     const allowed = productToCardViewModel(
-      createProduct({ inventoryStatus: "out-of-stock", backorderable: true }),
+      createProduct({
+        inventoryStatus: "out-of-stock",
+        backorderable: true,
+      }),
       "KRONOS",
       formatMoney,
     );
+
     expect(allowed.availability).toEqual({
       status: "out-of-stock",
       label: "قابل سفارش",
@@ -226,10 +291,14 @@ describe("F8 product card model", () => {
     });
 
     const rejected = productToCardViewModel(
-      createProduct({ inventoryStatus: "backorder", backorderable: false }),
+      createProduct({
+        inventoryStatus: "backorder",
+        backorderable: false,
+      }),
       "KRONOS",
       formatMoney,
     );
+
     expect(rejected.availability).toEqual({
       status: "backorder",
       label: "ناموجود",
@@ -239,10 +308,14 @@ describe("F8 product card model", () => {
 
   test("rejects contradictory tracking and inventory status", () => {
     const contradictory = productToCardViewModel(
-      createProduct({ inventoryTracking: "not-tracked", inventoryStatus: "in-stock" }),
+      createProduct({
+        inventoryTracking: "not-tracked",
+        inventoryStatus: "in-stock",
+      }),
       "KRONOS",
       formatMoney,
     );
+
     expect(contradictory.availability).toEqual({
       status: "unknown",
       label: "ناموجود",

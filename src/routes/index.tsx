@@ -1,29 +1,49 @@
 import { lazy, Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+
 import { HeroSection } from "@/components/sections/HeroSection";
 import { BrandsMarquee } from "@/components/sections/BrandsMarquee";
 import { CategoriesSection } from "@/components/sections/CategoriesSection";
 import { FeaturedProducts } from "@/components/sections/FeaturedProducts";
-import { CATALOG } from "@/lib/catalog";
 
 const ServicesSection = lazy(() =>
-  import("@/components/sections/ServicesSection").then((m) => ({ default: m.ServicesSection })),
+  import("@/components/sections/ServicesSection").then((module) => ({
+    default: module.ServicesSection,
+  })),
 );
+
 const EditorialSection = lazy(() =>
-  import("@/components/sections/EditorialSection").then((m) => ({ default: m.EditorialSection })),
+  import("@/components/sections/EditorialSection").then((module) => ({
+    default: module.EditorialSection,
+  })),
+);
+
+const TestimonialsSection = lazy(() =>
+  import("@/components/sections/TestimonialsSection").then((module) => ({
+    default: module.TestimonialsSection,
+  })),
+);
+
+const NewsletterSection = lazy(() =>
+  import("@/components/sections/NewsletterSection").then((module) => ({
+    default: module.NewsletterSection,
+  })),
 );
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "کرونوس — فروشگاه ساعت لوکس | KRONOS" },
+      { title: "کرونوس — فروشگاه ساعت | KRONOS" },
       {
         name: "description",
         content:
-          "مرجع تخصصی ساعت‌های لوکس، اسپرت و هوشمند: Rolex، Omega، Patek Philippe، G-Shock، Apple Watch با ضمانت اصالت.",
+          "کالکشن ساعت‌های لوکس، اسپرت، کلاسیک و هوشمند KRONOS را مرور و مقایسه کنید.",
       },
-      { property: "og:title", content: "کرونوس — فروشگاه ساعت لوکس" },
-      { property: "og:description", content: "ساعت‌های اورجینال با ضمانت اصالت و ارسال امن." },
+      { property: "og:title", content: "کرونوس — فروشگاه ساعت" },
+      {
+        property: "og:description",
+        content: "کالکشن‌های منتخب ساعت در KRONOS.",
+      },
     ],
   }),
   component: HomePage,
@@ -35,10 +55,13 @@ function HomePage() {
       <HeroSection />
       <BrandsMarquee />
       <CategoriesSection />
-      <FeaturedProducts watches={CATALOG.slice(0, 8)} />
-      <Suspense fallback={<div className="h-96" />}>
+      <FeaturedProducts />
+
+      <Suspense fallback={<div className="h-96 bg-[#08090B]" aria-hidden="true" />}>
         <ServicesSection />
         <EditorialSection />
+        <TestimonialsSection />
+        <NewsletterSection />
       </Suspense>
     </>
   );

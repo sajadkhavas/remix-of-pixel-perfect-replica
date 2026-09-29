@@ -8,7 +8,7 @@ const BADGE_LABELS: Readonly<Record<ProductBadge, string>> = {
   preorder: "پیش‌خرید",
 };
 
-export function ProductBadges({ badges }: { badges: readonly ProductBadge[] }) {
+export function ProductBadges({ badges }: { readonly badges: readonly ProductBadge[] }) {
   if (badges.length === 0) return null;
 
   return (
@@ -16,7 +16,7 @@ export function ProductBadges({ badges }: { badges: readonly ProductBadge[] }) {
       {badges.map((badge) => (
         <span
           key={badge}
-          className="rounded-sm border border-border-default bg-background-elevated px-2 py-1 text-[10px] font-semibold text-text-secondary"
+          className="rounded-full border border-[#C9A84C]/20 bg-[#090A0C]/80 px-2 py-1 text-[9px] font-semibold text-[#D8C17E] backdrop-blur-md"
         >
           {BADGE_LABELS[badge]}
         </span>

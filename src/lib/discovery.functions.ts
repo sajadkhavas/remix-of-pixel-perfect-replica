@@ -1,4 +1,9 @@
-import { serializeDiscoverySearch, type DiscoverySearchState } from "@/domain/search";
+import { createServerFn } from "@tanstack/react-start";
+
+import {
+  serializeDiscoverySearch,
+  type DiscoverySearchState,
+} from "@/domain/search";
 import {
   completeDiscoveryState,
   DEFAULT_DISCOVERY_SORT,
@@ -16,53 +21,95 @@ export interface DiscoveryWireRequest {
   readonly categorySlug?: string;
 }
 
-export function encodeDiscoveryRequest(input: DiscoveryRequest): DiscoveryWireRequest {
+export function encodeDiscoveryRequest(
+  input: DiscoveryRequest,
+): DiscoveryWireRequest {
   return {
-    search: serializeDiscoverySearch(input.state, DEFAULT_DISCOVERY_SORT),
+    search: serializeDiscoverySearch(
+      input.state,
+      DEFAULT_DISCOVERY_SORT,
+    ),
     categorySlug: input.categorySlug,
   };
 }
 
-function parseWireSearch(search: string): Record<string, string | string[]> {
+function parseWireSearch(
+  search: string,
+): Record<string, string | string[]> {
   const raw: Record<string, string | string[]> = {};
+
   for (const [key, value] of new URLSearchParams(search)) {
     const current = raw[key];
-    if (current === undefined) raw[key] = value;
-    else if (Array.isArray(current)) current.push(value);
-    else raw[key] = [current, value];
+
+    if (current === undefined) {
+      raw[key] = value;
+    } else if (Array.isArray(current)) {
+      current.push(value);
+    } else {
+      raw[key] = [current, value];
+    }
   }
+
   return raw;
 }
 
-export function decodeDiscoveryRequest(input: unknown): DiscoveryRequest | null {
+export function decodeDiscoveryRequest(
+  input: unknown,
+): DiscoveryRequest | null {
   if (!input || typeof input !== "object") return null;
+
   const record = input as Record<string, unknown>;
-  if (typeof record.search !== "string" || record.search.length > 4096) return null;
+
   if (
-    record.categorySlug !== undefined &&
-    (typeof record.categorySlug !== "string" || !/^[a-z0-9-]{1,80}$/.test(record.categorySlug))
+    typeof record.search !== "string" ||
+    record.search.length > 4096
   ) {
     return null;
   }
 
-  const search = validatePublicDiscoverySearch(parseWireSearch(record.search));
+  if (
+    record.categorySlug !== undefined &&
+    (typeof record.categorySlug !== "string" ||
+      !/^[a-z0-9-]{1,80}$/.test(record.categorySlug))
+  ) {
+    return null;
+  }
+
+  const search = validatePublicDiscoverySearch(
+    parseWireSearch(record.search),
+  );
+
   return {
     state: completeDiscoveryState(search),
-    categorySlug: typeof record.categorySlug === "string" ? record.categorySlug : undefined,
+    categorySlug:
+      typeof record.categorySlug === "string"
+        ? record.categorySlug
+        : undefined,
   };
 }
 
-export async function getDiscoveryData(input: DiscoveryRequest): Promise<DiscoveryServerResult> {
-  if (import.meta.env.SSR) {
-    const { loadDiscoveryServer } = await import("@/lib/discovery.server");
-    return loadDiscoveryServer(input);
-  }
+const loadDiscovery = createServerFn({ method: "POST" })
+  .inputValidator((wire: DiscoveryWireRequest) => {
+    const decoded = decodeDiscoveryRequest(wire);
 
-  const response = await fetch("/shop", {
-    method: "POST",
-    headers: { "content-type": "application/json", accept: "application/json" },
-    body: JSON.stringify(encodeDiscoveryRequest(input)),
+    if (!decoded) {
+      throw new Error("درخواست فروشگاه معتبر نیست.");
+    }
+
+    return decoded;
+  })
+  .handler(async ({ data }) => {
+    const { loadDiscoveryServer } = await import(
+      "@/lib/discovery.server"
+    );
+
+    return loadDiscoveryServer(data);
   });
-  if (!response.ok) throw new Error(`Discovery request failed with ${response.status}`);
-  return (await response.json()) as DiscoveryServerResult;
+
+export async function getDiscoveryData(
+  input: DiscoveryRequest,
+): Promise<DiscoveryServerResult> {
+  return loadDiscovery({
+    data: encodeDiscoveryRequest(input),
+  });
 }

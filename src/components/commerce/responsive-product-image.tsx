@@ -1,20 +1,16 @@
-import { useState } from "react";
-
 import type { ProductCardImageModel } from "./product-card-model";
 
 export function ResponsiveProductImage({
   image,
   eager = false,
 }: {
-  image: ProductCardImageModel | undefined;
-  eager?: boolean;
+  readonly image: ProductCardImageModel | undefined;
+  readonly eager?: boolean;
 }) {
-  const [loaded, setLoaded] = useState(false);
-
   if (!image) {
     return (
       <div
-        className="flex size-full items-center justify-center bg-background-elevated px-6 text-center text-xs text-text-muted"
+        className="flex size-full items-center justify-center bg-[#0B0D0F] px-4 text-center text-xs text-[#77716A]"
         role="img"
         aria-label="تصویر محصول در دسترس نیست"
       >
@@ -24,8 +20,12 @@ export function ResponsiveProductImage({
   }
 
   return (
-    <div className="relative size-full overflow-hidden bg-background-elevated">
-      {!loaded ? <div className="absolute inset-0 skeleton-shimmer" aria-hidden="true" /> : null}
+    <div className="relative size-full overflow-hidden bg-[#0B0D0F]">
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(201,168,76,0.07),transparent_60%)]"
+        aria-hidden="true"
+      />
+
       <img
         src={image.src}
         alt={image.alt}
@@ -33,10 +33,9 @@ export function ResponsiveProductImage({
         height={image.height}
         loading={eager ? "eager" : "lazy"}
         decoding="async"
-        onLoad={() => setLoaded(true)}
-        className={`size-full object-contain p-6 transition-opacity duration-300 motion-reduce:transition-none sm:p-8 ${
-          loaded ? "opacity-100" : "opacity-0"
-        }`}
+        fetchPriority={eager ? "high" : "auto"}
+        sizes="(max-width: 639px) 50vw, (max-width: 1023px) 33vw, 25vw"
+        className="relative z-10 size-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.025] motion-reduce:transition-none"
       />
     </div>
   );

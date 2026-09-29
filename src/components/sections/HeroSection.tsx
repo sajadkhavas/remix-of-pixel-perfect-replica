@@ -1,323 +1,412 @@
-import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Link } from "@tanstack/react-router";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, EffectFade, Pagination } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/effect-fade";
-import "swiper/css/pagination";
-import Typewriter from "typewriter-effect";
-import watchLuxury from "@/assets/watch-luxury.png";
-import watchSport from "@/assets/watch-sport.png";
-import watchSmart from "@/assets/watch-smart.png";
-import { gsap } from "@/lib/gsap";
+import {
+  ArrowLeft,
+  CircleDot,
+  Crown,
+  Gem,
+  Play,
+  ShieldCheck,
+} from "lucide-react";
+import { motion } from "framer-motion";
 
-const SLIDES = [
-  {
-    id: 1,
-    eyebrow: "کلکسیون جدید ۱۴۰۴",
-    title: "زمان را\nبه یاد بسپار",
-    subtitle: "Rolex · Omega · Patek Philippe",
-    badge: "کلکسیون اکسکلوسیو رسید",
-    image: watchLuxury,
-    bg: "from-[#080808] via-[#0f0a00] to-[#080808]",
-    accent: "#C9A84C",
-    cta: "کشف کلکسیون",
-    ctaSecondary: "درباره برندها",
-  },
-  {
-    id: 2,
-    eyebrow: "ساعت اسپرت حرفه‌ای",
-    title: "ساخته شده\nبرای ماجرا",
-    subtitle: "Casio G-Shock · Seiko · Citizen",
-    badge: "مقاوم در برابر آب تا ۲۰۰ متر",
-    image: watchSport,
-    bg: "from-[#080808] via-[#080f00] to-[#080808]",
-    accent: "#5A8A3C",
-    cta: "ساعت‌های اسپرت",
-    ctaSecondary: "مقایسه مدل‌ها",
-  },
-  {
-    id: 3,
-    eyebrow: "هوشمند، متصل، زیبا",
-    title: "آینده\nمچ شما",
-    subtitle: "Apple Watch · Samsung Galaxy · Garmin",
-    badge: "سازگار با iOS و Android",
-    image: watchSmart,
-    bg: "from-[#080808] via-[#00080f] to-[#080808]",
-    accent: "#3A7CA8",
-    cta: "ساعت هوشمند",
-    ctaSecondary: "مقایسه ویژگی‌ها",
-  },
+import heroKronosBg from "@/assets/hero-kronos-bg.webp";
+import watchLuxury from "@/assets/watch-luxury.png";
+
+const HERO_STATS = [
+  { value: "50+", label: "برند معتبر" },
+  { value: "1200+", label: "مدل ساعت" },
+  { value: "99٪", label: "رضایت کاربران" },
+] as const;
+
+const TICKER_ITEMS = [
+  { label: "اصالت تضمینی", Icon: ShieldCheck },
+  { label: "کالکشن‌های منتخب", Icon: Crown },
+  { label: "طراحی ماندگار", Icon: Gem },
+  { label: "انتخاب برای هر سبک", Icon: CircleDot },
 ] as const;
 
 export function HeroSection() {
-  const [activeIdx, setActiveIdx] = useState(0);
-  const [isMounted, setIsMounted] = useState(false);
-  const headingRef = useRef<HTMLDivElement>(null);
-  const shouldReduceMotion = useReducedMotion();
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!headingRef.current || shouldReduceMotion) return;
-
-    const context = gsap.context(() => {
-      gsap.fromTo(
-        ".hero-line",
-        { opacity: 0, y: 60, filter: "blur(6px)" },
-        {
-          opacity: 1,
-          y: 0,
-          filter: "blur(0px)",
-          duration: 1.2,
-          stagger: 0.18,
-          ease: "power4.out",
-          delay: 0.3,
-        },
-      );
-    }, headingRef);
-
-    return () => context.revert();
-  }, [activeIdx, shouldReduceMotion]);
-
-  const activeSlide = SLIDES[activeIdx] ?? SLIDES[0];
-
   return (
-    <section className="relative w-full h-[88vh] sm:h-screen overflow-hidden grain-overlay">
-      <div className="absolute inset-0 vignette z-10 pointer-events-none" />
+    <section
+      dir="rtl"
+      aria-labelledby="home-hero-title"
+      className="relative isolate overflow-hidden bg-[#070809] text-[#F7F2E8]"
+    >
+      <style>{`
+        @keyframes kronos-home-ticker {
+          from { transform: translate3d(0, 0, 0); }
+          to { transform: translate3d(-50%, 0, 0); }
+        }
+      `}</style>
+
+      {/* =========================================================
+          CINEMATIC HERO BACKGROUND
+          Desktop: bright watch atmosphere on the left, clean dark
+          negative space on the right for Persian copy.
+          Mobile: crop follows the watch area, while a stronger
+          vertical overlay keeps the text readable.
+         ========================================================= */}
       <div
-        className="absolute top-0 left-0 right-0 h-[1px] z-30"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent 0%, #C9A84C 30%, #E8C96C 50%, #C9A84C 70%, transparent 100%)",
-        }}
-      />
-
-      <Swiper
-        modules={[Autoplay, EffectFade, Pagination]}
-        effect="fade"
-        autoplay={shouldReduceMotion ? false : { delay: 7000, disableOnInteraction: false }}
-        pagination={{ clickable: true }}
-        loop
-        onSlideChange={(swiper) => setActiveIdx(swiper.realIndex)}
-        className="absolute inset-0 w-full h-full"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+        aria-hidden="true"
       >
-        {SLIDES.map((slide) => (
-          <SwiperSlide key={slide.id}>
-            <div className={`relative w-full h-full bg-gradient-to-br ${slide.bg}`}>
-              <div
-                className="absolute right-[10%] top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[120px] opacity-20 pointer-events-none"
-                style={{ background: slide.accent }}
-              />
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+        <img
+          src={heroKronosBg}
+          alt=""
+          width={1672}
+          height={941}
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
+          className="
+            absolute inset-0 h-full w-full object-cover
+            object-[31%_center]
+            opacity-[0.88]
+            sm:object-[29%_center]
+            lg:object-center
+            lg:opacity-[0.82]
+          "
+        />
 
+        {/* Desktop contrast:
+            keeps the right side dark so title/body never disappear. */}
+        <div className="absolute inset-0 hidden bg-[linear-gradient(90deg,rgba(7,8,9,0.08)_0%,rgba(7,8,9,0.18)_38%,rgba(7,8,9,0.72)_66%,rgba(7,8,9,0.96)_100%)] lg:block" />
+
+        {/* Desktop vertical shaping */}
+        <div className="absolute inset-0 hidden bg-[linear-gradient(180deg,rgba(7,8,9,0.15)_0%,rgba(7,8,9,0.04)_42%,rgba(7,8,9,0.72)_100%)] lg:block" />
+
+        {/* Mobile:
+            top remains rich around the watch, lower section becomes
+            progressively darker for headline/buttons/stats. */}
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,8,9,0.10)_0%,rgba(7,8,9,0.12)_28%,rgba(7,8,9,0.68)_56%,rgba(7,8,9,0.95)_76%,#070809_100%)] lg:hidden" />
+
+        {/* Mobile side vignette keeps the crop elegant */}
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,8,9,0.22)_0%,rgba(7,8,9,0.02)_45%,rgba(7,8,9,0.36)_100%)] lg:hidden" />
+
+        {/* Soft brand glow */}
+        <div className="absolute -left-[12%] top-[4%] h-[60%] w-[58%] rounded-full bg-[#C9A84C]/[0.07] blur-[90px] lg:h-[72%] lg:w-[60%] lg:blur-[120px]" />
+
+        {/* Top / bottom finishing */}
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#D7B45D]/45 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#070809] to-transparent lg:h-24" />
+      </div>
+
+      {/* =========================================================
+          HERO BODY
+          Desktop RTL:
+          foreground watch = left
+          copy = right
+
+          Mobile:
+          watch first, copy immediately below — same approved layout.
+         ========================================================= */}
       <div
-        className="container mx-auto px-5 sm:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center z-20 relative h-full pt-10 lg:pt-0"
-        dir="rtl"
+        dir="ltr"
+        className="
+          relative mx-auto grid w-full max-w-[1500px] items-center
+          gap-0 px-4 pb-6 pt-3
+          sm:px-6 sm:pb-8 sm:pt-5
+          lg:min-h-[560px]
+          lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)]
+          lg:gap-7 lg:px-10 lg:pb-7 lg:pt-5
+          xl:min-h-[590px] xl:px-14
+        "
       >
-        <AnimatePresence mode="wait">
-          <motion.div
-            ref={headingRef}
-            key={activeSlide.id}
-            initial={shouldReduceMotion ? false : { opacity: 0, x: -28, filter: "blur(6px)" }}
-            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            exit={shouldReduceMotion ? undefined : { opacity: 0, x: 28, filter: "blur(6px)" }}
-            transition={{ duration: shouldReduceMotion ? 0 : 0.55, ease: "easeOut" }}
-            className="flex flex-col gap-5 sm:gap-7"
-          >
-            <motion.div
-              initial={shouldReduceMotion ? false : { opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{
-                delay: shouldReduceMotion ? 0 : 0.2,
-                duration: shouldReduceMotion ? 0 : 0.8,
-              }}
-              className="hero-line flex items-center gap-3"
-            >
-              <div className="h-[1px] w-8 sm:w-10" style={{ background: activeSlide.accent }} />
-              <span
-                className="text-[10px] sm:text-xs tracking-[0.3em] uppercase font-medium"
-                style={{ color: activeSlide.accent }}
-              >
-                {activeSlide.eyebrow}
-              </span>
-            </motion.div>
-
-            <div className="hero-line">
-              <h1
-                className="text-4xl sm:text-6xl lg:text-8xl font-black leading-[1.05] text-[#F0EDE8] whitespace-pre-line"
-                style={{
-                  fontFamily: "Playfair Display, Vazirmatn Variable, serif",
-                }}
-              >
-                {activeSlide.title}
-              </h1>
-              <div
-                className="h-[2px] mt-3 sm:mt-4 rounded-full"
-                style={{
-                  width: "100px",
-                  background: `linear-gradient(90deg, ${activeSlide.accent}, transparent)`,
-                  animation: shouldReduceMotion ? undefined : "line-draw 1.4s ease-out 0.8s both",
-                }}
-              />
-            </div>
-
-            <div className="hero-line text-[#8A8A8A] text-base tracking-widest h-6">
-              {!isMounted || shouldReduceMotion ? (
-                activeSlide.subtitle
-              ) : (
-                <Typewriter
-                  key={activeSlide.id}
-                  options={{
-                    strings: [activeSlide.subtitle],
-                    autoStart: true,
-                    loop: false,
-                    delay: 55,
-                    cursor: "_",
-                  }}
-                />
-              )}
-            </div>
-
-            <motion.div
-              initial={shouldReduceMotion ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{
-                delay: shouldReduceMotion ? 0 : 1,
-                duration: shouldReduceMotion ? 0 : undefined,
-              }}
-              className="hero-line inline-flex items-center gap-2 w-fit px-4 py-2 rounded-full border text-xs tracking-wider"
-              style={{
-                borderColor: `${activeSlide.accent}55`,
-                color: activeSlide.accent,
-                background: `${activeSlide.accent}0d`,
-                animation: shouldReduceMotion ? undefined : "gold-pulse 3s ease-in-out infinite",
-              }}
-            >
-              <span
-                className="w-1.5 h-1.5 rounded-full"
-                style={{ background: activeSlide.accent }}
-              />
-              {activeSlide.badge}
-            </motion.div>
-
-            <div className="hero-line flex gap-3 sm:gap-4 flex-wrap mt-2">
-              <Link
-                to="/shop"
-                className="relative overflow-hidden px-6 sm:px-10 py-3 sm:py-4 font-bold text-[#080808] text-xs sm:text-sm tracking-[0.15em] uppercase group"
-                style={{ background: activeSlide.accent }}
-              >
-                <span className="relative z-10">{activeSlide.cta}</span>
-                <span
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100"
-                  style={{
-                    background:
-                      "linear-gradient(100deg, transparent 20%, rgba(255,255,255,0.35) 50%, transparent 80%)",
-                    animation: shouldReduceMotion
-                      ? undefined
-                      : "gold-shimmer 1.6s ease-in-out infinite",
-                  }}
-                />
-              </Link>
-
-              <Link
-                to="/brands"
-                className="px-6 sm:px-10 py-3 sm:py-4 font-medium text-[#A8A8A8] hover:text-[#F0EDE8] text-xs sm:text-sm tracking-[0.15em] uppercase border border-[#2A2A2A] hover:border-[#C9A84C] transition-all duration-300"
-              >
-                {activeSlide.ctaSecondary}
-              </Link>
-            </div>
-          </motion.div>
-        </AnimatePresence>
-
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeSlide.id}
-            className="flex items-center justify-center relative order-first lg:order-last"
-            initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.92, y: 18 }}
-            animate={
-              shouldReduceMotion
-                ? { opacity: 1, scale: 1, y: 0 }
-                : { opacity: 1, scale: 1, y: [0, -14, 0] }
-            }
-            exit={shouldReduceMotion ? undefined : { opacity: 0, scale: 0.92, y: 18 }}
-            transition={
-              shouldReduceMotion
-                ? { duration: 0 }
-                : {
-                    y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-                    opacity: { duration: 0.45 },
-                    scale: { duration: 0.45 },
-                  }
-            }
-          >
+        {/* Foreground watch */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97, x: -18 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
+          transition={{
+            duration: 0.85,
+            ease: [0.16, 1, 0.3, 1],
+          }}
+          className="
+            relative order-1 flex min-h-[270px] items-center justify-center
+            sm:min-h-[340px]
+            lg:min-h-[485px]
+          "
+        >
+          <div className="relative w-full max-w-[680px]">
+            {/* Halo behind product */}
             <div
-              className="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 sm:w-48 h-6 blur-2xl opacity-30 rounded-full"
-              style={{ background: activeSlide.accent }}
+              className="
+                absolute left-1/2 top-1/2
+                h-[72%] w-[72%]
+                -translate-x-1/2 -translate-y-1/2
+                rounded-full bg-[#D4AF55]/[0.09]
+                blur-[54px]
+                sm:blur-[62px]
+              "
+              aria-hidden="true"
             />
+
+            {/* Fine luxury rings */}
+            <div
+              className="absolute inset-[12%] rounded-full border border-[#D8B45A]/[0.10]"
+              aria-hidden="true"
+            />
+            <div
+              className="absolute inset-[21%] rounded-full border border-white/[0.04]"
+              aria-hidden="true"
+            />
+
             <img
-              src={activeSlide.image}
-              alt={activeSlide.subtitle}
-              width={480}
-              height={480}
+              src={watchLuxury}
+              alt="ساعت لوکس KRONOS"
+              width={1000}
+              height={1000}
               loading="eager"
               decoding="async"
               fetchPriority="high"
-              className="relative z-10 w-48 sm:w-72 lg:w-full lg:max-w-[480px] drop-shadow-[0_40px_60px_rgba(0,0,0,0.8)]"
-              style={{
-                filter: `drop-shadow(0 20px 40px ${activeSlide.accent}55)`,
-              }}
+              className="
+                relative z-10 mx-auto h-auto w-full
+                max-w-[560px]
+                object-contain
+                drop-shadow-[0_42px_68px_rgba(0,0,0,0.78)]
+                sm:max-w-[610px]
+                lg:max-w-[620px]
+              "
             />
-          </motion.div>
-        </AnimatePresence>
+          </div>
+        </motion.div>
+
+        {/* Copy */}
+        <motion.div
+          dir="rtl"
+          initial={{ opacity: 0, y: 22 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.72,
+            delay: 0.08,
+            ease: [0.16, 1, 0.3, 1],
+          }}
+          className="
+            relative z-10 order-2 mx-auto flex w-full max-w-2xl
+            flex-col items-center text-center
+            lg:mx-0 lg:items-start lg:text-right
+          "
+        >
+          {/* Additional copy veil:
+              subtle enough to preserve the image, strong enough to
+              protect text contrast on different screens. */}
+          <div
+            className="
+              pointer-events-none absolute
+              -inset-x-4 -inset-y-5 -z-10
+              rounded-[2rem]
+              bg-[radial-gradient(ellipse_at_center,rgba(7,8,9,0.55),rgba(7,8,9,0.20)_58%,transparent_78%)]
+              blur-[2px]
+              lg:hidden
+            "
+            aria-hidden="true"
+          />
+
+          <div className="flex items-center gap-3">
+            <span
+              className="h-px w-7 bg-[#D5B45D] sm:w-9"
+              aria-hidden="true"
+            />
+
+            <span
+              className="
+                text-[8px] font-semibold tracking-[0.34em]
+                text-[#D9BA68]
+                drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]
+                sm:text-[10px]
+              "
+              dir="ltr"
+            >
+              A TIMELESS LEGACY
+            </span>
+          </div>
+
+          <h1
+            id="home-hero-title"
+            className="
+              mt-3 max-w-[9ch]
+              text-4xl font-semibold leading-[1.22]
+              text-[#FFF9EE]
+              [text-shadow:0_3px_22px_rgba(0,0,0,0.65)]
+              sm:mt-4 sm:text-5xl
+              md:text-6xl
+              lg:text-[4.35rem]
+              xl:text-[4.7rem]
+            "
+            style={{
+              fontFamily:
+                "Playfair Display, Vazirmatn Variable, serif",
+            }}
+          >
+            فراتر از زمان
+          </h1>
+
+          <p
+            className="
+              mt-3 max-w-xl
+              text-sm leading-7 text-[#E2D9C8]
+              [text-shadow:0_2px_14px_rgba(0,0,0,0.72)]
+              sm:mt-4 sm:text-base sm:leading-8
+              lg:text-[16px]
+            "
+          >
+            در KRONOS هر ساعت انتخابی از هنر، دقت و شخصیت است؛
+            برای کسانی که زمان را فقط نمی‌سنجند، بلکه آن را زندگی
+            می‌کنند.
+          </p>
+
+          {/* CTAs */}
+          <div className="mt-5 flex w-full flex-col gap-2.5 sm:mt-6 sm:w-auto sm:flex-row sm:flex-wrap lg:justify-start">
+            <Link
+              to="/shop"
+              className="
+                group inline-flex min-h-12 items-center justify-center gap-2
+                rounded-lg bg-[#D9B75E] px-6
+                text-sm font-semibold text-[#0B0C0E]
+                shadow-[0_10px_30px_rgba(201,168,76,0.14)]
+                transition-all duration-300
+                hover:bg-[#E7CB78]
+                hover:shadow-[0_14px_34px_rgba(201,168,76,0.20)]
+                focus-visible:outline-none
+                focus-visible:ring-2 focus-visible:ring-[#D9B75E]
+                focus-visible:ring-offset-2 focus-visible:ring-offset-[#070809]
+              "
+            >
+              مشاهده کالکشن‌ها
+              <ArrowLeft
+                className="size-4 transition-transform duration-300 group-hover:-translate-x-1"
+                aria-hidden="true"
+              />
+            </Link>
+
+            <a
+              href="#featured-products"
+              className="
+                group inline-flex min-h-12 items-center justify-center gap-2
+                rounded-lg border border-[#E4D7BB]/[0.18]
+                bg-[#070809]/55 px-6
+                text-sm font-semibold text-[#F8F2E8]
+                shadow-[0_8px_24px_rgba(0,0,0,0.18)]
+                backdrop-blur-md
+                transition-all duration-300
+                hover:border-[#D6B35E]/45
+                hover:bg-[#111214]/75
+                focus-visible:outline-none
+                focus-visible:ring-2 focus-visible:ring-[#C9A84C]
+              "
+            >
+              <span className="flex size-7 items-center justify-center rounded-full border border-[#E4D7BB]/[0.18]">
+                <Play
+                  className="size-3 fill-current"
+                  aria-hidden="true"
+                />
+              </span>
+              محصولات ویژه
+            </a>
+          </div>
+
+          {/* Stats */}
+          <div
+            className="
+              mt-6 grid w-full grid-cols-3
+              border-t border-[#E6D7B5]/[0.10]
+              pt-4
+              sm:mt-7 sm:pt-5
+            "
+          >
+            {HERO_STATS.map((stat, index) => (
+              <div
+                key={stat.label}
+                className={[
+                  "min-w-0 px-2 sm:px-4",
+                  index !== HERO_STATS.length - 1
+                    ? "border-l border-[#E6D7B5]/[0.10]"
+                    : "",
+                ].join(" ")}
+              >
+                <strong
+                  className="
+                    block text-xl font-semibold tracking-[-0.04em]
+                    text-[#F8E8BF]
+                    [text-shadow:0_2px_12px_rgba(0,0,0,0.65)]
+                    sm:text-2xl
+                    lg:text-[1.7rem]
+                  "
+                  dir="ltr"
+                  style={{
+                    fontFamily: "DM Mono, monospace",
+                  }}
+                >
+                  {stat.value}
+                </strong>
+
+                <span
+                  className="
+                    mt-1 block truncate
+                    text-[8px] text-[#B6AEA1]
+                    [text-shadow:0_2px_10px_rgba(0,0,0,0.7)]
+                    sm:text-[10px]
+                  "
+                >
+                  {stat.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
 
-      <motion.div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-3"
-        animate={shouldReduceMotion ? undefined : { y: [0, 8, 0] }}
-        transition={
-          shouldReduceMotion ? undefined : { duration: 2, repeat: Infinity, ease: "easeInOut" }
-        }
+      {/* =========================================================
+          LUXURY TICKER
+         ========================================================= */}
+      <div
+        className="
+          relative z-20 overflow-hidden
+          border-y border-white/[0.07]
+          bg-[#0A0B0D]/95 py-3
+          backdrop-blur-xl
+          sm:py-3.5
+        "
+        dir="ltr"
+        aria-label="ویژگی‌های KRONOS"
       >
-        <div className="relative w-8 h-8">
-          <svg viewBox="0 0 32 32" className="w-full h-full" fill="none">
-            <circle cx="16" cy="16" r="14" stroke="#C9A84C" strokeWidth="1" strokeOpacity="0.4" />
-            <line
-              x1="16"
-              y1="16"
-              x2="16"
-              y2="6"
-              stroke="#C9A84C"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              style={{
-                transformOrigin: "16px 16px",
-                animation: shouldReduceMotion ? undefined : "second-hand 10s linear infinite",
-              }}
-            />
-            <line
-              x1="16"
-              y1="16"
-              x2="21"
-              y2="16"
-              stroke="#C9A84C"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              style={{
-                transformOrigin: "16px 16px",
-                animation: shouldReduceMotion ? undefined : "second-hand 120s linear infinite",
-              }}
-            />
-          </svg>
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-14 bg-gradient-to-r from-[#0A0B0D] to-transparent sm:w-28" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-14 bg-gradient-to-l from-[#0A0B0D] to-transparent sm:w-28" />
+
+        <div className="flex w-max animate-[kronos-home-ticker_24s_linear_infinite] motion-reduce:animate-none">
+          {[0, 1].map((copy) => (
+            <div
+              key={copy}
+              className="flex shrink-0 items-center"
+            >
+              {TICKER_ITEMS.map(({ label, Icon }) => (
+                <div
+                  key={`${copy}-${label}`}
+                  dir="rtl"
+                  className="
+                    flex shrink-0 items-center gap-2
+                    px-5 text-[10px] text-[#B1A99C]
+                    sm:px-8 sm:text-xs
+                    lg:px-10
+                  "
+                >
+                  <Icon
+                    className="size-3.5 shrink-0 text-[#D0AD55]"
+                    strokeWidth={1.5}
+                    aria-hidden="true"
+                  />
+
+                  <span>{label}</span>
+
+                  <span
+                    className="ms-4 size-1 rounded-full bg-[#C9A84C]/35"
+                    aria-hidden="true"
+                  />
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
-        <span className="text-[#8A8A8A] text-[10px] tracking-[0.4em] uppercase">اسکرول</span>
-      </motion.div>
+      </div>
     </section>
   );
 }

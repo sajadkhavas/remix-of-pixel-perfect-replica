@@ -1,61 +1,64 @@
 import { motion } from "framer-motion";
+import { Link } from "@tanstack/react-router";
 
-const BRANDS = [
-  { name: "ROLEX", color: "#C9A84C" },
-  { name: "OMEGA", color: "#8A8A8A" },
-  { name: "PATEK PHILIPPE", color: "#C9A84C" },
-  { name: "TAG HEUER", color: "#8A8A8A" },
-  { name: "G-SHOCK", color: "#5A8A3C" },
-  { name: "APPLE WATCH", color: "#3A7CA8" },
-  { name: "GARMIN", color: "#3A7CA8" },
-  { name: "SEIKO", color: "#8A8A8A" },
-  { name: "TISSOT", color: "#8A6A3C" },
-  { name: "LONGINES", color: "#C9A84C" },
-];
+import { CATALOG_BRANDS } from "@/data/fixtures/brands";
 
-function BrandItem({ brand }: { brand: (typeof BRANDS)[0] }) {
+function BrandItem({
+  brand,
+}: {
+  readonly brand: (typeof CATALOG_BRANDS)[number];
+}) {
   return (
-    <motion.div
-      whileHover={{ scale: 1.05 }}
-      className="flex items-center justify-center px-12 py-4 shrink-0"
-      style={{
-        color: brand.color,
-        fontFamily: "Playfair Display, serif",
-        letterSpacing: "0.3em",
-        fontWeight: 700,
-        fontSize: "1.05rem",
-        opacity: 0.6,
-      }}
+    <Link
+      to="/shop"
+      search={{ brand: [brand.slug] }}
+      resetScroll
+      viewTransition
+      preload="intent"
+      className="flex shrink-0 items-center justify-center px-8 py-4 sm:px-12"
+      aria-label={`مشاهده محصولات ${brand.name}`}
     >
-      {brand.name}
-    </motion.div>
+      <motion.span
+        whileHover={{ scale: 1.05 }}
+        className="text-sm font-semibold tracking-[0.22em] text-[#BEB7AB]/60 transition-colors hover:text-[#D7BD77] sm:text-base sm:tracking-[0.28em]"
+        style={{ fontFamily: "Playfair Display, serif" }}
+        dir="ltr"
+      >
+        {brand.name.toUpperCase()}
+      </motion.span>
+    </Link>
   );
 }
 
 export function BrandsMarquee() {
+  const brands = CATALOG_BRANDS.filter((brand) => brand.featured);
+
+  if (brands.length === 0) return null;
+
+  const repeated = [...brands, ...brands, ...brands, ...brands];
+
   return (
-    <section className="py-6 bg-[#080808] overflow-hidden border-y border-[#1E1E1E]">
+    <section
+      className="overflow-hidden border-y border-white/[0.06] bg-[#08090B] py-5 sm:py-6"
+      aria-label="برندهای منتخب"
+    >
       <div className="relative">
         <div
-          className="absolute right-0 top-0 bottom-0 w-32 z-10 pointer-events-none"
-          style={{
-            background: "linear-gradient(to left, #080808, transparent)",
-          }}
+          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-[#08090B] to-transparent sm:w-32"
+          aria-hidden="true"
         />
         <div
-          className="absolute left-0 top-0 bottom-0 w-32 z-10 pointer-events-none"
-          style={{
-            background: "linear-gradient(to right, #080808, transparent)",
-          }}
+          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-[#08090B] to-transparent sm:w-32"
+          aria-hidden="true"
         />
 
         <motion.div
-          className="flex"
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+          className="flex w-max"
+          animate={{ x: ["0%", "-25%"] }}
+          transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
         >
-          {[...BRANDS, ...BRANDS, ...BRANDS, ...BRANDS].map((brand, i) => (
-            <BrandItem key={i} brand={brand} />
+          {repeated.map((brand, index) => (
+            <BrandItem key={`${brand.id}-${index}`} brand={brand} />
           ))}
         </motion.div>
       </div>

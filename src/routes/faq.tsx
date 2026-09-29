@@ -1,68 +1,79 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { ChevronDown } from "lucide-react";
 
 import { ContentPage } from "@/components/content/PolicyPage";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { buildTrustPageHead } from "@/content/trust/seo";
 
 const FAQS = [
   {
-    q: "اطلاعات فنی هر ساعت از کجا می‌آید؟",
-    a: "مشخصات نمایش‌داده‌شده باید از داده ثبت‌شده همان محصول و منبع قابل بررسی آن تهیه شود. اگر یک مشخصه ثبت نشده باشد، فروشگاه نباید آن را حدس بزند.",
+    q: "چطور ساعت مناسب را پیدا کنم؟",
+    a: "از فیلترهای فروشگاه برای محدودکردن نتایج بر اساس دسته‌بندی، برند، نوع موتور، اندازه قاب، جنس قاب، رنگ صفحه و سایر مشخصات استفاده کنید.",
   },
   {
-    q: "آیا موجودی و قیمت همیشه ثابت است؟",
-    a: "خیر. موجودی و قیمت می‌توانند تغییر کنند و باید از وضعیت ثبت‌شده همان مدل یا واریانت خوانده شوند. صفحه محصول مرجع وضعیت فعلی قابل نمایش است.",
+    q: "آیا می‌توانم یک محصول را برای بعد ذخیره کنم؟",
+    a: "بله. از آیکن قلب روی کارت یا صفحه محصول استفاده کنید تا ساعت در بخش علاقه‌مندی‌ها ذخیره شود.",
   },
   {
-    q: "شرایط ارسال و مرجوعی چیست؟",
-    a: "جزئیات ارسال یا مرجوعی فقط وقتی نمایش داده می‌شود که سیاست مربوط در تنظیمات عمومی فروشگاه ثبت و برای انتشار تأیید شده باشد. از صفحه «ارسال و مرجوعی» وضعیت فعلی را بررسی کنید.",
+    q: "قیمت و موجودی از کجا بررسی می‌شود؟",
+    a: "صفحه همان محصول مرجع قیمت، واریانت انتخاب‌شده و وضعیت موجودی قابل نمایش است.",
   },
   {
-    q: "گارانتی و اصالت چگونه اعلام می‌شود؟",
-    a: "هیچ تضمین، مدت گارانتی یا رابطه رسمی با برند بدون شواهد تأییدشده به‌عنوان واقعیت نمایش داده نمی‌شود. صفحات گارانتی و اصالت تنها اطلاعات تأییدشده را منتشر می‌کنند.",
+    q: "چطور مدل‌های یک دسته را ببینم؟",
+    a: "از بخش دسته‌بندی‌ها وارد کالکشن لوکس، اسپرت، کلاسیک یا هوشمند شوید؛ هر صفحه فقط محصولات همان دسته را نمایش می‌دهد.",
   },
   {
-    q: "چه روش‌های پرداختی قابل استفاده‌اند؟",
-    a: "فقط روش‌هایی که در تنظیمات عمومی فعال شده‌اند در صفحه روش‌های پرداخت نمایش داده می‌شوند. نام درگاه یا روش پرداخت غیرفعال نباید به کاربر نشان داده شود.",
+    q: "شرایط ارسال و بازگشت را کجا ببینم؟",
+    a: "صفحه «ارسال و بازگشت کالا» راهنمای اصلی این بخش است و اطلاعات مرتبط با سفارش از همان مسیر قابل پیگیری است.",
   },
   {
-    q: "چطور چند مدل را مقایسه کنم؟",
-    a: "اگر قابلیت مقایسه در فروشگاه فعال باشد، می‌توانید مدل‌ها را بر اساس مشخصات ثبت‌شده کنار هم ببینید. نبود یک مشخصه به معنی نامشخص بودن آن داده است، نه برتری یا ضعف محصول.",
+    q: "برای بررسی اصالت چه چیزهایی مهم است؟",
+    a: "نام مدل، شماره مرجع، مشخصات فنی و مدارک همراه محصول را با اطلاعات قابل بررسی همان سازنده و همان سفارش تطبیق دهید.",
+  },
+  {
+    q: "روش پرداخت چه زمانی مشخص می‌شود؟",
+    a: "روش‌های قابل استفاده برای سفارش در مرحله مربوط به پرداخت نمایش داده می‌شوند.",
   },
 ] as const;
 
 export const Route = createFileRoute("/faq")({
-  head: () =>
-    buildTrustPageHead({
-      pathname: "/faq",
-      title: "پرسش‌های متداول",
-      description: "پاسخ‌های عمومی درباره اطلاعات محصول، موجودی و سیاست‌های قابل انتشار فروشگاه.",
-    }),
+  head: () => ({
+    meta: [
+      { title: "پرسش‌های متداول | KRONOS" },
+      {
+        name: "description",
+        content: "پاسخ به پرسش‌های متداول درباره خرید و استفاده از فروشگاه KRONOS.",
+      },
+    ],
+  }),
   component: FaqPage,
 });
 
 function FaqPage() {
   return (
     <ContentPage
-      eyebrow="پشتیبانی"
+      eyebrow="FAQ"
       title="پرسش‌های متداول"
-      intro="پاسخ‌های این صفحه عمداً از وعده‌های زمانی، گارانتی، مرجوعی یا پرداخت تأییدنشده خودداری می‌کنند."
+      intro="پاسخ سریع به پرسش‌های رایج درباره جستجو، انتخاب محصول، علاقه‌مندی‌ها، سفارش و خدمات خرید."
     >
-      <Accordion type="single" collapsible className="rounded-lg border border-border-subtle px-5">
-        {FAQS.map((item, index) => (
-          <AccordionItem key={item.q} value={`faq-${index}`}>
-            <AccordionTrigger className="min-h-11 text-right text-text-primary hover:no-underline">
-              {item.q}
-            </AccordionTrigger>
-            <AccordionContent className="leading-8 text-text-secondary">{item.a}</AccordionContent>
-          </AccordionItem>
+      <div className="overflow-hidden rounded-[1.4rem] border border-white/[0.07] bg-[#0D0F11]">
+        {FAQS.map((item) => (
+          <details
+            key={item.q}
+            className="group border-b border-white/[0.06] last:border-b-0"
+          >
+            <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-sm font-semibold text-[#F0EDE8] outline-none transition-colors hover:text-[#DCC27C] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#C9A84C] sm:px-6">
+              <span>{item.q}</span>
+              <ChevronDown
+                className="size-4 shrink-0 text-[#817B73] transition-transform duration-300 group-open:rotate-180"
+                aria-hidden="true"
+              />
+            </summary>
+
+            <div className="px-5 pb-5 text-sm leading-8 text-[#948E85] sm:px-6">
+              {item.a}
+            </div>
+          </details>
         ))}
-      </Accordion>
+      </div>
     </ContentPage>
   );
 }

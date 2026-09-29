@@ -1,10 +1,9 @@
-import { Mail, Phone } from "lucide-react";
+import { Mail, Phone, Send, Instagram } from "lucide-react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import {
   ContentPage,
   ContentSection,
-  UnconfiguredPolicyNotice,
 } from "@/components/content/PolicyPage";
 import {
   getConfirmedEmails,
@@ -12,15 +11,17 @@ import {
   getConfirmedSocialLinks,
 } from "@/components/layout/navigation-model";
 import { usePublicStoreSettings } from "@/components/layout/store-settings-context";
-import { buildTrustPageHead } from "@/content/trust/seo";
 
 export const Route = createFileRoute("/contact")({
-  head: () =>
-    buildTrustPageHead({
-      pathname: "/contact",
-      title: "تماس با کرونوس",
-      description: "راه‌های ارتباطی تأییدشده کرونوس و وضعیت دسترسی به پشتیبانی.",
-    }),
+  head: () => ({
+    meta: [
+      { title: "تماس با KRONOS" },
+      {
+        name: "description",
+        content: "راه‌های ارتباطی KRONOS.",
+      },
+    ],
+  }),
   component: ContactPage,
 });
 
@@ -30,75 +31,89 @@ function ContactPage() {
   const emails = getConfirmedEmails(settings);
   const socialLinks = getConfirmedSocialLinks(settings);
   const hasChannels = phones.length + emails.length + socialLinks.length > 0;
-  const formAvailable =
-    settings.features.contactForm && settings.environment.capabilities.contactForm === "configured";
 
   return (
     <ContentPage
-      eyebrow="تماس"
+      eyebrow="CONTACT"
       title="راه‌های ارتباطی"
-      intro="در این صفحه فقط کانال‌هایی نمایش داده می‌شوند که برای انتشار عمومی تأیید شده باشند."
+      intro="برای پرسش درباره محصول، سفارش یا خدمات خرید از کانال‌های درج‌شده در این صفحه استفاده کنید."
     >
       {hasChannels ? (
-        <ContentSection title="کانال‌های تأییدشده">
-          <div className="grid gap-3 sm:grid-cols-2">
-            {phones.map((phone) => (
-              <a
-                key={phone.id}
-                href={`tel:${phone.e164}`}
-                className="flex min-h-11 items-center gap-3 rounded-md border border-border-subtle px-4 py-3 text-text-primary hover:border-border-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
-              >
-                <Phone className="size-5 text-accent-primary" aria-hidden="true" />
+        <div className="grid gap-4 sm:grid-cols-2">
+          {phones.map((phone) => (
+            <a
+              key={phone.id}
+              href={`tel:${phone.e164}`}
+              className="group flex min-h-20 items-center gap-4 rounded-[1.25rem] border border-white/[0.07] bg-[#0D0F11] px-5 transition-colors hover:border-[#C9A84C]/28"
+            >
+              <span className="inline-flex size-10 items-center justify-center rounded-full bg-[#C9A84C]/[0.06] text-[#D6BE78]">
+                <Phone className="size-4" aria-hidden="true" />
+              </span>
+              <span className="text-sm font-semibold text-[#F0EDE8]">
                 {phone.displayValue ?? phone.e164}
-              </a>
-            ))}
-            {emails.map((email) => (
-              <a
-                key={email.id}
-                href={`mailto:${email.address}`}
-                className="flex min-h-11 items-center gap-3 rounded-md border border-border-subtle px-4 py-3 text-text-primary hover:border-border-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
-              >
-                <Mail className="size-5 text-accent-primary" aria-hidden="true" />
+              </span>
+            </a>
+          ))}
+
+          {emails.map((email) => (
+            <a
+              key={email.id}
+              href={`mailto:${email.address}`}
+              className="group flex min-h-20 items-center gap-4 rounded-[1.25rem] border border-white/[0.07] bg-[#0D0F11] px-5 transition-colors hover:border-[#C9A84C]/28"
+            >
+              <span className="inline-flex size-10 items-center justify-center rounded-full bg-[#C9A84C]/[0.06] text-[#D6BE78]">
+                <Mail className="size-4" aria-hidden="true" />
+              </span>
+              <span className="truncate text-sm font-semibold text-[#F0EDE8]">
                 {email.address}
-              </a>
-            ))}
-            {socialLinks.map((social) => (
-              <a
-                key={`${social.platform}-${social.url}`}
-                href={social.url}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="flex min-h-11 items-center rounded-md border border-border-subtle px-4 py-3 text-text-primary hover:border-border-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
-              >
+              </span>
+            </a>
+          ))}
+
+          {socialLinks.map((social) => (
+            <a
+              key={`${social.platform}-${social.url}`}
+              href={social.url}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="group flex min-h-20 items-center gap-4 rounded-[1.25rem] border border-white/[0.07] bg-[#0D0F11] px-5 transition-colors hover:border-[#C9A84C]/28"
+            >
+              <span className="inline-flex size-10 items-center justify-center rounded-full bg-[#C9A84C]/[0.06] text-[#D6BE78]">
+                {social.platform === "instagram" ? (
+                  <Instagram className="size-4" aria-hidden="true" />
+                ) : (
+                  <Send className="size-4" aria-hidden="true" />
+                )}
+              </span>
+              <span className="text-sm font-semibold text-[#F0EDE8]">
                 {social.label}
-              </a>
-            ))}
+              </span>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <ContentSection title="راهنمای سریع">
+          <p>
+            برای پاسخ به پرسش‌های عمومی درباره خرید، ارسال، ضمانت و اصالت می‌توانید ابتدا بخش پرسش‌های متداول و خدمات را بررسی کنید.
+          </p>
+
+          <div className="flex flex-wrap gap-2">
+            <Link
+              to="/faq"
+              className="inline-flex min-h-11 items-center rounded-xl bg-[#C9A84C] px-4 text-sm font-semibold text-[#090A0C] transition-colors hover:bg-[#DFC36E]"
+            >
+              پرسش‌های متداول
+            </Link>
+
+            <Link
+              to="/services"
+              className="inline-flex min-h-11 items-center rounded-xl border border-white/[0.08] px-4 text-sm font-semibold text-[#DAD3C9] transition-colors hover:border-[#C9A84C]/30 hover:text-[#DCC27C]"
+            >
+              خدمات
+            </Link>
           </div>
         </ContentSection>
-      ) : (
-        <UnconfiguredPolicyNotice label="اطلاعات تماس عمومی">
-          <Link
-            to="/faq"
-            className="inline-flex min-h-11 items-center rounded-md border border-border-default px-4 text-sm font-semibold text-text-primary hover:bg-background-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
-          >
-            مشاهده پرسش‌های متداول
-          </Link>
-        </UnconfiguredPolicyNotice>
       )}
-
-      <ContentSection title="فرم تماس">
-        {formAvailable ? (
-          <p>
-            قابلیت فرم تماس برای این محیط فعال شده است، اما ارسال باید به اتصال واقعی سرویس پشتیبانی
-            وابسته باشد. هیچ پیام موفقیت بدون ثبت واقعی درخواست نمایش داده نمی‌شود.
-          </p>
-        ) : (
-          <p>
-            فرم تماس عمومی در حال حاضر فعال نیست. این صفحه عمداً فرم نمایشی یا پیام موفقیت ساختگی
-            ارائه نمی‌کند.
-          </p>
-        )}
-      </ContentSection>
     </ContentPage>
   );
 }

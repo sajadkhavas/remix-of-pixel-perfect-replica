@@ -71,6 +71,30 @@ export function UnconfiguredPolicyNotice({
   );
 }
 
+export function PolicyList({
+  items,
+}: {
+  readonly items: readonly string[];
+}) {
+  return (
+    <ul className="grid gap-2.5">
+      {items.map((item) => (
+        <li
+          key={item}
+          className="flex gap-3 rounded-xl border border-white/[0.06] bg-[#090B0D] px-4 py-3 text-sm leading-7 text-[#AAA39A]"
+        >
+          <span
+            className="mt-2 size-1.5 shrink-0 rounded-full bg-[#C9A84C]"
+            aria-hidden="true"
+          />
+
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function SupportLinks() {
   return (
     <div className="flex flex-wrap gap-2">

@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
+import { FloatingActions } from "@/components/layout/FloatingActions";
 import { Footer } from "@/components/layout/Footer";
 import { MobileTabBar } from "@/components/layout/MobileTabBar";
 import { Navbar } from "@/components/layout/Navbar";
@@ -172,17 +173,22 @@ function RootComponent() {
       <StoreSettingsProvider>
         <StoreProvider>
           <SkipLink />
+
           <div
             className="flex min-h-screen flex-col overflow-x-hidden bg-background-canvas"
             dir="rtl"
           >
             <Navbar />
+
             <main id="main-content" className="flex-1" tabIndex={-1}>
               <Outlet />
             </main>
+
             <Footer />
             <MobileTabBar />
           </div>
+
+          <FloatingActions />
           <Toaster />
         </StoreProvider>
       </StoreSettingsProvider>
