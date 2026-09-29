@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/layout/PageHero";
-import editorialImg from "@/assets/watch-7.jpg";
+const editorialImg = "/media/watch-7.jpg";
 
 const POSTS = [
   {

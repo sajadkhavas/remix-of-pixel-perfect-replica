@@ -5,7 +5,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
-import newsletterOmega from "@/assets/kronos-newsletter-omega-speedmaster.webp";
+const newsletterOmega = "/media/kronos-newsletter-omega-speedmaster.webp";
 
 export function NewsletterSection() {
   return (

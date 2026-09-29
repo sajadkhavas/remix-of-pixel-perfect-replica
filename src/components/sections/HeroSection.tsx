@@ -9,8 +9,8 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 
-import heroKronosBg from "@/assets/hero-kronos-bg.webp";
-import watchLuxury from "@/assets/watch-luxury.png";
+const heroKronosBg = "/media/hero-kronos-bg.webp";
+const watchLuxury = "/media/watch-luxury.png";
 
 const HERO_STATS = [
   { value: "50+", label: "برند معتبر" },

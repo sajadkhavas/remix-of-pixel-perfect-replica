@@ -1,8 +1,8 @@
 import type { Brand } from "../../domain/catalog";
-import luxuryImage from "../../assets/kronos-product-luxury-royal-oak.webp";
-import sportImage from "../../assets/kronos-product-sport-carrera.webp";
-import classicImage from "../../assets/kronos-product-classic-datejust.webp";
-import smartImage from "../../assets/kronos-product-smart-apple-watch.webp";
+const luxuryImage = "/media/kronos-product-luxury-royal-oak.webp";
+const sportImage = "/media/kronos-product-sport-carrera.webp";
+const classicImage = "/media/kronos-product-classic-datejust.webp";
+const smartImage = "/media/kronos-product-smart-apple-watch.webp";
 
 const BRAND_ASSET_URLS = {
   "kronos-product-luxury-royal-oak.webp": luxuryImage,

@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
 
-import patekPhilippeNautilus from "@/assets/patek-philippe-nautilus-blue-dial-kronos.webp";
+const patekPhilippeNautilus = "/media/patek-philippe-nautilus-blue-dial-kronos.webp";
 
 type EditorialItem = {
   readonly id: string;
